@@ -32,6 +32,8 @@ public class CarReservationRequest {
     @Column(nullable=false)
     private ZonedDateTime reservationStartDate;
 
+    @NotNull
+    @Column(nullable=false)
     private ZonedDateTime reservationEndDate;
 
     @NotNull
@@ -120,8 +122,9 @@ public class CarReservationRequest {
         if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
         if (getReservationStartDate() != null ? !getReservationStartDate().equals(that.getReservationStartDate()) : that.getReservationStartDate() != null)
             return false;
-        if (getState() != that.getState()) return false;
-        return getCreationDate() != null ? getCreationDate().equals(that.getCreationDate()) : that.getCreationDate() == null;
+        if (getReservationEndDate() != null ? !getReservationEndDate().equals(that.getReservationEndDate()) : that.getReservationEndDate() != null)
+            return false;
+        return getState() == that.getState();
     }
 
     @Override
@@ -129,8 +132,8 @@ public class CarReservationRequest {
         int result = getCar() != null ? getCar().hashCode() : 0;
         result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
         result = 31 * result + (getReservationStartDate() != null ? getReservationStartDate().hashCode() : 0);
+        result = 31 * result + (getReservationEndDate() != null ? getReservationEndDate().hashCode() : 0);
         result = 31 * result + (getState() != null ? getState().hashCode() : 0);
-        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;
     }
 }
