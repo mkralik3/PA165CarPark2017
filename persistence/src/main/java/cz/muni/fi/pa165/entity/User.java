@@ -96,4 +96,28 @@ public class User {
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
+        if (getType() != user.getType()) return false;
+        return getCreationDate() != null ? getCreationDate().equals(user.getCreationDate()) : user.getCreationDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPassword() != null ? getPassword().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
+        return result;
+    }
 }

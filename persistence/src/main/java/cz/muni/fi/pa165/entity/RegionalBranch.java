@@ -100,4 +100,23 @@ public class RegionalBranch {
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof RegionalBranch)) return false;
+
+        RegionalBranch that = (RegionalBranch) o;
+
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        return getCreationDate() != null ? getCreationDate().equals(that.getCreationDate()) : that.getCreationDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
+        return result;
+    }
 }

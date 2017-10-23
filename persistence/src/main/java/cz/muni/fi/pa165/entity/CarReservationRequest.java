@@ -108,4 +108,29 @@ public class CarReservationRequest {
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CarReservationRequest)) return false;
+
+        CarReservationRequest that = (CarReservationRequest) o;
+
+        if (getCar() != null ? !getCar().equals(that.getCar()) : that.getCar() != null) return false;
+        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
+        if (getReservationStartDate() != null ? !getReservationStartDate().equals(that.getReservationStartDate()) : that.getReservationStartDate() != null)
+            return false;
+        if (getState() != that.getState()) return false;
+        return getCreationDate() != null ? getCreationDate().equals(that.getCreationDate()) : that.getCreationDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCar() != null ? getCar().hashCode() : 0;
+        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
+        result = 31 * result + (getReservationStartDate() != null ? getReservationStartDate().hashCode() : 0);
+        result = 31 * result + (getState() != null ? getState().hashCode() : 0);
+        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
+        return result;
+    }
 }
