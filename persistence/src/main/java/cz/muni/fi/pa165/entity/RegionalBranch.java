@@ -3,6 +3,9 @@ package cz.muni.fi.pa165.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,13 +26,13 @@ public class RegionalBranch {
     private RegionalBranch parent;
 
     @OneToMany(mappedBy = "parent")
-    private Set<RegionalBranch> children;
+    private Set<RegionalBranch> children = new HashSet<>();
 
     @OneToMany
-    private Set<User> employees;
+    private Set<User> employees = new HashSet<>();
 
     @OneToMany
-    private Set<Car> cars;
+    private Set<Car> cars = new HashSet<>();
 
     @NotNull
     @Column(nullable=false)
@@ -62,28 +65,24 @@ public class RegionalBranch {
     }
 
     public Set<RegionalBranch> getChildren() {
-        return children;
+        return Collections.unmodifiableSet(children);
     }
 
-    public void setChildren(Set<RegionalBranch> children) {
-        this.children = children;
-    }
+    public void addChild(RegionalBranch children) { this.children.add(children);}
 
     public Set<User> getEmployees() {
-        return employees;
+        return Collections.unmodifiableSet(employees);
     }
 
-    public void setEmployees(Set<User> employees) {
-        this.employees = employees;
+    public void addEmployee(User employee) {
+        this.employees.add(employee);
     }
 
     public Set<Car> getCars() {
-        return cars;
+        return Collections.unmodifiableSet(cars);
     }
 
-    public void setCars(Set<Car> cars) {
-        this.cars = cars;
-    }
+    public void setCar(Car car) { this.cars.add(car); }
 
     public LocalDateTime getCreationDate() {
         return creationDate;
