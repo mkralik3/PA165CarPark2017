@@ -5,21 +5,13 @@
  */
 package cz.muni.fi.pa165.dao;
 
-import cz.muni.fi.pa165.PersistenceSampleApplicationContext;
 import cz.muni.fi.pa165.entity.Car;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
-import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.annotations.Test;
 
@@ -27,15 +19,8 @@ import org.testng.annotations.Test;
  *
  * @author Tomas Pavuk
  */
+public class CarDaoTest extends AbstractDao {
 
-@ContextConfiguration(classes=PersistenceSampleApplicationContext.class)
-@TestExecutionListeners(TransactionalTestExecutionListener.class)
-@Transactional
-public class CarDaoTest extends AbstractTestNGSpringContextTests{
-
-	@Autowired
-	private CarDAO carDao;
-        
 	@Test
 	public void findAll(){
 		Car car1 = new Car();

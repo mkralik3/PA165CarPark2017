@@ -5,30 +5,19 @@
  */
 package cz.muni.fi.pa165.dao;
 
-import cz.muni.fi.pa165.PersistenceSampleApplicationContext;
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import cz.muni.fi.pa165.enums.UserType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -36,22 +25,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomas Pavuk
  */
-
-@ContextConfiguration(classes = PersistenceSampleApplicationContext.class)
-@TestExecutionListeners(TransactionalTestExecutionListener.class)
-@Transactional
-public class CarReservationRequestDaoTest extends AbstractTestNGSpringContextTests {
-    @Autowired
-    private UserDAO userDao;
-
-    @Autowired
-    private CarDAO carDao;
-
-    @Autowired
-    private CarReservationRequestDAO reservationDao;
-
-    @PersistenceContext
-    private EntityManager em;
+public class CarReservationRequestDaoTest extends AbstractDao {
 
     private Clock testClock;
     private Car car1;

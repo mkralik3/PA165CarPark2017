@@ -5,29 +5,20 @@
  */
 package cz.muni.fi.pa165.dao;
 
-import cz.muni.fi.pa165.PersistenceSampleApplicationContext;
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import cz.muni.fi.pa165.enums.UserType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -35,23 +26,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomas Pavuk
  */
-
-@ContextConfiguration(classes = PersistenceSampleApplicationContext.class)
-@TestExecutionListeners(TransactionalTestExecutionListener.class)
-@Transactional
-public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
-
-    @Autowired
-    private RegionalBranchDAO branchDao;
-
-    @Autowired
-    private CarDAO carDao;
-
-    @Autowired
-    private CarReservationRequestDAO reservationDao;
-
-    @Autowired
-    private UserDAO userDao;
+public class RegionalBranchDaoTest extends AbstractDao {
 
     private User user;
     private Clock testClock;
@@ -185,7 +160,7 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
         assertThat(foundBranch.getName()).isEqualTo("Branch");
     }
 
-    @Test()
+    @Test
     public void createBranchSavesBranchProperties() {
         RegionalBranch branch = new RegionalBranch();
         branch.setName("Branch");
@@ -225,7 +200,7 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
         branchDao.createRegionalBranch(branch);
     }
 
-    @Test()
+    @Test
     public void updateUser() {
         RegionalBranch branch = new RegionalBranch();
         branch.setName("Branch");
@@ -251,7 +226,7 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
         branchDao.deleteRegionalBranch(null);
     }
 
-    @Test()
+    @Test
     public void deleteBranch() {
         RegionalBranch branch = new RegionalBranch();
         branch.setName("Branch");
@@ -261,6 +236,4 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
         branchDao.deleteRegionalBranch(branch);
         assertThat(branchDao.findRegionalBranchById(branch.getId())).isNull();
     }
-
-
 }
