@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
+import java.time.Clock;
 import org.springframework.format.datetime.joda.LocalDateTimeParser;
 
 import javax.persistence.*;
@@ -14,18 +15,21 @@ import java.time.ZonedDateTime;
 @Entity
 public class CarReservationRequest {
 
+    @Transient
+    private final Clock clock;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     @ManyToOne(optional = false)
-    @Column (nullable=false)
+    @JoinColumn (nullable=false)
     private Car car;
 
     @NotNull
     @ManyToOne(optional = false)
-    @Column(nullable=false)
+    @JoinColumn(nullable=false)
     private User user;
 
     @NotNull
@@ -47,6 +51,11 @@ public class CarReservationRequest {
 
     private LocalDateTime modificationDate;
 
+    public CarReservationRequest(Clock clock)
+    {
+        this.clock = clock;
+    }
+    
     public Long getId() {
         return id;
     }
