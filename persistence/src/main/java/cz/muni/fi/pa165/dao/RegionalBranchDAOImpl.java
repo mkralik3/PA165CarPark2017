@@ -5,16 +5,14 @@
  */
 package cz.muni.fi.pa165.dao;
 
-import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
-import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 
 /**
- *
  * @author Tomas Pavuk
  */
 @Repository
@@ -25,47 +23,58 @@ public class RegionalBranchDAOImpl implements RegionalBranchDAO {
 
     @Override
     public void createRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't create null branch!");
+        em.persist(regionalBranch);
     }
 
     @Override
     public RegionalBranch updateRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't update null branch!");
+        return em.merge(regionalBranch);
     }
 
     @Override
     public void deleteRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't delete null branch!");
+        em.remove(regionalBranch);
     }
 
     @Override
     public RegionalBranch findRegionalBranchById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.find(RegionalBranch.class, id);
     }
 
     @Override
     public Collection<RegionalBranch> findAllRegionalBranches() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT b FROM RegionalBranch b", RegionalBranch.class)
+                .getResultList();
     }
 
     @Override
     public Collection<RegionalBranch> findAllChildrenBranches(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT b FROM RegionalBranch b WHERE b.parent.name = :name", RegionalBranch.class)
+                .setParameter("name", regionalBranch.getName())
+                .getResultList();
     }
 
     @Override
     public RegionalBranch findParentBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /** em.createQuery("SELECT b FROM RegionalBranch b WHERE b.parent = :regionalBranch", RegionalBranch.class)
+         .setParameter("regionalBranch", regionalBranch)
+         .getSingleResult(); **/
+        return regionalBranch.getParent();
     }
 
-    @Override
-    public Collection<Car> findAllCarsForBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    /**
+     @Override public Collection<Car> findAllCarsForBranch(RegionalBranch regionalBranch) {
+     return regionalBranch.getCars();
+     }
 
-    @Override
-    public Collection<Car> findAllAvaliableCarsForBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+     @Override public Collection<Car> findAllAvaliableCarsForBranch(RegionalBranch regionalBranch) {
+     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     }
+     **/
 }
