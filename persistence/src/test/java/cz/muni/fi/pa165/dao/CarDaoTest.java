@@ -10,11 +10,12 @@ import cz.muni.fi.pa165.entity.Car;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -33,9 +34,6 @@ import org.testng.annotations.Test;
 public class CarDaoTest extends AbstractTestNGSpringContextTests{
         @Autowired
 	private CarDAO carDao;
-	
-	@PersistenceContext 
-	private EntityManager em;
         
         @Test
 	public void findAll(){
@@ -84,19 +82,11 @@ public class CarDaoTest extends AbstractTestNGSpringContextTests{
                 assertThat(carDao.findCarById(car.getId()).getName()).isEqualTo(("Car1"));
 	}
         
-        @Test(expectedExceptions=IllegalArgumentException.class)
+        @Test(expectedExceptions=ConstraintViolationException.class)
 	public void nullCarNameIsNotAllowed(){
 		Car car = new Car();
 		car.setName(null);
                 car.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-		carDao.createCar(car);		
-	}
-        
-        @Test(expectedExceptions=IllegalArgumentException.class)
-	public void nullCarCreationDateIsNotAllowed(){
-		Car car = new Car();
-		car.setName("Name");
-                car.setCreationDate(null);
 		carDao.createCar(car);		
 	}
         
@@ -116,7 +106,7 @@ public class CarDaoTest extends AbstractTestNGSpringContextTests{
                 assertThat(foundCar.getCreationDate()).isEqualTo(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
 	}
         
-        @Test(expectedExceptions=NullPointerException.class)
+        @Test(expectedExceptions=InvalidDataAccessApiUsageException.class)
 	public void deleteNullCarIsNotAllowed(){
 		carDao.deleteCar(null);
 	}
@@ -132,7 +122,7 @@ public class CarDaoTest extends AbstractTestNGSpringContextTests{
                 assertThat(carDao.findCarById(car.getId())).isNull();
 	}
         
-        @Test(expectedExceptions=NullPointerException.class)
+        @Test(expectedExceptions=InvalidDataAccessApiUsageException.class)
 	public void updateNullCarIsNotAllowed(){
 		carDao.updateCar(null);
 	}

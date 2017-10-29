@@ -77,7 +77,7 @@ public class CarReservationRequestDaoTest extends AbstractTestNGSpringContextTes
 		carDao.createCar(car2);
                 
                 user = new User();
-		user.setName("User1");
+		user.setUserName("User1");
                 user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
                 user.setPassword("1234567890");
                 user.setType(UserType.USER);

@@ -1,6 +1,8 @@
 package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.UserType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,6 +19,10 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @NotNull
+    @Column(nullable=false)
     private String userName;
 
     @NotNull
@@ -26,20 +32,22 @@ public class User {
 
     @NotNull
     @Column(nullable=false)
-    private String name;
-
-    @NotNull
-    @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private UserType type;
 
-    @NotNull
-    @Column(nullable=false,unique=true)
     private LocalDateTime creationDate;
 
     private LocalDateTime activationDate;
 
     private LocalDateTime modificationDate;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;
@@ -55,14 +63,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public UserType getType() {
@@ -107,7 +107,6 @@ public class User {
 
         if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
             return false;
-        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
         if (getType() != user.getType()) return false;
         return getCreationDate() != null ? getCreationDate().equals(user.getCreationDate()) : user.getCreationDate() == null;
     }
@@ -115,7 +114,6 @@ public class User {
     @Override
     public int hashCode() {
         int result = getPassword() != null ? getPassword().hashCode() : 0;
-        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;

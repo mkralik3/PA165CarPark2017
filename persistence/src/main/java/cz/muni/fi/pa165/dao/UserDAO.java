@@ -30,6 +30,13 @@ public interface UserDAO {
     void deleteUser(User user);
 
     /**
+     * Find user by ID
+     * @param id - id for particular user
+     * @return particular user or null when user with user name doesn't exist
+     */
+    User findUserById(Long id);
+
+    /**
      * Find user by user name
      * @param userName - user name for particular user
      * @return particular user or null when user with user name doesn't exist

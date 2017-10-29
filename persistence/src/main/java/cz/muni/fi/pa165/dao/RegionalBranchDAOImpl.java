@@ -10,12 +10,18 @@ import cz.muni.fi.pa165.entity.RegionalBranch;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  *
  * @author Tomas Pavuk
  */
 @Repository
 public class RegionalBranchDAOImpl implements RegionalBranchDAO {
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public void createRegionalBranch(RegionalBranch regionalBranch) {
