@@ -33,11 +33,11 @@ public class CarReservationRequest {
 
     @NotNull
     @Column(nullable=false)
-    private ZonedDateTime reservationStartDate;
+    private LocalDateTime reservationStartDate;
 
     @NotNull
     @Column(nullable=false)
-    private ZonedDateTime reservationEndDate;
+    private LocalDateTime reservationEndDate;
 
     @NotNull
     @Column(nullable=false)
@@ -77,19 +77,19 @@ public class CarReservationRequest {
         this.user = user;
     }
 
-    public ZonedDateTime getReservationStartDate() {
+    public LocalDateTime getReservationStartDate() {
         return reservationStartDate;
     }
 
-    public void setReservationStartDate(ZonedDateTime reservationStartDate) {
+    public void setReservationStartDate(LocalDateTime reservationStartDate) {
         this.reservationStartDate = reservationStartDate;
     }
 
-    public ZonedDateTime getReservationEndDate() {
+    public LocalDateTime getReservationEndDate() {
         return reservationEndDate;
     }
 
-    public void setReservationEndDate(ZonedDateTime reservationEndDate) {
+    public void setReservationEndDate(LocalDateTime reservationEndDate) {
         this.reservationEndDate = reservationEndDate;
     }
 
