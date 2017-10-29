@@ -6,10 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Matej Kralik
@@ -29,15 +26,17 @@ public class RegionalBranch {
     private RegionalBranch parent;
 
     @OneToMany(mappedBy = "parent")
-    private Set<RegionalBranch> children = new HashSet<>();
+    private List<RegionalBranch> children = new ArrayList<>();
 
     @OneToMany
-    private Set<User> employees = new HashSet<>();
+    private List<User> employees = new ArrayList<>();
 
     @OneToMany
-    private Set<Car> cars = new HashSet<>();
+    private List<Car> cars = new ArrayList<>();
 
-    private LocalDateTime creationDate;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     private LocalDateTime modificationDate;
 
@@ -62,28 +61,48 @@ public class RegionalBranch {
     }
 
     public void setParent(RegionalBranch parent) {
+        if (parent == this)
+            throw new IllegalArgumentException("You cannot set this it as it's own Parent!");
+        if (this.parent == parent)
+            throw new IllegalArgumentException("This parent is already set!");
         this.parent = parent;
     }
 
-    public Set<RegionalBranch> getChildren() {
-        return Collections.unmodifiableSet(children);
+    public List<RegionalBranch> getChildren() {
+        return children;
     }
 
-    public void addChild(RegionalBranch children) { this.children.add(children);}
+    public void addChild(RegionalBranch children) {
+        if (!this.children.contains(children))
+            throw new IllegalArgumentException("Already conrains this branch!");
+        if (children == null)
+            throw new IllegalArgumentException("You cannot add null branch!");
+        this.children.add(children);
+    }
 
-    public Set<User> getEmployees() {
-        return Collections.unmodifiableSet(employees);
+    public List<User> getEmployees() {
+        return employees;
     }
 
     public void addEmployee(User employee) {
+        if (this.employees.contains(employee))
+            throw new IllegalArgumentException("This branch already contains this employee");
+        if (employee == null)
+            throw new IllegalArgumentException("You cannot add null employee");
         this.employees.add(employee);
     }
 
-    public Set<Car> getCars() {
-        return Collections.unmodifiableSet(cars);
+    public List<Car> getCars() {
+        return cars;
     }
 
-    public void setCar(Car car) { this.cars.add(car); }
+    public void addCar(Car car) {
+        if (this.cars.contains(car))
+            throw new IllegalArgumentException("This branch already contains this car!");
+        if (car == null)
+            throw new IllegalArgumentException("You cannot add null car");
+        this.cars.add(car);
+    }
 
     public LocalDateTime getCreationDate() {
         return creationDate;

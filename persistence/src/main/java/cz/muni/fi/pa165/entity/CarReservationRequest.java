@@ -1,12 +1,11 @@
 package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
-import java.time.Clock;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 /**
  * @author Matej Kralik
@@ -44,7 +43,9 @@ public class CarReservationRequest {
     @Enumerated(EnumType.STRING)
     private CarReservationRequestState state;
 
-    private LocalDateTime creationDate;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     private LocalDateTime modificationDate;
 
