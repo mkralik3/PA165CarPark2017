@@ -399,6 +399,4 @@ public class CarReservationRequestDaoTest extends AbstractTestNGSpringContextTes
         reservationDao.deleteReservationRequest(reservation);
         assertThat(reservationDao.findReservationByID(reservation.getId())).isNull();
     }
-
-
 }

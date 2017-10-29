@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.dao;
 
+import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
 
 import java.util.Collection;
@@ -56,24 +57,9 @@ public interface RegionalBranchDAO {
     Collection<RegionalBranch> findAllChildrenBranches(RegionalBranch regionalBranch);
 
     /**
-     * Find regional branch which is parent for particular regional branch
-     *
-     * @param regionalBranch - particular regional branch
-     * @return parent regional branch or null if none exists
-     */
-    RegionalBranch findParentBranch(RegionalBranch regionalBranch);
-
-    /**
-     * Find all cars which are in the particular regional branch
-     * @param regionalBranch - particular regional branch
-     * @return collection of cars which are in the particular branch or null if none exists
-     */
-    //Collection<Car> findAllCarsForBranch(RegionalBranch regionalBranch);
-
-    /**
      * Find all cars which are available for reservation in the particular regional branch
      * @param regionalBranch - particular regional branch
      * @return collection of cars which are available in the particular branch or null if none exists
      */
-    //Collection<Car> findAllAvaliableCarsForBranch(RegionalBranch regionalBranch);
+    Collection<Car> findAllAvailableCarsForBranch(RegionalBranch regionalBranch);
 }

@@ -7,21 +7,30 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.PersistenceSampleApplicationContext;
 import cz.muni.fi.pa165.entity.Car;
+import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.RegionalBranch;
+import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.enums.CarReservationRequestState;
+import cz.muni.fi.pa165.enums.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Tomas Pavuk
@@ -31,11 +40,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
 public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
+
     @Autowired
     private RegionalBranchDAO branchDao;
 
     @Autowired
     private CarDAO carDao;
+
+    @Autowired
+    private CarReservationRequestDAO reservationDao;
+
+    @Autowired
+    private UserDAO userDao;
+
+    private User user;
+    private Clock testClock;
+    private LocalDateTime currentTime;
+
+    @BeforeMethod
+    public void createUserAndClock() {
+        user = new User();
+        user.setUserName("User1");
+        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        user.setPassword("1234567890");
+        user.setType(UserType.USER);
+        userDao.createUser(user);
+
+        testClock = mock(Clock.class);
+        when(testClock.instant()).thenAnswer((invocation) -> currentTime);
+        currentTime = LocalDateTime.now();
+    }
 
     @Test
     public void findAllRegionalBranches() {
@@ -85,69 +119,58 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
-    public void findParentBranch() {
-        RegionalBranch parentBranch = new RegionalBranch();
-        RegionalBranch childBranch = new RegionalBranch();
-        parentBranch.setName("ParentBranch");
-        parentBranch.setCreationDate(LocalDateTime.of(2015, Month.MARCH, 20, 10, 10));
-        branchDao.createRegionalBranch(parentBranch);
-
-        childBranch.setName("Branch1");
-        childBranch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        childBranch.setParent(parentBranch);
-        branchDao.createRegionalBranch(childBranch);
-
-        RegionalBranch foundBranch = branchDao.findParentBranch(childBranch);
-        assertThat(foundBranch).isEqualTo(parentBranch);
-    }
-
-    /**
-    @Test
-    public void findAllCarsForBranch() {
-        Car car1 = new Car();
-        Car car2 = new Car();
-        car1.setName("Car1");
-        car1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car2.setName("Car2");
-        car2.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-
-        carDao.createCar(car1);
-        carDao.createCar(car2);
-
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2015, Month.MARCH, 20, 10, 10));
-        branch.addCar(car1);
-        branchDao.createRegionalBranch(branch);
-
-        List<Car> foundCars = (List<Car>) branchDao.findAllCarsForBranch(branch);
-        assertThat(foundCars.size()).isEqualTo(1);
-        assertThat(foundCars).contains(car1);
-    }
-
-    @Test
     public void findAllAvailableCarsForBranch() {
         Car car1 = new Car();
         Car car2 = new Car();
+        Car car3 = new Car();
         car1.setName("Car1");
         car1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
         car2.setName("Car2");
         car2.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car2.setActivationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 20));
-
+        car3.setName("Car3");
+        car3.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
         carDao.createCar(car1);
         carDao.createCar(car2);
+        carDao.createCar(car3);
 
         RegionalBranch branch = new RegionalBranch();
         branch.setName("Branch");
         branch.setCreationDate(LocalDateTime.of(2015, Month.MARCH, 20, 10, 10));
         branch.addCar(car1);
+        branch.addCar(car2);
+        branch.addCar(car3);
         branchDao.createRegionalBranch(branch);
 
-        List<Car> foundCars = (List<Car>) branchDao.findAllAvaliableCarsForBranch(branch);
-        assertThat(foundCars.size()).isEqualTo(1);
-        assertThat(foundCars).contains(car2);
-    }  **/
+        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
+        reservation1.setUser(user);
+        reservation1.setCar(car1);
+        reservation1.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
+        reservation1.setReservationEndDate(currentTime.minus(7, ChronoUnit.DAYS));
+        reservation1.setState(CarReservationRequestState.APPROVED);
+
+        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        reservation2.setUser(user);
+        reservation2.setCar(car2);
+        reservation2.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
+        reservation2.setReservationEndDate(currentTime.plus(7, ChronoUnit.DAYS));
+        reservation2.setState(CarReservationRequestState.APPROVED);
+
+        CarReservationRequest reservation3 = new CarReservationRequest(testClock);
+        reservation3.setUser(user);
+        reservation3.setCar(car3);
+        reservation3.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
+        reservation3.setReservationEndDate(currentTime.plus(7, ChronoUnit.DAYS));
+        reservation3.setState(CarReservationRequestState.DENIED);
+
+        reservationDao.createReservationRequest(reservation1); //reservation1 is outdated car1 is already available
+        reservationDao.createReservationRequest(reservation2); //reservation2 is still actual car2 isn't already available
+        reservationDao.createReservationRequest(reservation3); //reservation3 is actual but was denied car3 is available
+
+        List<Car> foundCars = (List<Car>) branchDao.findAllAvailableCarsForBranch(branch);
+        assertThat(foundCars.size()).isEqualTo(2);
+        assertThat(foundCars).contains(car1);
+        assertThat(foundCars).contains(car3);
+    }
 
     @Test
     public void findBranchById() {
