@@ -2,7 +2,6 @@ package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import java.time.Clock;
-import org.springframework.format.datetime.joda.LocalDateTimeParser;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -45,8 +44,6 @@ public class CarReservationRequest {
     @Enumerated(EnumType.STRING)
     private CarReservationRequestState state;
 
-    @NotNull
-    @Column(nullable=false)
     private LocalDateTime creationDate;
 
     private LocalDateTime modificationDate;

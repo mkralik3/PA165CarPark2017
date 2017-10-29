@@ -18,8 +18,6 @@ public class Car {
     @Column(nullable=false)
     private String name;
 
-    @NotNull
-    @Column(nullable=false)
     private LocalDateTime creationDate;
 
     private LocalDateTime activationDate;

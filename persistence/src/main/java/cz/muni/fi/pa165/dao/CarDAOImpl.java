@@ -9,36 +9,41 @@ import cz.muni.fi.pa165.entity.Car;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  *
- * @author Tomas Pavuk
+ * @author Matej Kralik
  */
 @Repository
 public class CarDAOImpl implements CarDAO {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public void createCar(Car car) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.persist(car);
     }
 
     @Override
     public Car updateCar(Car car) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.merge(car);
     }
 
     @Override
     public void deleteCar(Car car) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.remove(car);
     }
 
     @Override
     public Collection<Car> findAllCars() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        return em.createQuery("select c from Car c", Car.class)
+                .getResultList();    }
 
     @Override
     public Car findCarById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.find(Car.class, id);
     }
-    
 }

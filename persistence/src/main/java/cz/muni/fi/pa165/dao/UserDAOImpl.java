@@ -10,41 +10,56 @@ import cz.muni.fi.pa165.enums.UserType;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  *
- * @author Tomas Pavuk
+ * @author Matej Kralik
  */
 @Repository
 public class UserDAOImpl implements UserDAO{
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public void createUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.persist(user);
     }
 
     @Override
     public User updateUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.merge(user);
     }
 
     @Override
     public void deleteUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.remove(user);
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        return em.find(User.class,id);
     }
 
     @Override
     public User findUserByUserName(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                return em.createQuery("SELECT u FROM User u WHERE u.userName = :username", User.class) //USERS
+                .setParameter("username", userName)
+                .getSingleResult();
     }
 
     @Override
     public Collection<User> findAllUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT u FROM User u", User.class)
+                .getResultList();
     }
 
     @Override
     public Collection<User> findUsersByType(UserType type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT u FROM User u WHERE u.userType = :type", User.class) //USERS
+                .setParameter("type", type)
+                .getResultList();
     }
-    
 }

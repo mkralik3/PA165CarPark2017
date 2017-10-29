@@ -39,9 +39,6 @@ public class RegionalBranchDaoTest extends AbstractTestNGSpringContextTests{
     
         @Autowired
 	private CarDAO carDao;
-	
-	@PersistenceContext 
-	private EntityManager em;
         
         @Test
 	public void findAllRegionalBranches(){

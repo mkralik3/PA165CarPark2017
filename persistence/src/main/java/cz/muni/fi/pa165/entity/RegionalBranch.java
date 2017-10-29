@@ -1,5 +1,8 @@
 package cz.muni.fi.pa165.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -34,8 +37,6 @@ public class RegionalBranch {
     @OneToMany
     private Set<Car> cars = new HashSet<>();
 
-    @NotNull
-    @Column(nullable=false)
     private LocalDateTime creationDate;
 
     private LocalDateTime modificationDate;
