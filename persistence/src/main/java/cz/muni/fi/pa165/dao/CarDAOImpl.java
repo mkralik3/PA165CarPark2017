@@ -6,11 +6,14 @@
 package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Car;
+import java.time.Clock;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import cz.muni.fi.pa165.DateTimeProvider;
 
 /**
  *
@@ -19,16 +22,25 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class CarDAOImpl implements CarDAO {
 
+    private final DateTimeProvider dateTimeProvider;
     @PersistenceContext
     private EntityManager em;
+    
+    @Autowired
+    public CarDAOImpl(DateTimeProvider dateTimeProvider){
+        this.dateTimeProvider = dateTimeProvider;
+    }
 
     @Override
     public void createCar(Car car) {
+        car.setCreationDate(dateTimeProvider.provideNow());
+        car.setModificationDate(car.getCreationDate());
         em.persist(car);
     }
 
     @Override
     public Car updateCar(Car car) {
+        car.setModificationDate(dateTimeProvider.provideNow());
         return em.merge(car);
     }
 

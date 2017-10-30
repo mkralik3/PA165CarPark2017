@@ -5,9 +5,10 @@
  */
 package cz.muni.fi.pa165.dao.tests;
 
+import cz.muni.fi.pa165.dao.tests.support.TestCarsFactory;
 import cz.muni.fi.pa165.entity.Car;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -17,98 +18,85 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author Tomas Pavuk
+ * @author Martin Miškeje
  */
 public class CarDaoTest extends TestBase {
 
+    private final TestCarsFactory carsFactory = new TestCarsFactory();
+    
     @Test
-    public void findAll() {
-        Car car1 = new Car();
-        Car car2 = new Car();
-        car1.setName("Car1");
-        car1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car2.setName("Car2");
-        car2.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+    public void findAllCarsTest() {
+        List<Car> carsToCreate = new ArrayList<Car>();
+        carsToCreate.add(carsFactory.createCar("findAllCarsTest1"));
+        carsToCreate.add(carsFactory.createCar("findAllCarsTest2"));
 
-        carDao.createCar(car1);
-        carDao.createCar(car2);
+        for (Car car : carsToCreate){
+            carDao.createCar(car);
+        }
 
-        List<Car> cars = (List<Car>) carDao.findAllCars();
+        Collection<Car> loadedCars = carDao.findAllCars();
 
-        assertThat(cars.size()).isEqualTo(2);
-        assertThat(cars).contains(car1);
-        assertThat(cars).contains(car2);
+        for (Car createdCar : carsToCreate){
+            assertThat(loadedCars).contains(createdCar);
+        }
     }
 
     @Test
-    public void findCarById() {
-        Car car1 = new Car();
-        car1.setName("Car1");
-        car1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car1.setActivationDate(LocalDateTime.of(2017, Month.APRIL, 20, 10, 10));
-        car1.setModificationDate(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
-        carDao.createCar(car1);
+    public void findCarByIdTest() {
+        Car carToCreate = carsFactory.createCar("findCarByIdTest");
+        carDao.createCar(carToCreate);
 
-        Car foundCar = carDao.findCarById(car1.getId());
+        Car loadedCar = carDao.findCarById(carToCreate.getId());
 
-        assertThat(foundCar).isNotNull();
-        assertThat(foundCar.getName()).isEqualTo("Car1");
-        assertThat(foundCar.getCreationDate()).isEqualTo(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        assertThat(foundCar.getActivationDate()).isEqualTo(LocalDateTime.of(2017, Month.APRIL, 20, 10, 10));
-        assertThat(foundCar.getModificationDate()).isEqualTo(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
+        assertThat(loadedCar).isNotNull();
+        assertThat(loadedCar.getName()).isEqualTo(carToCreate.getName());
+        assertThat(loadedCar.getCreationDate()).isEqualTo(carToCreate.getCreationDate());
+        assertThat(loadedCar.getActivationDate()).isEqualTo(carToCreate.getActivationDate());
+        assertThat(loadedCar.getModificationDate()).isEqualTo(carToCreate.getModificationDate());
     }
 
     @Test
-    public void createCarSavesCarName() {
-        Car car = new Car();
-        car.setName("Car1");
-        car.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        carDao.createCar(car);
-        assertThat(carDao.findCarById(car.getId()).getName()).isEqualTo(("Car1"));
+    public void createCarTest() {
+        Car carToCreate = carsFactory.createCar("createCarTest");
+        carDao.createCar(carToCreate);
+        assertThat(carToCreate.getId()).isGreaterThan(0);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
-    public void nullCarNameIsNotAllowed() {
-        Car car = new Car();
-        car.setName(null);
-        car.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        carDao.createCar(car);
+    public void nullCarNameTest() {
+        Car carToCreate = carsFactory.createCar(null);
+        carDao.createCar(carToCreate);
     }
 
     @Test
-    public void updateCar() {
-        Car car = new Car();
-        car.setName("CarName");
-        car.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        carDao.createCar(car);
-        car.setName("NewCarName");
-        car.setCreationDate(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
+    public void updateCarTest() {
+        Car carToCreate = carsFactory.createCar("updateCarTest1");
+        Car carToUpdate = carsFactory.createCar("updateCarTest2");
 
-        Car foundCar = carDao.findCarById(car.getId());
+        carDao.createCar(carToCreate);
+        carToUpdate.setId(carToCreate.getId());
+        
+        carDao.updateCar(carToUpdate);
 
-        assertThat(foundCar.getName()).isEqualTo("NewCarName");
-        assertThat(foundCar.getCreationDate()).isEqualTo(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
+        Car loadedCar = carDao.findCarById(carToUpdate.getId());
+
+        assertThat(loadedCar.getName()).isEqualTo(carToUpdate.getName());
     }
 
     @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
-    public void deleteNullCarIsNotAllowed() {
+    public void deleteNullCarIsNotAllowedTest() {
         carDao.deleteCar(null);
     }
 
     @Test
-    public void deleteCar() {
-        Car car = new Car();
-        car.setName("CarName");
-        car.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+    public void deleteCarTest() {
+        Car car = carsFactory.createCar("deleteCarTest");
         carDao.createCar(car);
-        assertThat(carDao.findCarById(car.getId())).isNotNull();
+        Car loadedCar = carDao.findCarById(car.getId());
+        assertThat(loadedCar).isNotNull();
         carDao.deleteCar(car);
-        assertThat(carDao.findCarById(car.getId())).isNull();
-    }
-
-    @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
-    public void updateNullCarIsNotAllowed() {
-        carDao.updateCar(null);
+        loadedCar = carDao.findCarById(car.getId());
+        assertThat(loadedCar).isNull();
     }
 
 }
