@@ -1,6 +1,10 @@
-package cz.muni.fi.pa165.dao;
+package cz.muni.fi.pa165.dao.tests;
 
 import cz.muni.fi.pa165.PersistenceSampleApplicationContext;
+import cz.muni.fi.pa165.dao.CarDAO;
+import cz.muni.fi.pa165.dao.CarReservationRequestDAO;
+import cz.muni.fi.pa165.dao.RegionalBranchDAO;
+import cz.muni.fi.pa165.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
