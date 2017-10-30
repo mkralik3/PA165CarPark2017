@@ -5,7 +5,7 @@
     <parent>
         <artifactId>car-park-parent</artifactId>
         <groupId>cz.fi.muni.pa165</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-milestone1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
