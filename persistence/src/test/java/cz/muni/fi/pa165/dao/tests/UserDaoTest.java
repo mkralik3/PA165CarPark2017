@@ -5,15 +5,18 @@
  */
 package cz.muni.fi.pa165.dao.tests;
 
+import cz.muni.fi.pa165.dao.tests.support.TestObjectFactory;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.UserType;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.orm.jpa.JpaSystemException;
+import org.testng.annotations.Test;
 
 /**
  *
@@ -21,138 +24,107 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UserDaoTest extends TestBase {
 
+    private final TestObjectFactory objectFactory = new TestObjectFactory();
+    
+    @Test
+    public void createUser() {
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
+        userDao.createUser(user);
+        assertThat(user.getId()).isGreaterThan(0);
+    }
+    
     @Test
     public void findAllUsers() {
-        User user1 = new User();
-        User user2 = new User();
-        user1.setUserName("User1");
-        user1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        user1.setPassword("1234567890");
-        user1.setType(UserType.USER);
+        List<User> usersToCreate = new ArrayList<User>();
+        usersToCreate.add(objectFactory.createUser("User1", "1234567890", UserType.USER));
+        usersToCreate.add(objectFactory.createUser("User2", "1234567890", UserType.BRANCH_MANAGER));
 
-        user2.setUserName("User2");
-        user2.setCreationDate(LocalDateTime.of(2012, Month.MARCH, 20, 10, 10));
-        user2.setPassword("1234567890");
-        user2.setType(UserType.BRANCH_MANAGER);
+        for (User user : usersToCreate){
+            userDao.createUser(user);
+        }
 
-        userDao.createUser(user1);
-        userDao.createUser(user2);
-
-        List<User> users = (List<User>) userDao.findAllUsers();
-
-        assertThat(users.size()).isEqualTo(2);
-        assertThat(users).contains(user1);
-        assertThat(users).contains(user2);
+        List<User> foundUsers = (List<User>) userDao.findAllUsers();
+        
+        for (User user : usersToCreate){
+            assertThat(foundUsers).contains(user);
+        }
     }
 
     @Test
     public void findUserByUserName() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         userDao.createUser(user);
 
         User foundUser = userDao.findUserByUserName(user.getUserName());
 
         assertThat(foundUser).isNotNull();
-        assertThat(foundUser.getUserName()).isEqualTo("User");
+        assertThat(foundUser.getUserName()).isEqualTo(user.getUserName());
+        assertThat(foundUser.getPassword()).isEqualTo(user.getPassword());
+        assertThat(foundUser.getType()).isEqualTo(user.getType());
+        assertThat(foundUser.getCreationDate()).isEqualTo(user.getCreationDate());
+        assertThat(foundUser.getActivationDate()).isEqualTo(user.getActivationDate());
+        assertThat(foundUser.getModificationDate()).isEqualTo(user.getModificationDate());
     }
 
     @Test
     public void findUserByUserID() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         userDao.createUser(user);
 
         User foundUser = userDao.findUserById(user.getId());
 
         assertThat(foundUser).isNotNull();
-        assertThat(foundUser.getUserName()).isEqualTo("User");
-    }
-
-    @Test
-    public void createUsersSavesUserProperties() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        user.setActivationDate(LocalDateTime.of(2017, Month.APRIL, 20, 10, 10));
-        user.setModificationDate(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
-        userDao.createUser(user);
-
-        User foundUser = userDao.findUserById(user.getId());
-
-        assertThat(foundUser).isNotNull();
-        assertThat(foundUser.getUserName()).isEqualTo("User");
-        assertThat(foundUser.getPassword()).isEqualTo("1234567890");
-        assertThat(foundUser.getType()).isEqualTo(UserType.BRANCH_MANAGER);
-        assertThat(foundUser.getCreationDate()).isEqualTo(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        assertThat(foundUser.getActivationDate()).isEqualTo(LocalDateTime.of(2017, Month.APRIL, 20, 10, 10));
-        assertThat(foundUser.getModificationDate()).isEqualTo(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
+        assertThat(foundUser.getUserName()).isEqualTo(user.getUserName());
+        assertThat(foundUser.getPassword()).isEqualTo(user.getPassword());
+        assertThat(foundUser.getType()).isEqualTo(user.getType());
+        assertThat(foundUser.getCreationDate()).isEqualTo(user.getCreationDate());
+        assertThat(foundUser.getActivationDate()).isEqualTo(user.getActivationDate());
+        assertThat(foundUser.getModificationDate()).isEqualTo(user.getModificationDate());
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullNameIsNotAllowed() {
-        User user = new User();
-        user.setUserName(null);
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser(null, "1234567890", UserType.USER);
         userDao.createUser(user);
+    }
+    
+    @Test(expectedExceptions = JpaSystemException.class)
+    public void nonUniqueNameIsNotAllowed() {
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
+        User userWithSameName = objectFactory.createUser("User", "1234567890", UserType.USER);
+        userDao.createUser(user);
+        userDao.createUser(userWithSameName);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullPasswordIsNotAllowed() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword(null);
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", null, UserType.USER);
         userDao.createUser(user);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void tooShortPasswordIsNotAllowed() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("123");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", "123", UserType.USER);
         userDao.createUser(user);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullUserTypeIsNotAllowed() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(null);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", "1234567890", null);
         userDao.createUser(user);
     }
 
     @Test
     public void updateUser() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        userDao.createUser(user);
+        User userToCreate = objectFactory.createUser("User", "1234567890", UserType.USER);
+        User userToUpdate = objectFactory.createUser("ChangedUser", "1234567890", UserType.USER);
+        userDao.createUser(userToCreate);
+        
+        userToUpdate.setId(userToCreate.getId());
+        userDao.updateUser(userToUpdate);
 
-        user.setUserName("UserWithChangedName");
-        user.setCreationDate(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
-
-        User foundUser = userDao.findUserById(user.getId());
-
-        assertThat(foundUser.getUserName()).isEqualTo("UserWithChangedName");
-        assertThat(foundUser.getCreationDate()).isEqualTo(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
+        User foundUser = userDao.findUserById(userToUpdate.getId());
+        assertThat(foundUser.getUserName()).isEqualTo(userToUpdate.getUserName());
     }
 
     @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
@@ -162,19 +134,10 @@ public class UserDaoTest extends TestBase {
 
     @Test()
     public void deleteUser() {
-        User user = new User();
-        user.setUserName("User");
-        user.setPassword("1234567890");
-        user.setType(UserType.BRANCH_MANAGER);
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         userDao.createUser(user);
         assertThat(userDao.findUserById(user.getId())).isNotNull();
         userDao.deleteUser(user);
         assertThat(userDao.findUserById(user.getId())).isNull();
-    }
-
-    @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
-    public void updateNullUserIsNotAllowed() {
-        userDao.updateUser(null);
     }
 }

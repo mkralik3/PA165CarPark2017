@@ -5,7 +5,7 @@
  */
 package cz.muni.fi.pa165.dao.tests;
 
-import cz.muni.fi.pa165.dao.tests.support.TestCarsFactory;
+import cz.muni.fi.pa165.dao.tests.support.TestObjectFactory;
 import cz.muni.fi.pa165.entity.Car;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,13 +22,13 @@ import org.testng.annotations.Test;
  */
 public class CarDaoTest extends TestBase {
 
-    private final TestCarsFactory carsFactory = new TestCarsFactory();
+    private final TestObjectFactory objectFactory = new TestObjectFactory();
     
     @Test
     public void findAllCarsTest() {
         List<Car> carsToCreate = new ArrayList<Car>();
-        carsToCreate.add(carsFactory.createCar("findAllCarsTest1"));
-        carsToCreate.add(carsFactory.createCar("findAllCarsTest2"));
+        carsToCreate.add(objectFactory.createCar("findAllCarsTest1"));
+        carsToCreate.add(objectFactory.createCar("findAllCarsTest2"));
 
         for (Car car : carsToCreate){
             carDao.createCar(car);
@@ -43,7 +43,7 @@ public class CarDaoTest extends TestBase {
 
     @Test
     public void findCarByIdTest() {
-        Car carToCreate = carsFactory.createCar("findCarByIdTest");
+        Car carToCreate = objectFactory.createCar("findCarByIdTest");
         carDao.createCar(carToCreate);
 
         Car loadedCar = carDao.findCarById(carToCreate.getId());
@@ -57,21 +57,21 @@ public class CarDaoTest extends TestBase {
 
     @Test
     public void createCarTest() {
-        Car carToCreate = carsFactory.createCar("createCarTest");
+        Car carToCreate = objectFactory.createCar("createCarTest");
         carDao.createCar(carToCreate);
         assertThat(carToCreate.getId()).isGreaterThan(0);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullCarNameTest() {
-        Car carToCreate = carsFactory.createCar(null);
+        Car carToCreate = objectFactory.createCar(null);
         carDao.createCar(carToCreate);
     }
 
     @Test
     public void updateCarTest() {
-        Car carToCreate = carsFactory.createCar("updateCarTest1");
-        Car carToUpdate = carsFactory.createCar("updateCarTest2");
+        Car carToCreate = objectFactory.createCar("updateCarTest1");
+        Car carToUpdate = objectFactory.createCar("updateCarTest2");
 
         carDao.createCar(carToCreate);
         carToUpdate.setId(carToCreate.getId());
@@ -90,7 +90,7 @@ public class CarDaoTest extends TestBase {
 
     @Test
     public void deleteCarTest() {
-        Car car = carsFactory.createCar("deleteCarTest");
+        Car car = objectFactory.createCar("deleteCarTest");
         carDao.createCar(car);
         Car loadedCar = carDao.findCarById(car.getId());
         assertThat(loadedCar).isNotNull();
