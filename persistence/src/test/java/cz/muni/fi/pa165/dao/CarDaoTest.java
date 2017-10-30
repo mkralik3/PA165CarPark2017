@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
  *
  * @author Tomas Pavuk
  */
-public class CarDaoTest extends AbstractDao {
+public class CarDaoTest extends TestBase {
 
     @Test
     public void findAll() {

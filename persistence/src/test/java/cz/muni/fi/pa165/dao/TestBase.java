@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @ContextConfiguration(classes=PersistenceSampleApplicationContext.class)
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 @Transactional
-public abstract class AbstractDao extends AbstractTestNGSpringContextTests {
+public abstract class TestBase extends AbstractTestNGSpringContextTests {
 
     @Autowired
     protected CarDAO carDao;

@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomas Pavuk
  */
-public class RegionalBranchDaoTest extends AbstractDao {
+public class RegionalBranchDaoTest extends TestBase {
 
     private User user;
     private Clock testClock;

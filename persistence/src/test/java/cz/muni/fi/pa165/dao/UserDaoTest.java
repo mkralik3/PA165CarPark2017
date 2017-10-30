@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Tomas Pavuk
  */
-public class UserDaoTest extends AbstractDao {
+public class UserDaoTest extends TestBase {
 
     @Test
     public void findAllUsers() {

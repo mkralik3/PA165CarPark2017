@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomas Pavuk
  */
-public class CarReservationRequestDaoTest extends AbstractDao {
+public class CarReservationRequestDaoTest extends TestBase {
 
     private Clock testClock;
     private Car car1;
