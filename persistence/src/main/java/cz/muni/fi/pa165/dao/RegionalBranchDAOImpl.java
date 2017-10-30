@@ -26,22 +26,16 @@ public class RegionalBranchDAOImpl implements RegionalBranchDAO {
 
     @Override
     public void createRegionalBranch(RegionalBranch regionalBranch) {
-        if (regionalBranch == null)
-            throw new NullPointerException("You can't create null branch!");
         em.persist(regionalBranch);
     }
 
     @Override
     public RegionalBranch updateRegionalBranch(RegionalBranch regionalBranch) {
-        if (regionalBranch == null)
-            throw new NullPointerException("You can't update null branch!");
         return em.merge(regionalBranch);
     }
 
     @Override
     public void deleteRegionalBranch(RegionalBranch regionalBranch) {
-        if (regionalBranch == null)
-            throw new NullPointerException("You can't delete null branch!");
         em.remove(regionalBranch);
     }
 

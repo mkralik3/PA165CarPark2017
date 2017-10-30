@@ -6,7 +6,6 @@
 package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Car;
-import java.time.Clock;
 import java.util.Collection;
 import org.springframework.stereotype.Repository;
 

@@ -5,6 +5,8 @@
  */
 package cz.muni.fi.pa165.dao.tests;
 
+import cz.muni.fi.pa165.DateTimeProvider;
+import cz.muni.fi.pa165.dao.tests.support.TestObjectFactory;
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.RegionalBranch;
@@ -16,126 +18,82 @@ import org.testng.annotations.Test;
 import javax.validation.ConstraintViolationException;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 /**
  * @author Tomas Pavuk
  */
 public class RegionalBranchDaoTest extends TestBase {
 
-    private User user;
-    private Clock testClock;
+    private final TestObjectFactory objectFactory = new TestObjectFactory();
+    
     private LocalDateTime currentTime;
 
     @BeforeMethod
-    public void createUserAndClock() {
-        user = new User();
-        user.setUserName("User1");
-        user.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        user.setPassword("1234567890");
-        user.setType(UserType.USER);
-        userDao.createUser(user);
-
-        testClock = mock(Clock.class);
-        when(testClock.instant()).thenAnswer((invocation) -> currentTime);
+    public void setup() {
         currentTime = LocalDateTime.now();
     }
 
     @Test
     public void findAllRegionalBranches() {
-        RegionalBranch branch1 = new RegionalBranch();
-        RegionalBranch branch2 = new RegionalBranch();
-        branch1.setName("Branch1");
-        branch1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        List<RegionalBranch> branchesToCreate = new ArrayList<>();
+        branchesToCreate.add(objectFactory.createRegionalBranch("Branch1"));
+        branchesToCreate.add(objectFactory.createRegionalBranch("Branch2"));
 
-        branch2.setName("Branch2");
-        branch2.setCreationDate(LocalDateTime.of(2012, Month.MARCH, 20, 10, 10));
+        for (RegionalBranch branch : branchesToCreate){
+            branchDao.createRegionalBranch(branch);
+        }
 
-        branchDao.createRegionalBranch(branch1);
-        branchDao.createRegionalBranch(branch2);
-
-        List<RegionalBranch> branches = (List<RegionalBranch>) branchDao.findAllRegionalBranches();
-
-        assertThat(branches.size()).isEqualTo(2);
-        assertThat(branches).contains(branch1);
-        assertThat(branches).contains(branch2);
+        List<RegionalBranch> foundBranches = (List<RegionalBranch>) branchDao.findAllRegionalBranches();
+        
+        for (RegionalBranch branch : branchesToCreate){
+            assertThat(foundBranches).contains(branch);
+        }
     }
 
     @Test
     public void findAllChildrenBranches() {
-        RegionalBranch parentBranch = new RegionalBranch();
-        RegionalBranch branch1 = new RegionalBranch();
-        RegionalBranch branch2 = new RegionalBranch();
-        parentBranch.setName("ParentBranch");
-        parentBranch.setCreationDate(LocalDateTime.of(2015, Month.MARCH, 20, 10, 10));
+        RegionalBranch parentBranch = objectFactory.createRegionalBranch("Parent");
+        RegionalBranch childBranch = objectFactory.createRegionalBranch("Child", null, null, null, parentBranch);
+
         branchDao.createRegionalBranch(parentBranch);
+        branchDao.createRegionalBranch(childBranch);
 
-        branch1.setName("Branch1");
-        branch1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        branch1.setParent(parentBranch);
+        List<RegionalBranch> foundChildrenBranches = (List<RegionalBranch>) branchDao.findAllChildrenBranches(parentBranch);
 
-        branch2.setName("Branch2");
-        branch2.setCreationDate(LocalDateTime.of(2012, Month.MARCH, 20, 10, 10));
-        branch2.setParent(parentBranch);
-
-        branchDao.createRegionalBranch(branch1);
-        branchDao.createRegionalBranch(branch2);
-
-        List<RegionalBranch> branches = (List<RegionalBranch>) branchDao.findAllChildrenBranches(parentBranch);
-
-        assertThat(branches.size()).isEqualTo(2);
-        assertThat(branches).contains(branch1);
-        assertThat(branches).contains(branch2);
+        assertThat(foundChildrenBranches.size()).isEqualTo(1);
+        assertThat(foundChildrenBranches).contains(childBranch);
     }
 
     @Test
     public void findAllAvailableCarsForBranch() {
-        Car car1 = new Car();
-        Car car2 = new Car();
-        Car car3 = new Car();
-        car1.setName("Car1");
-        car1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car2.setName("Car2");
-        car2.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        car3.setName("Car3");
-        car3.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        Car car1 = objectFactory.createCar("Car1");
+        Car car2 = objectFactory.createCar("Car2");
+        Car car3 = objectFactory.createCar("Car3");
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         carDao.createCar(car1);
         carDao.createCar(car2);
         carDao.createCar(car3);
+        List<Car> createdCars = Arrays.asList(car1, car2, car3);
 
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2015, Month.MARCH, 20, 10, 10));
-        branch.addCar(car1);
-        branch.addCar(car2);
-        branch.addCar(car3);
+        RegionalBranch branch = objectFactory.createRegionalBranch("Branch", null, createdCars, null, null);
         branchDao.createRegionalBranch(branch);
 
-        CarReservationRequest reservation1 = new CarReservationRequest();
-        reservation1.setUser(user);
-        reservation1.setCar(car1);
-        reservation1.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
-        reservation1.setReservationEndDate(currentTime.minus(7, ChronoUnit.DAYS));
-        reservation1.setState(CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation1 = objectFactory.
+                createReservationRequest(car1, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.minus(7, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
 
-        CarReservationRequest reservation2 = new CarReservationRequest();
-        reservation2.setUser(user);
-        reservation2.setCar(car2);
-        reservation2.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
-        reservation2.setReservationEndDate(currentTime.plus(7, ChronoUnit.DAYS));
-        reservation2.setState(CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation2 = objectFactory.
+                createReservationRequest(car2, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.plus(7, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
 
-        CarReservationRequest reservation3 = new CarReservationRequest();
-        reservation3.setUser(user);
-        reservation3.setCar(car3);
-        reservation3.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
-        reservation3.setReservationEndDate(currentTime.plus(7, ChronoUnit.DAYS));
-        reservation3.setState(CarReservationRequestState.DENIED);
+        CarReservationRequest reservation3 = objectFactory.
+                createReservationRequest(car2, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.plus(7, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
 
         reservationDao.createReservationRequest(reservation1); //reservation1 is outdated car1 is already available
         reservationDao.createReservationRequest(reservation2); //reservation2 is still actual car2 isn't already available
@@ -149,88 +107,49 @@ public class RegionalBranchDaoTest extends TestBase {
 
     @Test
     public void findBranchById() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        branchDao.createRegionalBranch(branch);
+        RegionalBranch branchToCreate = objectFactory.createRegionalBranch("Branch");
+        branchDao.createRegionalBranch(branchToCreate);
 
-        RegionalBranch foundBranch = branchDao.findRegionalBranchById(branch.getId());
+        RegionalBranch foundBranch = branchDao.findRegionalBranchById(branchToCreate.getId());
 
         assertThat(foundBranch).isNotNull();
-        assertThat(foundBranch.getName()).isEqualTo("Branch");
-    }
-
-    @Test
-    public void createBranchSavesBranchProperties() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        branch.setModificationDate(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
-        branchDao.createRegionalBranch(branch);
-
-        RegionalBranch foundBranch = branchDao.findRegionalBranchById(branch.getId());
-
-        assertThat(foundBranch.getName()).isEqualTo("Branch");
-        assertThat(foundBranch.getCreationDate()).isEqualTo(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        assertThat(foundBranch.getModificationDate()).isEqualTo(LocalDateTime.of(2017, Month.MAY, 20, 10, 10));
+        assertThat(foundBranch.getName()).isEqualTo(branchToCreate.getName());
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullNameIsNotAllowed() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName(null);
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        branchDao.createRegionalBranch(branch);
-    }
-
-    @Test(expectedExceptions = ConstraintViolationException.class)
-    public void nullBranchCreationDateIsNotAllowed() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(null);
+        RegionalBranch branch = objectFactory.createRegionalBranch(null);
         branchDao.createRegionalBranch(branch);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void branchCantBeItsOwnParent() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("User");
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        RegionalBranch branch = objectFactory.createRegionalBranch("Branch");
         branch.setParent(branch);
         branchDao.createRegionalBranch(branch);
     }
 
     @Test
-    public void updateUser() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        branchDao.createRegionalBranch(branch);
+    public void updateBranch() {
+        RegionalBranch branchToCreate = objectFactory.createRegionalBranch("Branch");
+        RegionalBranch branchToUpdate = objectFactory.createRegionalBranch("UpdatedBranch");
+        branchDao.createRegionalBranch(branchToCreate);
+        
+        branchToUpdate.setId(branchToCreate.getId());
+        branchDao.updateRegionalBranch(branchToUpdate);
 
-        branch.setName("BranchWithChangedName");
-        branch.setCreationDate(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
-
-        RegionalBranch foundBranch = branchDao.findRegionalBranchById(branch.getId());
-
-        assertThat(foundBranch.getName()).isEqualTo("BranchWithChangedName");
-        assertThat(foundBranch.getCreationDate()).isEqualTo(LocalDateTime.of(2016, Month.FEBRUARY, 20, 10, 10));
+        RegionalBranch foundBranch = branchDao.findRegionalBranchById(branchToCreate.getId());
+        assertThat(foundBranch.getName()).isEqualTo(branchToUpdate.getName());
     }
 
-    @Test(expectedExceptions = NullPointerException.class)
-    public void updateNullBranchIsNotAllowed() {
-        branchDao.updateRegionalBranch(null);
-    }
-
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
     public void deleteNullBranchIsNotAllowed() {
         branchDao.deleteRegionalBranch(null);
     }
 
     @Test
     public void deleteBranch() {
-        RegionalBranch branch = new RegionalBranch();
-        branch.setName("Branch");
-        branch.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
+        RegionalBranch branch = objectFactory.createRegionalBranch("Branch");
         branchDao.createRegionalBranch(branch);
         assertThat(branchDao.findRegionalBranchById(branch.getId())).isNotNull();
         branchDao.deleteRegionalBranch(branch);
