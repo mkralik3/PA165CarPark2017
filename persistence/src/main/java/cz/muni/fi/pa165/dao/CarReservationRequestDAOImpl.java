@@ -27,29 +27,21 @@ public class CarReservationRequestDAOImpl implements CarReservationRequestDAO {
 
     @Override
     public void createReservationRequest(CarReservationRequest reservation) {
-        if (reservation == null)
-            throw new NullPointerException("You can't create null reservation!");
         em.persist(reservation);
     }
 
     @Override
     public CarReservationRequest updateReservationRequest(CarReservationRequest reservation) {
-        if (reservation == null)
-            throw new NullPointerException("You can't update null reservation!");
         return em.merge(reservation);
     }
 
     @Override
     public void deleteReservationRequest(CarReservationRequest reservation) {
-        if (reservation == null)
-            throw new NullPointerException("You can't delete null reservation!");
         em.remove(reservation);
     }
 
     @Override
     public CarReservationRequest findReservationByID(Long id) {
-        if (id == null)
-            throw new NullPointerException("You can't find reservation with null id!");
         return em.find(CarReservationRequest.class, id);
     }
 

@@ -55,11 +55,4 @@ public class UserDAOImpl implements UserDAO{
         return em.createQuery("SELECT u FROM User u", User.class)
                 .getResultList();
     }
-
-    @Override
-    public Collection<User> findUsersByType(UserType type) {
-        return em.createQuery("SELECT u FROM User u WHERE u.userType = :type", User.class) //USERS
-                .setParameter("type", type)
-                .getResultList();
-    }
 }

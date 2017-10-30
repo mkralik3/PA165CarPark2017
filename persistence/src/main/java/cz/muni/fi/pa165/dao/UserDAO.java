@@ -49,11 +49,4 @@ public interface UserDAO {
      */
     Collection<User> findAllUsers();
 
-    /**
-     * Find all users according to type
-     * @param type - type of user
-     * @return Collection with all users with same type
-     */
-    Collection<User> findUsersByType(UserType type);
-
 }

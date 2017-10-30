@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
  */
 @Entity
 public class CarReservationRequest {
-
-    @Transient
-    private final Clock clock;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +46,8 @@ public class CarReservationRequest {
 
     private LocalDateTime modificationDate;
 
-    public CarReservationRequest(Clock clock)
-    {
-        this.clock = clock;
+    public CarReservationRequest() {
+        
     }
     
     public Long getId() {
