@@ -66,6 +66,9 @@ public class RegionalBranch {
         if (parent == this)
             throw new IllegalArgumentException("You cannot set this it as it's own Parent!");
         this.parent = parent;
+        if(parent != null && !parent.getChildren().contains(this)){ // If parent doesn't set this children
+            parent.addChild(this);
+        }
     }
 
     public List<RegionalBranch> getChildren() {
@@ -78,6 +81,9 @@ public class RegionalBranch {
         if (children == null)
             throw new IllegalArgumentException("You cannot add null branch!");
         this.children.add(children);
+        if(!children.getParent().equals(this)){ // If children doesn't set this parent
+            children.setParent(this);
+        }
     }
 
     public List<User> getEmployees() {
