@@ -63,8 +63,6 @@ public class RegionalBranch {
     public void setParent(RegionalBranch parent) {
         if (parent == this)
             throw new IllegalArgumentException("You cannot set this it as it's own Parent!");
-        if (this.parent == parent)
-            throw new IllegalArgumentException("This parent is already set!");
         this.parent = parent;
     }
 
@@ -73,8 +71,8 @@ public class RegionalBranch {
     }
 
     public void addChild(RegionalBranch children) {
-        if (!this.children.contains(children))
-            throw new IllegalArgumentException("Already conrains this branch!");
+        if (this.children.contains(children))
+            throw new IllegalArgumentException("Already contains this branch!");
         if (children == null)
             throw new IllegalArgumentException("You cannot add null branch!");
         this.children.add(children);

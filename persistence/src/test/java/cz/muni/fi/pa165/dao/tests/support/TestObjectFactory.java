@@ -15,13 +15,13 @@ import java.util.List;
  * @author Martin Miškeje
  */
 public class TestObjectFactory {
-    
-    public Car createCar(String name){
+
+    public Car createCar(String name) {
         Car result = new Car();
         result.setName(name);
         return result;
     }
-    
+
     public User createUser(String username, String password, UserType type) {
         User user = new User();
         user.setUserName(username);
@@ -29,29 +29,36 @@ public class TestObjectFactory {
         user.setType(type);
         return user;
     }
-    
+
     public RegionalBranch createRegionalBranch(String name) {
         RegionalBranch branch = new RegionalBranch();
         branch.setName(name);
         return branch;
     }
-    
+
     public RegionalBranch createRegionalBranch(String name, List<User> employees, List<Car> cars, List<RegionalBranch> children, RegionalBranch parent) {
         RegionalBranch branch = new RegionalBranch();
         branch.setName(name);
         branch.setParent(parent);
-        for (User employee : employees) {
-            branch.addEmployee(employee);
+        if (employees != null) {
+            for (User employee : employees) {
+                branch.addEmployee(employee);
+            }
         }
-        for (Car car : cars) {
-            branch.addCar(car);
+        if (cars != null) {
+            for (Car car : cars) {
+                branch.addCar(car);
+            }
         }
-        for (RegionalBranch child : children) {
-            branch.addChild(child);
+        if (children != null) {
+            for (RegionalBranch child : children) {
+                branch.addChild(child);
+            }
         }
+
         return branch;
     }
-    
+
     public CarReservationRequest createReservationRequest(Car car, User user, LocalDateTime reservationStartDate, LocalDateTime reservationEndDate, CarReservationRequestState state) {
         CarReservationRequest reservationRequest = new CarReservationRequest();
         reservationRequest.setCar(car);

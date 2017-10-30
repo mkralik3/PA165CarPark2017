@@ -61,9 +61,8 @@ public class RegionalBranchDaoTest extends TestBase {
     @Test
     public void findAllChildrenBranches() {
         RegionalBranch parentBranch = objectFactory.createRegionalBranch("Parent");
-        RegionalBranch childBranch = objectFactory.createRegionalBranch("Child", null, null, null, parentBranch);
-
         branchDao.createRegionalBranch(parentBranch);
+        RegionalBranch childBranch = objectFactory.createRegionalBranch("Child", null, null, null, parentBranch);
         branchDao.createRegionalBranch(childBranch);
 
         List<RegionalBranch> foundChildrenBranches = (List<RegionalBranch>) branchDao.findAllChildrenBranches(parentBranch);
@@ -78,6 +77,7 @@ public class RegionalBranchDaoTest extends TestBase {
         Car car2 = objectFactory.createCar("Car2");
         Car car3 = objectFactory.createCar("Car3");
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
+        userDao.createUser(user);
         carDao.createCar(car1);
         carDao.createCar(car2);
         carDao.createCar(car3);
@@ -93,7 +93,7 @@ public class RegionalBranchDaoTest extends TestBase {
                 createReservationRequest(car2, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.plus(7, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
 
         CarReservationRequest reservation3 = objectFactory.
-                createReservationRequest(car2, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.plus(7, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
+                createReservationRequest(car3, user, currentTime.minus(9, ChronoUnit.DAYS), currentTime.plus(7, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
 
         reservationDao.createReservationRequest(reservation1); //reservation1 is outdated car1 is already available
         reservationDao.createReservationRequest(reservation2); //reservation2 is still actual car2 isn't already available
