@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pa165.dao;
 
+import cz.muni.fi.pa165.DateTimeProvider;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.UserType;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -20,16 +22,26 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class UserDAOImpl implements UserDAO{
 
+    private final DateTimeProvider dateTimeProvider;
+    
     @PersistenceContext
     private EntityManager em;
+    
+    @Autowired
+    public UserDAOImpl(DateTimeProvider dateTimeProvider){
+        this.dateTimeProvider = dateTimeProvider;
+    }
 
     @Override
     public void createUser(User user) {
+        if (user.getCreationDate() == null) user.setCreationDate(dateTimeProvider.provideNow());
+        if (user.getModificationDate() == null) user.setModificationDate(user.getCreationDate());
         em.persist(user);
     }
 
     @Override
     public User updateUser(User user) {
+        if (user.getModificationDate() == null) user.setModificationDate(dateTimeProvider.provideNow());
         return em.merge(user);
     }
 

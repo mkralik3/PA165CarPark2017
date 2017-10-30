@@ -42,8 +42,10 @@ public class CarReservationRequest {
 
     @NotNull
     @Column(nullable = false)
-    private LocalDateTime creationDate = LocalDateTime.now();
+    private LocalDateTime creationDate;
 
+    @NotNull
+    @Column(nullable=false)
     private LocalDateTime modificationDate;
 
     public CarReservationRequest() {

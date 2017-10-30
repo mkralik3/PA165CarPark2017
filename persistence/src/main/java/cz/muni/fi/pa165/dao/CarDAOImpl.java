@@ -32,14 +32,14 @@ public class CarDAOImpl implements CarDAO {
 
     @Override
     public void createCar(Car car) {
-        car.setCreationDate(dateTimeProvider.provideNow());
-        car.setModificationDate(car.getCreationDate());
+        if (car.getCreationDate() == null) car.setCreationDate(dateTimeProvider.provideNow());
+        if (car.getModificationDate() == null) car.setModificationDate(car.getCreationDate());
         em.persist(car);
     }
 
     @Override
     public Car updateCar(Car car) {
-        car.setModificationDate(dateTimeProvider.provideNow());
+        if (car.getModificationDate() == null) car.setModificationDate(dateTimeProvider.provideNow());
         return em.merge(car);
     }
 

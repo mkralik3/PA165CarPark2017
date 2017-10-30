@@ -35,10 +35,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
+    @NotNull
+    @Column(nullable=false)
     private LocalDateTime creationDate;
 
     private LocalDateTime activationDate;
 
+    @NotNull
+    @Column(nullable=false)
     private LocalDateTime modificationDate;
 
     public long getId() {
