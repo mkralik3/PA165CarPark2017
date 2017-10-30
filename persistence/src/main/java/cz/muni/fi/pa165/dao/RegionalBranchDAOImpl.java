@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pa165.dao;
 
+import cz.muni.fi.pa165.DateTimeProvider;
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Tomas Pavuk
@@ -21,16 +23,25 @@ import java.util.Collection;
 @Repository
 public class RegionalBranchDAOImpl implements RegionalBranchDAO {
 
+    private final DateTimeProvider dateTimeProvider;
     @PersistenceContext
     private EntityManager em;
+    
+    @Autowired
+    public RegionalBranchDAOImpl(DateTimeProvider dateTimeProvider){
+        this.dateTimeProvider = dateTimeProvider;
+    }
 
     @Override
     public void createRegionalBranch(RegionalBranch regionalBranch) {
+        if (regionalBranch.getCreationDate() == null) regionalBranch.setCreationDate(dateTimeProvider.provideNow());
+        if (regionalBranch.getModificationDate() == null) regionalBranch.setModificationDate(regionalBranch.getCreationDate());
         em.persist(regionalBranch);
     }
 
     @Override
     public RegionalBranch updateRegionalBranch(RegionalBranch regionalBranch) {
+        if (regionalBranch.getModificationDate() == null) regionalBranch.setModificationDate(dateTimeProvider.provideNow());
         return em.merge(regionalBranch);
     }
 

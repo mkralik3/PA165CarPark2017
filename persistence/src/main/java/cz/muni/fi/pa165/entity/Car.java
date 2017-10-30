@@ -18,10 +18,14 @@ public class Car {
     @Column(nullable=false)
     private String name;
 
+    @NotNull
+    @Column(nullable=false)
     private LocalDateTime creationDate;
 
     private LocalDateTime activationDate;
-
+    
+    @NotNull
+    @Column(nullable=false)
     private LocalDateTime modificationDate;
 
     public Long getId() {
