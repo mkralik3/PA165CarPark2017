@@ -116,21 +116,21 @@ public class RegionalBranchDaoTest extends AbstractDao {
         branch.addCar(car3);
         branchDao.createRegionalBranch(branch);
 
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
         reservation1.setUser(user);
         reservation1.setCar(car1);
         reservation1.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
         reservation1.setReservationEndDate(currentTime.minus(7, ChronoUnit.DAYS));
         reservation1.setState(CarReservationRequestState.APPROVED);
 
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation2.setUser(user);
         reservation2.setCar(car2);
         reservation2.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));
         reservation2.setReservationEndDate(currentTime.plus(7, ChronoUnit.DAYS));
         reservation2.setState(CarReservationRequestState.APPROVED);
 
-        CarReservationRequest reservation3 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation3 = new CarReservationRequest();
         reservation3.setUser(user);
         reservation3.setCar(car3);
         reservation3.setReservationStartDate(currentTime.minus(9, ChronoUnit.DAYS));

@@ -60,8 +60,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservations() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -88,8 +88,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservationsWhichStartBetween() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -117,8 +117,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservationsWhichEndBetween() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -147,8 +147,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservationsByState() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -179,8 +179,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservationsForCar() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -207,8 +207,8 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findAllReservationsForUser() {
-        CarReservationRequest reservation1 = new CarReservationRequest(testClock);
-        CarReservationRequest reservation2 = new CarReservationRequest(testClock);
+        CarReservationRequest reservation1 = new CarReservationRequest();
+        CarReservationRequest reservation2 = new CarReservationRequest();
         reservation1.setCar(car1);
         reservation1.setUser(user);
         reservation1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -235,7 +235,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test
     public void findReservationById() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -254,7 +254,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullCarIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(null);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -267,7 +267,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullUserIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(null);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -280,7 +280,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullReservationCreationDateIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(null);
@@ -293,7 +293,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullReservationStartDateIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -306,7 +306,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullReservationEndDateIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -319,7 +319,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullReservationStateIsNotAllowed() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -332,7 +332,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test()
     public void updateReservation() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
@@ -360,7 +360,7 @@ public class CarReservationRequestDaoTest extends AbstractDao {
 
     @Test()
     public void deleteReservation() {
-        CarReservationRequest reservation = new CarReservationRequest(testClock);
+        CarReservationRequest reservation = new CarReservationRequest();
         reservation.setCar(car1);
         reservation.setUser(user);
         reservation.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
