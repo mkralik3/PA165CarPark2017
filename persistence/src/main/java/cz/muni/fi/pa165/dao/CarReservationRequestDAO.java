@@ -53,7 +53,7 @@ public interface CarReservationRequestDAO {
      * @param startDateTo - end day of period
      * @return collection of reservations which start in the specific period or null if none exists
     a     */
-    Collection<CarReservationRequest> findAllReservationsWhichStartBetween(ZonedDateTime startDateFrom, ZonedDateTime startDateTo);
+    Collection<CarReservationRequest> findAllReservationsWhichStartBetween(LocalDateTime startDateFrom, LocalDateTime startDateTo);
 
     /**
      * Find all reservations which end in the particular period
@@ -61,7 +61,7 @@ public interface CarReservationRequestDAO {
      * @param endDateTo - end day of period
      * @return collection of reservations which end in the specific period or null if none exists
 a     */
-    Collection<CarReservationRequest> findAllReservationsWhichEndBetween(ZonedDateTime endDateFrom, ZonedDateTime endDateTo);
+    Collection<CarReservationRequest> findAllReservationsWhichEndBetween(LocalDateTime endDateFrom, LocalDateTime endDateTo);
 
 
     /**

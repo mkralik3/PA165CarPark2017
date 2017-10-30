@@ -1,12 +1,11 @@
 package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
-import java.time.Clock;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 /**
  * @author Matej Kralik
@@ -33,18 +32,20 @@ public class CarReservationRequest {
 
     @NotNull
     @Column(nullable=false)
-    private ZonedDateTime reservationStartDate;
+    private LocalDateTime reservationStartDate;
 
     @NotNull
     @Column(nullable=false)
-    private ZonedDateTime reservationEndDate;
+    private LocalDateTime reservationEndDate;
 
     @NotNull
     @Column(nullable=false)
     @Enumerated(EnumType.STRING)
     private CarReservationRequestState state;
 
-    private LocalDateTime creationDate;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     private LocalDateTime modificationDate;
 
@@ -77,19 +78,19 @@ public class CarReservationRequest {
         this.user = user;
     }
 
-    public ZonedDateTime getReservationStartDate() {
+    public LocalDateTime getReservationStartDate() {
         return reservationStartDate;
     }
 
-    public void setReservationStartDate(ZonedDateTime reservationStartDate) {
+    public void setReservationStartDate(LocalDateTime reservationStartDate) {
         this.reservationStartDate = reservationStartDate;
     }
 
-    public ZonedDateTime getReservationEndDate() {
+    public LocalDateTime getReservationEndDate() {
         return reservationEndDate;
     }
 
-    public void setReservationEndDate(ZonedDateTime reservationEndDate) {
+    public void setReservationEndDate(LocalDateTime reservationEndDate) {
         this.reservationEndDate = reservationEndDate;
     }
 

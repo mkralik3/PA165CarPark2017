@@ -7,14 +7,15 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
-import java.util.Collection;
+import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
- *
  * @author Tomas Pavuk
  */
 @Repository
@@ -25,47 +26,52 @@ public class RegionalBranchDAOImpl implements RegionalBranchDAO {
 
     @Override
     public void createRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't create null branch!");
+        em.persist(regionalBranch);
     }
 
     @Override
     public RegionalBranch updateRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't update null branch!");
+        return em.merge(regionalBranch);
     }
 
     @Override
     public void deleteRegionalBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (regionalBranch == null)
+            throw new NullPointerException("You can't delete null branch!");
+        em.remove(regionalBranch);
     }
 
     @Override
     public RegionalBranch findRegionalBranchById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.find(RegionalBranch.class, id);
     }
 
     @Override
     public Collection<RegionalBranch> findAllRegionalBranches() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT b FROM RegionalBranch b", RegionalBranch.class)
+                .getResultList();
     }
 
     @Override
     public Collection<RegionalBranch> findAllChildrenBranches(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT b FROM RegionalBranch b WHERE b.parent.name = :name", RegionalBranch.class)
+                .setParameter("name", regionalBranch.getName())
+                .getResultList();
     }
 
-    @Override
-    public RegionalBranch findParentBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Collection<Car> findAllCarsForBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Collection<Car> findAllAvaliableCarsForBranch(RegionalBranch regionalBranch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+     @Override public Collection<Car> findAllAvailableCarsForBranch(RegionalBranch regionalBranch) {
+         return em.createQuery("SELECT c1 FROM RegionalBranch b JOIN b.cars c1 WHERE c1 " +
+                         "NOT IN " + // car is not in actual reserved cars
+                         "(SELECT c2 FROM CarReservationRequest cr JOIN cr.car c2 WHERE cr .reservationEndDate > :today)" + //select all car which are reserved
+                         "OR c1 IN " + // or car is in actual reserved cars but reservation was denied
+                         "(SELECT c3 FROM CarReservationRequest cr2 JOIN cr2.car c3 WHERE cr2.reservationEndDate > :today AND cr2.state = :deniedState) ",
+                 Car.class)
+                 .setParameter("today", LocalDateTime.now())
+                 .setParameter("deniedState", CarReservationRequestState.DENIED)
+                 .getResultList();
+     }
 }

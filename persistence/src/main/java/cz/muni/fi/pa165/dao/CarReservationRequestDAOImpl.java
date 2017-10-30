@@ -9,71 +9,91 @@ import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
-import java.time.ZonedDateTime;
-import java.util.Collection;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
- *
  * @author Tomas Pavuk
  */
 @Repository
-public class CarReservationRequestDAOImpl implements CarReservationRequestDAO{
+public class CarReservationRequestDAOImpl implements CarReservationRequestDAO {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
     public void createReservationRequest(CarReservationRequest reservation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (reservation == null)
+            throw new NullPointerException("You can't create null reservation!");
+        em.persist(reservation);
     }
 
     @Override
     public CarReservationRequest updateReservationRequest(CarReservationRequest reservation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (reservation == null)
+            throw new NullPointerException("You can't update null reservation!");
+        return em.merge(reservation);
     }
 
     @Override
     public void deleteReservationRequest(CarReservationRequest reservation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (reservation == null)
+            throw new NullPointerException("You can't delete null reservation!");
+        em.remove(reservation);
     }
 
     @Override
     public CarReservationRequest findReservationByID(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (id == null)
+            throw new NullPointerException("You can't find reservation with null id!");
+        return em.find(CarReservationRequest.class, id);
     }
 
     @Override
     public Collection<CarReservationRequest> findAllReservations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT r FROM CarReservationRequest r", CarReservationRequest.class)
+                .getResultList();
     }
 
     @Override
     public Collection<CarReservationRequest> findAllReservationsByState(CarReservationRequestState state) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT r FROM CarReservationRequest r WHERE r.state = :state", CarReservationRequest.class)
+                .setParameter("state", state)
+                .getResultList();
     }
 
     @Override
     public Collection<CarReservationRequest> findAllReservationsForCar(Car car) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT r FROM CarReservationRequest r WHERE r.car = :car", CarReservationRequest.class)
+                .setParameter("car", car)
+                .getResultList();
     }
 
     @Override
     public Collection<CarReservationRequest> findAllReservationsForUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.createQuery("SELECT r FROM CarReservationRequest r WHERE r.user = :user", CarReservationRequest.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 
     @Override
-    public Collection<CarReservationRequest> findAllReservationsWhichStartBetween(ZonedDateTime startDateFrom, ZonedDateTime startDateTo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<CarReservationRequest> findAllReservationsWhichStartBetween(LocalDateTime startDateFrom, LocalDateTime startDateTo) {
+        return em.createQuery("SELECT r FROM CarReservationRequest r WHERE r.reservationStartDate BETWEEN :startDateFrom AND :startDateTo", CarReservationRequest.class)
+                .setParameter("startDateFrom", startDateFrom)
+                .setParameter("startDateTo", startDateTo)
+                .getResultList();
     }
 
     @Override
-    public Collection<CarReservationRequest> findAllReservationsWhichEndBetween(ZonedDateTime endDateFrom, ZonedDateTime endDateTo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<CarReservationRequest> findAllReservationsWhichEndBetween(LocalDateTime endDateFrom, LocalDateTime endDateTo) {
+        return em.createQuery("SELECT r FROM CarReservationRequest r WHERE r.reservationEndDate BETWEEN :endDateFrom AND :endDateTo", CarReservationRequest.class)
+                .setParameter("endDateFrom", endDateFrom)
+                .setParameter("endDateTo", endDateTo)
+                .getResultList();
     }
-    
+
 }
