@@ -76,29 +76,6 @@ public class UserDaoTest extends AbstractDao {
     }
 
     @Test
-    public void findUsersByType() {
-        User user1 = new User();
-        User user2 = new User();
-        user1.setUserName("User1");
-        user1.setCreationDate(LocalDateTime.of(2017, Month.MARCH, 20, 10, 10));
-        user1.setPassword("1234567890");
-        user1.setType(UserType.USER);
-
-        user2.setUserName("User2");
-        user2.setCreationDate(LocalDateTime.of(2012, Month.MARCH, 20, 10, 10));
-        user2.setPassword("1234567890");
-        user2.setType(UserType.BRANCH_MANAGER);
-
-        userDao.createUser(user1);
-        userDao.createUser(user2);
-
-        List<User> users = (List<User>) userDao.findUsersByType(UserType.USER);
-
-        assertThat(users.size()).isEqualTo(1);
-        assertThat(users).contains(user1);
-    }
-
-    @Test
     public void createUsersSavesUserProperties() {
         User user = new User();
         user.setUserName("User");
