@@ -31,6 +31,16 @@
             <artifactId>spring-context</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>car-park-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>car-park-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

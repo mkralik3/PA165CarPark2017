@@ -1,4 +1,6 @@
 package cz.muni.fi.pa165.facade;
 
-public class CarFacade {
+public interface CarFacade {
+    // create, update, delete
+    // get all
 }
