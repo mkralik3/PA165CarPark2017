@@ -1,8 +1,10 @@
 package cz.muni.fi.pa165.contracts;
 
+import cz.muni.fi.pa165.enums.UserType;
+
 import java.time.LocalDateTime;
 
-public class User {
+public class UserDTO {
     private long id;
     private String userName;
     private UserType type;

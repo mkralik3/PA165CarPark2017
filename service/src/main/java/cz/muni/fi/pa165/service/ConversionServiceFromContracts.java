@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.contracts.*;
+import cz.muni.fi.pa165.enums.UserType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConversionServiceFromContracts {
     
-    public cz.muni.fi.pa165.entity.User Convert(User source){
+    public cz.muni.fi.pa165.entity.User Convert(UserDTO source){
         cz.muni.fi.pa165.entity.User result = null;
         if (source != null) {
             result = new cz.muni.fi.pa165.entity.User();

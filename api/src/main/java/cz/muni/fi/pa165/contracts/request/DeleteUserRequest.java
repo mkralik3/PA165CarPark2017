@@ -1,4 +1,6 @@
-package cz.muni.fi.pa165.contracts;
+package cz.muni.fi.pa165.contracts.request;
+
+import cz.muni.fi.pa165.contracts.RequestBase;
 
 /**
  *

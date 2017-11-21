@@ -1,7 +1,16 @@
 package cz.muni.fi.pa165.facade;
 
-import cz.muni.fi.pa165.contracts.*;
+import cz.muni.fi.pa165.contracts.UserDTO;
+import cz.muni.fi.pa165.contracts.request.CreateUserRequest;
+import cz.muni.fi.pa165.contracts.request.DeleteUserRequest;
+import cz.muni.fi.pa165.contracts.request.UpdateUserRequest;
+import cz.muni.fi.pa165.contracts.response.CreateUserResponse;
+import cz.muni.fi.pa165.contracts.response.DeleteUserResponse;
+import cz.muni.fi.pa165.contracts.response.UpdateUserResponse;
+import cz.muni.fi.pa165.enums.UserErrorCode;
 import cz.muni.fi.pa165.service.*;
+
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -14,15 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserFacadeImpl implements UserFacade {
+
     @Inject
     private UserService userService;
+
     @Inject
     private ConversionServiceFromContracts conversionFrom;
+
     @Inject
     private ConversionServiceToContracts conversionTo;
     
     @Override
-    public CreateUserResponse CreateUser(CreateUserRequest request) {
+    public CreateUserResponse createUser(CreateUserRequest request) {
         CreateUserResponse response = new CreateUserResponse();
         if (request != null && request.getData() != null) {
             try {
@@ -45,12 +57,32 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UpdateUserResponse UpdateUser(UpdateUserRequest request) {
+    public UpdateUserResponse updateUser(UpdateUserRequest request) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public DeleteUserResponse DeleteUser(DeleteUserRequest request) {
+    public DeleteUserResponse deleteUser(DeleteUserRequest request) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isAdmin(UserDTO userDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isManager(UserDTO userDTO) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public UserDTO findUserByUserName(String userName) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
