@@ -1,4 +1,76 @@
 package cz.muni.fi.pa165.dto;
 
+import java.time.LocalDateTime;
+
 public class CarDTO {
+
+    private Long id;
+
+    private String name;
+
+    private LocalDateTime creationDate;
+
+    private LocalDateTime activationDate;
+
+    private LocalDateTime modificationDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public LocalDateTime getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(LocalDateTime modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof CarDTO)) return false;
+
+        CarDTO car = (CarDTO) o;
+
+        if (getName() != null ? !getName().equals(car.getName()) : car.getName() != null) return false;
+        return getCreationDate() != null ? getCreationDate().equals(car.getCreationDate()) : car.getCreationDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
+        return result;
+    }
+
 }
