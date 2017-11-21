@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.enums;
+package cz.muni.fi.pa165.contracts;
 
 /**
  * @author Matej Kralik
