@@ -29,31 +29,31 @@ public class UserDaoTest extends TestBase {
     @Test
     public void createUser() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
         assertThat(user.getId()).isGreaterThan(0);
     }
     
-    @Test
+    @Test(dependsOnMethods = "createUser")
     public void findAllUsers() {
         List<User> usersToCreate = new ArrayList<User>();
         usersToCreate.add(objectFactory.createUser("User1", "1234567890", UserType.USER));
         usersToCreate.add(objectFactory.createUser("User2", "1234567890", UserType.BRANCH_MANAGER));
 
         for (User user : usersToCreate){
-            userDao.createUser(user);
+            userDao.save(user);
         }
 
-        List<User> foundUsers = (List<User>) userDao.findAllUsers();
+        List<User> foundUsers = (List<User>) userDao.findAll();
         
         for (User user : usersToCreate){
             assertThat(foundUsers).contains(user);
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = "createUser")
     public void findUserByUserName() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
 
         User foundUser = userDao.findUserByUserName(user.getUserName());
 
@@ -66,12 +66,12 @@ public class UserDaoTest extends TestBase {
         assertThat(foundUser.getModificationDate()).isEqualTo(user.getModificationDate());
     }
 
-    @Test
+    @Test(dependsOnMethods = "createUser")
     public void findUserByUserID() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
 
-        User foundUser = userDao.findUserById(user.getId());
+        User foundUser = userDao.findOne(user.getId());
 
         assertThat(foundUser).isNotNull();
         assertThat(foundUser.getUserName()).isEqualTo(user.getUserName());
@@ -85,59 +85,69 @@ public class UserDaoTest extends TestBase {
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullNameIsNotAllowed() {
         User user = objectFactory.createUser(null, "1234567890", UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
     }
     
-    @Test(expectedExceptions = JpaSystemException.class)
+    @Test(expectedExceptions = JpaSystemException.class, dependsOnMethods = "createUser")
     public void nonUniqueNameIsNotAllowed() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         User userWithSameName = objectFactory.createUser("User", "1234567890", UserType.USER);
-        userDao.createUser(user);
-        userDao.createUser(userWithSameName);
+        userDao.save(user);
+        userDao.save(userWithSameName);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullPasswordIsNotAllowed() {
         User user = objectFactory.createUser("User", null, UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void tooShortPasswordIsNotAllowed() {
         User user = objectFactory.createUser("User", "123", UserType.USER);
-        userDao.createUser(user);
+        userDao.save(user);
     }
 
     @Test(expectedExceptions = ConstraintViolationException.class)
     public void nullUserTypeIsNotAllowed() {
         User user = objectFactory.createUser("User", "1234567890", null);
-        userDao.createUser(user);
+        userDao.save(user);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"createUser", "findUserByUserID"})
     public void updateUser() {
         User userToCreate = objectFactory.createUser("User", "1234567890", UserType.USER);
         User userToUpdate = objectFactory.createUser("ChangedUser", "1234567890", UserType.USER);
-        userDao.createUser(userToCreate);
+        userDao.save(userToCreate);
         
         userToUpdate.setId(userToCreate.getId());
-        userDao.updateUser(userToUpdate);
+        userDao.save(userToUpdate);
 
-        User foundUser = userDao.findUserById(userToUpdate.getId());
+        User foundUser = userDao.findOne(userToUpdate.getId());
         assertThat(foundUser.getUserName()).isEqualTo(userToUpdate.getUserName());
     }
 
-    @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
-    public void deleteNullUserIsNotAllowed() {
-        userDao.deleteUser(null);
-    }
-
-    @Test()
+    @Test(dependsOnMethods = {"createUser", "findUserByUserID"})
     public void deleteUser() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
-        userDao.createUser(user);
-        assertThat(userDao.findUserById(user.getId())).isNotNull();
-        userDao.deleteUser(user);
-        assertThat(userDao.findUserById(user.getId())).isNull();
+        userDao.save(user);
+        assertThat(userDao.findOne(user.getId())).isNotNull();
+        userDao.delete(user);
+        assertThat(userDao.findOne(user.getId())).isNull();
+    }
+
+    @Test(dependsOnMethods = "createUser")
+    public void findUserByUserType(){
+        User user = objectFactory.createUser("User", "1234567890", UserType.USER);
+        userDao.save(user);
+        User user2 = objectFactory.createUser("User2", "1234567890", UserType.USER);
+        userDao.save(user2);
+        User user3 = objectFactory.createUser("User3", "1234567890", UserType.ADMIN);
+        userDao.save(user3);
+
+        List<User> foundedUsers = userDao.findUsersByType(UserType.USER);
+        assertThat(foundedUsers).isNotNull();
+        assertThat(foundedUsers).hasSize(2);
+        assertThat(foundedUsers).contains(user,user2);
     }
 }

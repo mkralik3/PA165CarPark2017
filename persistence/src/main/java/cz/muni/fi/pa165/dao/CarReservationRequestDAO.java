@@ -4,64 +4,44 @@ import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * The interface for car reservation entity
  * @author Matej Kralik
  */
-public interface CarReservationRequestDAO {
-
-    /**
-     * Create reservation in database
-     * @param reservation - particular reservation
-     */
-    void createReservationRequest(CarReservationRequest reservation);
-
-    /**
-     * Update particular reservation in database
-     * @param reservation - particular reservation
-     * @return updated reservation
-     */
-    CarReservationRequest updateReservationRequest(CarReservationRequest reservation);
-
-    /**
-     * Delete particular reservation
-     * @param reservation - particular reservation
-     */
-    void deleteReservationRequest(CarReservationRequest reservation);
-
-    /**
-     * Find particular reservation by id
-     * @param id - id of reservation
-     * @return specific reservation or null if none exists
-     */
-    CarReservationRequest findReservationByID(Long id);
+public interface CarReservationRequestDAO extends CrudRepository<CarReservationRequest, Long> {
 
     /**
      * Find all reservations
-     * @return collection of all reservations or null if none exists
+     * @return reservations
      */
-    Collection<CarReservationRequest> findAllReservations();
+    List<CarReservationRequest> findAll();
 
     /**
      * Find all reservations which start in the particular period
      * @param startDateFrom - start day of period
      * @param startDateTo - end day of period
      * @return collection of reservations which start in the specific period or null if none exists
-    a     */
-    Collection<CarReservationRequest> findAllReservationsWhichStartBetween(LocalDateTime startDateFrom, LocalDateTime startDateTo);
+     */
+    @Query("SELECT r FROM CarReservationRequest r WHERE r.reservationStartDate BETWEEN :startDataFrom AND :startDateTo")
+    List<CarReservationRequest> findAllReservationsWhichStartBetween(@Param("startDataFrom") LocalDateTime startDateFrom,
+                                                                     @Param("startDateTo") LocalDateTime startDateTo);
 
     /**
      * Find all reservations which end in the particular period
      * @param endDateFrom - start day of period
      * @param endDateTo - end day of period
      * @return collection of reservations which end in the specific period or null if none exists
-a     */
-    Collection<CarReservationRequest> findAllReservationsWhichEndBetween(LocalDateTime endDateFrom, LocalDateTime endDateTo);
+     */
+    @Query("SELECT r FROM CarReservationRequest r WHERE r.reservationEndDate BETWEEN :endDataFrom AND :endDateTo")
+    List<CarReservationRequest> findAllReservationsWhichEndBetween(@Param("endDataFrom") LocalDateTime endDateFrom,
+                                                                   @Param("endDateTo") LocalDateTime endDateTo);
 
 
     /**
@@ -69,19 +49,19 @@ a     */
      * @param state - state of reservation
      * @return collection of reservations which have same state or null if none exists
      */
-    Collection<CarReservationRequest> findAllReservationsByState(CarReservationRequestState state);
+    List<CarReservationRequest> findAllReservationsByState(CarReservationRequestState state);
 
     /**
      * Find all reservations for particular car
      * @param car - particular car
      * @return collection of reservations which have same car or null if none exists
      */
-    Collection<CarReservationRequest> findAllReservationsForCar(Car car);
+    List<CarReservationRequest> findAllReservationsByCar(Car car);
 
     /**
      * Find all reservations for particular user
      * @param user - particular user
      * @return collection of reservations which have same user or null if none exists
      */
-    Collection<CarReservationRequest> findAllReservationsForUser(User user);
+    List<CarReservationRequest> findAllReservationsByUser(User user);
 }

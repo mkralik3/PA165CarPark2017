@@ -11,42 +11,41 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.testng.annotations.Test;
 
 /**
  *
- * @author Martin Miškeje
+ * @author Martin Miï¿½keje
  */
 public class CarDaoTest extends TestBase {
 
     private final TestObjectFactory objectFactory = new TestObjectFactory();
     
-    @Test
+    @Test(dependsOnMethods = "createCarTest")
     public void findAllCarsTest() {
         List<Car> carsToCreate = new ArrayList<Car>();
         carsToCreate.add(objectFactory.createCar("findAllCarsTest1"));
         carsToCreate.add(objectFactory.createCar("findAllCarsTest2"));
 
         for (Car car : carsToCreate){
-            carDao.createCar(car);
+            carDao.save(car);
         }
 
-        Collection<Car> loadedCars = carDao.findAllCars();
+        Collection<Car> loadedCars = carDao.findAll();
 
         for (Car createdCar : carsToCreate){
             assertThat(loadedCars).contains(createdCar);
         }
     }
 
-    @Test
+    @Test(dependsOnMethods = "createCarTest")
     public void findCarByIdTest() {
         Car carToCreate = objectFactory.createCar("findCarByIdTest");
-        carDao.createCar(carToCreate);
+        carDao.save(carToCreate);
 
-        Car loadedCar = carDao.findCarById(carToCreate.getId());
+        Car loadedCar = carDao.findOne(carToCreate.getId());
 
         assertThat(loadedCar).isNotNull();
         assertThat(loadedCar.getName()).isEqualTo(carToCreate.getName());
@@ -58,45 +57,39 @@ public class CarDaoTest extends TestBase {
     @Test
     public void createCarTest() {
         Car carToCreate = objectFactory.createCar("createCarTest");
-        carDao.createCar(carToCreate);
+        carDao.save(carToCreate);
         assertThat(carToCreate.getId()).isGreaterThan(0);
     }
 
-    @Test(expectedExceptions = ConstraintViolationException.class)
+    @Test(expectedExceptions = ConstraintViolationException.class, dependsOnMethods = "createCarTest")
     public void nullCarNameTest() {
         Car carToCreate = objectFactory.createCar(null);
-        carDao.createCar(carToCreate);
+        carDao.save(carToCreate);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"createCarTest", "findCarByIdTest"})
     public void updateCarTest() {
         Car carToCreate = objectFactory.createCar("updateCarTest1");
         Car carToUpdate = objectFactory.createCar("updateCarTest2");
 
-        carDao.createCar(carToCreate);
+        carDao.save(carToCreate);
         carToUpdate.setId(carToCreate.getId());
         
-        carDao.updateCar(carToUpdate);
+        carDao.save(carToUpdate);
 
-        Car loadedCar = carDao.findCarById(carToUpdate.getId());
+        Car loadedCar = carDao.findOne(carToUpdate.getId());
 
         assertThat(loadedCar.getName()).isEqualTo(carToUpdate.getName());
     }
 
-    @Test(expectedExceptions = InvalidDataAccessApiUsageException.class)
-    public void deleteNullCarIsNotAllowedTest() {
-        carDao.deleteCar(null);
-    }
-
-    @Test
+    @Test(dependsOnMethods = {"createCarTest", "findCarByIdTest"})
     public void deleteCarTest() {
         Car car = objectFactory.createCar("deleteCarTest");
-        carDao.createCar(car);
-        Car loadedCar = carDao.findCarById(car.getId());
+        carDao.save(car);
+        Car loadedCar = carDao.findOne(car.getId());
         assertThat(loadedCar).isNotNull();
-        carDao.deleteCar(car);
-        loadedCar = carDao.findCarById(car.getId());
+        carDao.delete(car);
+        loadedCar = carDao.findOne(car.getId());
         assertThat(loadedCar).isNull();
     }
-
 }

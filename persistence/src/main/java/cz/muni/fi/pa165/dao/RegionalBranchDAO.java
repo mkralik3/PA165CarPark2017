@@ -2,64 +2,47 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The interface for regional branch entity
  *
  * @author Matej Kralik
  */
-public interface RegionalBranchDAO {
-    /**
-     * Create regional branch in database
-     *
-     * @param regionalBranch - particular regional branch
-     */
-    void createRegionalBranch(RegionalBranch regionalBranch);
+public interface RegionalBranchDAO extends CrudRepository<RegionalBranch, Long> {
 
     /**
-     * Update particular regional branch in database
-     *
-     * @param regionalBranch - particular regional branch
-     * @return updated branch
+     * Find all branches
+     * @return all branches
      */
-    RegionalBranch updateRegionalBranch(RegionalBranch regionalBranch);
-
-    /**
-     * Delete particular regional branch
-     *
-     * @param regionalBranch - particular branch
-     */
-    void deleteRegionalBranch(RegionalBranch regionalBranch);
-
-    /**
-     * Find regional branch by id
-     *
-     * @param id - id of regional branch
-     * @return specific regional branch of null if none exists
-     */
-    RegionalBranch findRegionalBranchById(Long id);
-
-    /**
-     * Find all regional branches
-     *
-     * @return collection of all regional branches or null if none exists
-     */
-    Collection<RegionalBranch> findAllRegionalBranches();
+    List<RegionalBranch> findAll();
 
     /**
      * Find all regional branches which are children for particular regional branch
      *
-     * @param regionalBranch - particular regional branch
+     * @param nameOfBranch - particular regional branch
      * @return collection of all regional branch which are children or null if none exists
      */
-    Collection<RegionalBranch> findAllChildrenBranches(RegionalBranch regionalBranch);
+    @Query("SELECT b FROM RegionalBranch b WHERE b.parent.name = :name")
+    List<RegionalBranch> findAllChildrenBranches(@Param("name") String nameOfBranch);
 
     /**
-     * Find all cars which are available for reservation in the particular regional branch
-     * @param regionalBranch - particular regional branch
+     * Find all cars which are available for reservation in the particular regional branch in the particular day
+     * @param nameOfBranch - name of particular regional branch
+     * @param day - day for which is car available (e.g. today)
      * @return collection of cars which are available in the particular branch or null if none exists
      */
-    Collection<Car> findAllAvailableCarsForBranch(RegionalBranch regionalBranch);
+    @Query("SELECT c1 FROM RegionalBranch b JOIN b.cars c1 WHERE b.name = :name AND c1 " +
+            "NOT IN " + // car is not in actual reserved cars
+            "(SELECT c2 FROM CarReservationRequest cr JOIN cr.car c2 WHERE cr .reservationEndDate > :day)" + //select all car which are reserved
+            "OR c1 IN " + // or car is in actual reserved cars but reservation was denied
+            "(SELECT c3 FROM CarReservationRequest cr2 JOIN cr2.car c3 WHERE cr2.reservationEndDate > :day " +
+                "AND cr2.state = cz.muni.fi.pa165.enums.CarReservationRequestState.DENIED)")
+    List<Car> findAllAvailableCarsForBranch(@Param("name") String nameOfBranch,
+                                                  @Param("day") LocalDateTime day);
 }

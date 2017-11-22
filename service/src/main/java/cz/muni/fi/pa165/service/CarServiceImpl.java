@@ -24,7 +24,8 @@ public class CarServiceImpl implements CarService{
             throw new IllegalArgumentException();
         }
         car.setCreationDate(timeService.getCurrentTime());
-        carDAO.createCar(car);
+        car.setModificationDate(timeService.getCurrentTime());
+        carDAO.save(car);
     }
 
     @Override
@@ -33,22 +34,21 @@ public class CarServiceImpl implements CarService{
             throw new IllegalArgumentException();
         }
         car.setModificationDate(timeService.getCurrentTime());
-        carDAO.updateCar(car);
+        carDAO.save(car);
     }
 
     @Override
     public void deleteCar(long id) {
-        //carDAO.deleteCar(); TODO change DAO to crud repository
-        throw new UnsupportedOperationException("Not supported yet.");
+        carDAO.delete(id);
     }
 
     @Override
     public List<Car> findAllCar() {
-        return new ArrayList<>(carDAO.findAllCars());
+        return carDAO.findAll();
     }
 
     @Override
     public Car findCar(long id) {
-        return carDAO.findCarById(id);
+        return carDAO.findOne(id);
     }
 }
