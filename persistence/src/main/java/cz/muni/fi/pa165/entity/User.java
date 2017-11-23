@@ -109,17 +109,18 @@ public class User {
 
         User user = (User) o;
 
+        if (getUserName() != null ? !getUserName().equals(user.getUserName()) : user.getUserName() != null)
+            return false;
         if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
             return false;
-        if (getType() != user.getType()) return false;
-        return getCreationDate() != null ? getCreationDate().equals(user.getCreationDate()) : user.getCreationDate() == null;
+        return getType() == user.getType();
     }
 
     @Override
     public int hashCode() {
-        int result = getPassword() != null ? getPassword().hashCode() : 0;
+        int result = getUserName() != null ? getUserName().hashCode() : 0;
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;
     }
 }

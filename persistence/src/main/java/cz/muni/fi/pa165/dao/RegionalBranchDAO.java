@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.dao;
 
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
+import cz.muni.fi.pa165.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -39,10 +40,19 @@ public interface RegionalBranchDAO extends CrudRepository<RegionalBranch, Long> 
      */
     @Query("SELECT c1 FROM RegionalBranch b JOIN b.cars c1 WHERE b.name = :name AND c1 " +
             "NOT IN " + // car is not in actual reserved cars
-            "(SELECT c2 FROM CarReservationRequest cr JOIN cr.car c2 WHERE cr .reservationEndDate > :day)" + //select all car which are reserved
+            "(SELECT c2 FROM CarReservationRequest cr JOIN cr.car c2 WHERE cr.reservationEndDate > :day)" + //select all car which are reserved
             "OR c1 IN " + // or car is in actual reserved cars but reservation was denied
             "(SELECT c3 FROM CarReservationRequest cr2 JOIN cr2.car c3 WHERE cr2.reservationEndDate > :day " +
                 "AND cr2.state = cz.muni.fi.pa165.enums.CarReservationRequestState.DENIED)")
     List<Car> findAllAvailableCarsForBranch(@Param("name") String nameOfBranch,
                                                   @Param("day") LocalDateTime day);
+
+    /**
+     * Find all managers for particular branch
+     * @param nameOfBranch - name of particular regional branch
+     * @return list of all managers for particular branch
+     */
+    @Query("SELECT e FROM RegionalBranch b JOIN b.employees e WHERE b.name = :name " +
+            "AND e.type = cz.muni.fi.pa165.enums.UserType.BRANCH_MANAGER")
+    List<User>getAllManagersInBranch(@Param("name") String nameOfBranch);
 }

@@ -159,4 +159,32 @@ public class RegionalBranchDaoTest extends TestBase {
         branchDao.delete(branch);
         assertThat(branchDao.findOne(branch.getId())).isNull();
     }
+
+    @Test()
+    public void getAllManagersTest(){
+        User user1 = objectFactory.createUser("User1", "1234567890", UserType.USER);
+        User user2 = objectFactory.createUser("User2", "1234567890", UserType.BRANCH_MANAGER);
+        User user3 = objectFactory.createUser("User3", "1234567890", UserType.BRANCH_MANAGER);
+        User user4 = objectFactory.createUser("User4", "1234567890", UserType.USER);
+        User user5 = objectFactory.createUser("User5", "1234567890", UserType.BRANCH_MANAGER);
+        userDao.save(user1);
+        userDao.save(user2);
+        userDao.save(user3);
+        userDao.save(user4);
+        userDao.save(user5);
+        RegionalBranch branch = objectFactory.createRegionalBranch("Branch");
+        branch.addEmployee(user1);
+        branch.addEmployee(user2);
+        branch.addEmployee(user3);
+        branch.addEmployee(user4);
+        branchDao.save(branch);
+        RegionalBranch branch2 = objectFactory.createRegionalBranch("Branch2");
+        branch2.addEmployee(user5);
+        branchDao.save(branch2);
+
+        List<User> managers = branchDao.getAllManagersInBranch(branch.getName());
+        assertThat(managers).hasSize(2);
+        assertThat(managers.get(0).getUserName()).isEqualTo("User2");
+        assertThat(managers.get(1).getUserName()).isEqualTo("User3");
+    }
 }
