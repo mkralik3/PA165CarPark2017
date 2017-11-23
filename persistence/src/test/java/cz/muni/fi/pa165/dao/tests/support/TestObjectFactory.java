@@ -12,13 +12,17 @@ import java.util.List;
 
 /**
  *
- * @author Martin Miškeje
+ * @author Martin Miï¿½keje
  */
 public class TestObjectFactory {
+
+    private LocalDateTime currentTime = LocalDateTime.now();
 
     public Car createCar(String name) {
         Car result = new Car();
         result.setName(name);
+        result.setCreationDate(currentTime);
+        result.setModificationDate(currentTime);
         return result;
     }
 
@@ -26,6 +30,8 @@ public class TestObjectFactory {
         User user = new User();
         user.setUserName(username);
         user.setPassword(password);
+        user.setCreationDate(currentTime);
+        user.setModificationDate(currentTime);
         user.setType(type);
         return user;
     }
@@ -33,6 +39,8 @@ public class TestObjectFactory {
     public RegionalBranch createRegionalBranch(String name) {
         RegionalBranch branch = new RegionalBranch();
         branch.setName(name);
+        branch.setCreationDate(currentTime);
+        branch.setModificationDate(currentTime);
         return branch;
     }
 
@@ -40,6 +48,8 @@ public class TestObjectFactory {
         RegionalBranch branch = new RegionalBranch();
         branch.setName(name);
         branch.setParent(parent);
+        branch.setCreationDate(currentTime);
+        branch.setModificationDate(currentTime);
         if (employees != null) {
             for (User employee : employees) {
                 branch.addEmployee(employee);
@@ -66,6 +76,8 @@ public class TestObjectFactory {
         reservationRequest.setReservationStartDate(reservationStartDate);
         reservationRequest.setReservationEndDate(reservationEndDate);
         reservationRequest.setState(state);
+        reservationRequest.setCreationDate(currentTime);
+        reservationRequest.setModificationDate(currentTime);
         return reservationRequest;
     }
 }
