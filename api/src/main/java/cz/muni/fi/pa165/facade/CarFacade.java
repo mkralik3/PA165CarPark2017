@@ -7,12 +7,12 @@ import java.util.List;
 
 public interface CarFacade {
     
-    SimpleResult createCar(CarDTO car);
+    CarOperationResult createCar(CarDTO car);
 
     /*
     Activation/deactivation will be through this method
     */
-    SimpleResult updateCar(CarDTO car);
+    CarOperationResult updateCar(CarDTO car);
 
     SimpleResult deleteCar(long carId);
 

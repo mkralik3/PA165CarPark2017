@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface RegionalBranchFacade {
 
-    SimpleResult createRegionalBranch(RegionalBranchDTO branch);
+    RegionalBranchOperationResult createRegionalBranch(RegionalBranchDTO branch);
 
-    SimpleResult updateRegionalBranch(RegionalBranchDTO branch);
+    RegionalBranchOperationResult updateRegionalBranch(RegionalBranchDTO branch);
 
     SimpleResult deleteRegionalBranch(long regionalBranchId);
 
