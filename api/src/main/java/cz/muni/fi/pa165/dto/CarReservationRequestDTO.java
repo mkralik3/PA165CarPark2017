@@ -1,6 +1,6 @@
 package cz.muni.fi.pa165.dto;
 
-import cz.muni.fi.pa165.enums.CarReservationRequestState;
+import cz.muni.fi.pa165.dto.enums.CarReservationRequestState;
 
 import java.time.LocalDateTime;
 
@@ -66,26 +66,4 @@ public class CarReservationRequestDTO {
         this.state = state;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CarReservationRequestDTO)) return false;
-
-        CarReservationRequestDTO that = (CarReservationRequestDTO) o;
-
-        if (getCar() != null ? !getCar().equals(that.getCar()) : that.getCar() != null) return false;
-        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
-        if (getReservationStartDate() != null ? !getReservationStartDate().equals(that.getReservationStartDate()) : that.getReservationStartDate() != null)
-            return false;
-        return getReservationEndDate() != null ? getReservationEndDate().equals(that.getReservationEndDate()) : that.getReservationEndDate() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getCar() != null ? getCar().hashCode() : 0;
-        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
-        result = 31 * result + (getReservationStartDate() != null ? getReservationStartDate().hashCode() : 0);
-        result = 31 * result + (getReservationEndDate() != null ? getReservationEndDate().hashCode() : 0);
-        return result;
-    }
 }

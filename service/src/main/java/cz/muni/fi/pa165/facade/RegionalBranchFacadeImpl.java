@@ -1,64 +1,39 @@
 package cz.muni.fi.pa165.facade;
 
-import cz.muni.fi.pa165.dto.CarDTO;
-import cz.muni.fi.pa165.dto.RegionalBranchDTO;
-import cz.muni.fi.pa165.dto.UserDTO;
-
+import cz.muni.fi.pa165.dto.*;
+import cz.muni.fi.pa165.dto.results.*;
 import java.util.List;
 
 public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
+
     @Override
-    public void createRegionalBranch(RegionalBranchDTO branch) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SimpleResult createRegionalBranch(RegionalBranchDTO branch) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public RegionalBranchDTO updateRegionalBranch(RegionalBranchDTO branch) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SimpleResult updateRegionalBranch(RegionalBranchDTO branch) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteRegionalBranch(long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SimpleResult deleteRegionalBranch(long regionalBranchId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void assignUser(UserDTO user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SimpleResult assignUser(long regionalBranchId, UserDTO user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void assignCar(CarDTO car) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SimpleResult assignCar(long regionalBranchId, CarDTO car) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public List<RegionalBranchDTO> findAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public RegionalBranchDTO findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<CarDTO> getAllAvailableCars(long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<CarDTO> getAllReservedCars(long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void setChild(RegionalBranchDTO child) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void setParent(RegionalBranchDTO parent) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

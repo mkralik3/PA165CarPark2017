@@ -1,16 +1,17 @@
 package cz.muni.fi.pa165.dto;
 
-import cz.muni.fi.pa165.enums.UserType;
+import cz.muni.fi.pa165.dto.enums.UserType;
+import java.time.LocalDateTime;
 
 public class UserDTO {
 
     private long id;
-
     private String userName;
-
-    private String password;
-
     private UserType type;
+    private LocalDateTime creationDate;
+    private LocalDateTime activationDate;
+    private LocalDateTime modificationDate;
+    private RegionalBranchDTO regionalBranch;
 
     public long getId() {
         return id;
@@ -28,14 +29,6 @@ public class UserDTO {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public UserType getType() {
         return type;
     }
@@ -44,22 +37,35 @@ public class UserDTO {
         this.type = type;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDTO)) return false;
-
-        UserDTO userDTO = (UserDTO) o;
-
-        if (getUserName() != null ? !getUserName().equals(userDTO.getUserName()) : userDTO.getUserName() != null)
-            return false;
-        return getType() == userDTO.getType();
+    public LocalDateTime getCreationDate() {
+        return creationDate;
     }
 
-    @Override
-    public int hashCode() {
-        int result = getUserName() != null ? getUserName().hashCode() : 0;
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        return result;
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getActivationDate() {
+        return activationDate;
+    }
+
+    public void setActivationDate(LocalDateTime activationDate) {
+        this.activationDate = activationDate;
+    }
+
+    public LocalDateTime getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(LocalDateTime modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public RegionalBranchDTO getRegionalBranch() {
+        return regionalBranch;
+    }
+
+    public void setRegionalBranch(RegionalBranchDTO regionalBranch) {
+        this.regionalBranch = regionalBranch;
     }
 }

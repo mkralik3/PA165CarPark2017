@@ -2,18 +2,18 @@ package cz.muni.fi.pa165.dto;
 
 import java.time.LocalDateTime;
 
+/*
+@author Matej Kralik, modified by Martin Miskeje
+*/
 public class CarDTO {
 
     private Long id;
-
     private String name;
-
     private LocalDateTime creationDate;
-
     private LocalDateTime activationDate;
-
     private LocalDateTime modificationDate;
-
+    private RegionalBranchDTO regionalBranch = null;
+    
     public Long getId() {
         return id;
     }
@@ -54,23 +54,12 @@ public class CarDTO {
         this.modificationDate = modificationDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        if (!(o instanceof CarDTO)) return false;
-
-        CarDTO car = (CarDTO) o;
-
-        if (getName() != null ? !getName().equals(car.getName()) : car.getName() != null) return false;
-        return getCreationDate() != null ? getCreationDate().equals(car.getCreationDate()) : car.getCreationDate() == null;
+    public RegionalBranchDTO getRegionalBranch() {
+        return regionalBranch;
     }
 
-    @Override
-    public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
-        return result;
+    public void setRegionalBranch(RegionalBranchDTO regionalBranch) {
+        this.regionalBranch = regionalBranch;
     }
 
 }

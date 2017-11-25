@@ -1,29 +1,34 @@
 package cz.muni.fi.pa165.facade;
 
-import cz.muni.fi.pa165.dto.CarDTO;
-import cz.muni.fi.pa165.dto.RegionalBranchDTO;
-import cz.muni.fi.pa165.dto.UserDTO;
+import cz.muni.fi.pa165.dto.*;
+import cz.muni.fi.pa165.dto.results.*;
 
 import java.util.List;
-
+/*
+@author Martin Miškeje
+*/
 public interface UserFacade {
 
-    void registerUser(UserDTO user, String password);
+    ResultWithData<UserDTO> authenticate(AuthenticationDataDTO authData);
+    
+    UserOperationResult registerUser(UserDTO user, String password);
 
-    void changePassword(UserDTO user, String password);
+    UserOperationResult changePassword(long userId, String oldPassword, String newPassword);
 
-    void updateUser(UserDTO user);
+    /*
+    Activation/deactivation will be through this method
+    */
+    UserOperationResult updateUser(UserDTO user);
 
-    void deleteUser(long id);
+    /*
+    Returns isSuccess = true if found and deleted, otherwise false
+    */
+    SimpleResult deleteUser(long userId);
 
-    List<CarDTO> findAllUsers();
+    List<UserDTO> findAllUsers();
 
+    /*
+    Returns user if exists, otherwise null
+    */
     UserDTO findUserByUserName(String userName);
-
-    boolean isAdmin(long id);
-
-    /*return null whether user is not manager of branch*/
-    RegionalBranchDTO isManager(long id);
-
-
 }

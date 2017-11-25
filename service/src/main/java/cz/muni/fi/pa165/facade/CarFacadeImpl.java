@@ -1,7 +1,8 @@
 package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dao.CarDAO;
-import cz.muni.fi.pa165.dto.CarDTO;
+import cz.muni.fi.pa165.dto.*;
+import cz.muni.fi.pa165.dto.results.*;
 import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.service.BeanMappingService;
 import cz.muni.fi.pa165.service.CarService;
@@ -22,29 +23,31 @@ public class CarFacadeImpl implements CarFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public void createCar(CarDTO car) {
+    public SimpleResult createCar(CarDTO car) {
+        SimpleResult result = new SimpleResult();
         carService.createCar(beanMappingService.mapTo(car,Car.class));
+        result.setIsSuccess(true);
+        return result;
     }
 
     @Override
-    public void updateCar(CarDTO car) {
+    public SimpleResult updateCar(CarDTO car) {
+        SimpleResult result = new SimpleResult();
         carService.updateCar(beanMappingService.mapTo(car,Car.class));
+        result.setIsSuccess(true);
+        return result;
     }
 
     @Override
-    public void deleteCar(long id) {
+    public SimpleResult deleteCar(long id) {
+        SimpleResult result = new SimpleResult();
         carService.deleteCar(id);
+        result.setIsSuccess(true);
+        return result;
     }
 
     @Override
-    public CarDTO findCar(long id) {
-        Car findedCar = carService.findCar(id);
-        return findedCar == null ? null : beanMappingService.mapTo(findedCar, CarDTO.class);
-
-    }
-
-    @Override
-    public List<CarDTO> findAllCar() {
+    public List<CarDTO> findAllCars() {
         List<Car> cars = carService.findAllCar();
         return cars == null ? null : beanMappingService.mapTo(cars, CarDTO.class);
     }
