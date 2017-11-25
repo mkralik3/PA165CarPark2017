@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface UserFacade {
 
-    void registerUser(UserDTO user, String unHashPassword);
+    void registerUser(UserDTO user, String password);
 
-    void changePassword(UserDTO user, String newUnHashPassword);
+    void changePassword(UserDTO user, String password);
 
     void updateUser(UserDTO user);
 
     void deleteUser(long id);
 
-    List<CarDTO> findAllUser();
+    List<CarDTO> findAllUsers();
 
     UserDTO findUserByUserName(String userName);
 

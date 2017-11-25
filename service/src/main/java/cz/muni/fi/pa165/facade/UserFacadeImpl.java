@@ -8,12 +8,12 @@ import java.util.List;
 
 public class UserFacadeImpl implements UserFacade{
     @Override
-    public void registerUser(UserDTO user, String unHashPassword) {
+    public void registerUser(UserDTO user, String password) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void changePassword(UserDTO user, String newUnHashPassword) {
+    public void changePassword(UserDTO user, String password) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -28,7 +28,7 @@ public class UserFacadeImpl implements UserFacade{
         throw new UnsupportedOperationException("Not supported yet.");    }
 
     @Override
-    public List<CarDTO> findAllUser() {
+    public List<CarDTO> findAllUsers() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

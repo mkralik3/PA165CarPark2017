@@ -6,7 +6,7 @@
 package cz.muni.fi.pa165.dao.tests;
 
 import cz.muni.fi.pa165.dao.tests.support.TestObjectFactory;
-import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.entity.*;
 import cz.muni.fi.pa165.enums.UserType;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -30,6 +30,7 @@ public class UserDaoTest extends TestBase {
     public void createUser() {
         User user = objectFactory.createUser("User", "1234567890", UserType.USER);
         userDao.save(user);
+        
         assertThat(user.getId()).isGreaterThan(0);
     }
     
