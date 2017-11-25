@@ -18,4 +18,5 @@ public interface UserService {
     User delete(long userId);
     User findByUsername(String username);
     List<User> getAll();
+    Set<UserOperationErrorCode> changePassword(User user, String oldPassword, String newPassword);
 }

@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NullPointerException("user");
         }
+        // get user from db for change safety
         User existingUser = userDao.findUserByUserName(user.getUserName());
         if (existingUser == null) {
             throw new IllegalArgumentException("user not exists");
@@ -106,6 +107,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll() {
         return userDao.findAll();
+    }
+
+    @Override
+    public Set<UserOperationErrorCode> changePassword(User user, String oldPassword, String newPassword) {
+        if (user == null) {
+            throw new NullPointerException("user");
+        }
+        // get user from db for change safety
+        user = userDao.findOne(user.getId());
+        if (user == null) {
+            throw new IllegalArgumentException("user not exists");
+        }
+        Set<UserOperationErrorCode> errors = new HashSet<>();
+        if (oldPassword == null || newPassword == null) {
+            errors.add(UserOperationErrorCode.PASSWORD_REQUIRED);
+        }
+        else if (newPassword.length() < MIN_PASSWORD_LENGTH) {
+            errors.add(UserOperationErrorCode.PASSWORD_LENGTH);
+        }
+        else if (!passwordSupport.createHash(oldPassword).equals(user.getPassword())){
+            // possible improvement of security - count fail attempts
+            errors.add(UserOperationErrorCode.PASSWORD_MISMATCH);
+        }
+        if (errors.isEmpty()) {
+             user.setPassword(passwordSupport.createHash(newPassword));
+             user.setModificationDate(timeService.getCurrentTime());
+             userDao.save(user);
+        }
+        return errors;
     }
 
 }

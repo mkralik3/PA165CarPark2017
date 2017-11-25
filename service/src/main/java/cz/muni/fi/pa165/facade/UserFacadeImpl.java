@@ -47,8 +47,23 @@ public class UserFacadeImpl implements UserFacade{
     }
 
     @Override
-    public UserOperationResult changePassword(long userId, String oldPassword, String newPassword) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public UserOperationResult changePassword(UserDTO user, String oldPassword, String newPassword) {
+        UserOperationResult result = new UserOperationResult();
+        try {
+            User userToUpdate = beanMappingService.mapTo(user, User.class);
+            List<UserOperationErrorCode> errors = beanMappingService.mapTo(userService.changePassword(userToUpdate, oldPassword, newPassword), UserOperationErrorCode.class);
+            if (errors.isEmpty()) {
+                result.setData(beanMappingService.mapTo(userToUpdate, UserDTO.class));
+                result.setIsSuccess(true);
+            }
+            errors.forEach((e) -> {
+                result.getErrorCodes().add(beanMappingService.mapTo(e, UserOperationErrorCode.class));
+            });
+        } catch (Exception ex) {
+            result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
+            // todo log
+        }
+        return result;
     }
 
     @Override
