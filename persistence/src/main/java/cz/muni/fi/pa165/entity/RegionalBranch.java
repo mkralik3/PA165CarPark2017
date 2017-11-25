@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * @author Matej Kralik
+ * @author Matej Kralik, updated by Martin Miškeje
  */
 @Entity
 public class RegionalBranch {
@@ -28,10 +28,10 @@ public class RegionalBranch {
     @OneToMany(mappedBy = "parent")
     private List<RegionalBranch> children = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "regionalBranch", cascade = CascadeType.ALL)
     private List<User> employees = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "regionalBranch", cascade = CascadeType.ALL)
     private List<Car> cars = new ArrayList<>();
 
     @NotNull
@@ -73,35 +73,55 @@ public class RegionalBranch {
     }
 
     public void addChild(RegionalBranch children) {
-        if (this.children.contains(children))
-            throw new IllegalArgumentException("Already contains this branch!");
         if (children == null)
             throw new IllegalArgumentException("You cannot add null branch!");
+        if (this.children.contains(children))
+            throw new IllegalArgumentException("Already contains this branch!");
         this.children.add(children);
     }
-
+    
     public List<User> getEmployees() {
-        return employees;
+        return Collections.unmodifiableList(this.employees);
     }
 
     public void addEmployee(User employee) {
-        if (this.employees.contains(employee))
-            throw new IllegalArgumentException("This branch already contains this employee");
         if (employee == null)
             throw new IllegalArgumentException("You cannot add null employee");
+        if (this.employees.contains(employee))
+            throw new IllegalArgumentException("This branch already contains this employee");
         this.employees.add(employee);
+        employee.setRegionalBranch(this);
+    }
+    
+    public void removeEmployee(User employee) {
+        if (employee == null)
+            throw new IllegalArgumentException("You cannot remove null employee");
+        if (!this.employees.contains(employee))
+            throw new IllegalArgumentException("This branch does not contain this employee");
+        this.employees.remove(employee);
+        employee.setRegionalBranch(null);
     }
 
     public List<Car> getCars() {
-        return cars;
+        return Collections.unmodifiableList(this.cars);
     }
 
     public void addCar(Car car) {
-        if (this.cars.contains(car))
-            throw new IllegalArgumentException("This branch already contains this car!");
         if (car == null)
             throw new IllegalArgumentException("You cannot add null car");
+        if (this.cars.contains(car))
+            throw new IllegalArgumentException("This branch already contains this car!");
         this.cars.add(car);
+        car.setRegionalBranch(this);
+    }
+    
+    public void removeCar(Car car) {
+        if (car == null)
+            throw new IllegalArgumentException("You cannot remove null car");
+        if (!this.cars.contains(car))
+            throw new IllegalArgumentException("This branch does not contain this car!");
+        this.cars.add(car);
+        car.setRegionalBranch(null);
     }
 
     public LocalDateTime getCreationDate() {

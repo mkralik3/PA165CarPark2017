@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
- * @author Matej Kralik
+ * @author Matej Kralik, updated by Martin Miškeje
  */
 
 @Entity
@@ -44,6 +44,10 @@ public class User {
     @NotNull
     @Column(nullable=false)
     private LocalDateTime modificationDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "regionalBranchId", nullable = true)
+    private RegionalBranch regionalBranch = null;
 
     public long getId() {
         return id;
@@ -99,6 +103,14 @@ public class User {
 
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
+    }
+    
+    public RegionalBranch getRegionalBranch() {
+        return regionalBranch;
+    }
+    // internal only
+    void setRegionalBranch(RegionalBranch regionalBranch) {
+        this.regionalBranch = regionalBranch;
     }
 
     @Override

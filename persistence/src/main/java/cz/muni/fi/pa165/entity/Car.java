@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * @author Matej Kralik
+ * @author Matej Kralik, updated by Martin Miškeje
  */
 @Entity
 public class Car {
@@ -27,6 +27,10 @@ public class Car {
     @NotNull
     @Column(nullable=false)
     private LocalDateTime modificationDate;
+    
+    @ManyToOne
+    @JoinColumn(name = "regionalBranchId", nullable = true)
+    private RegionalBranch regionalBranch = null;
 
     public Long getId() {
         return id;
@@ -66,6 +70,14 @@ public class Car {
 
     public void setModificationDate(LocalDateTime modificationDate) {
         this.modificationDate = modificationDate;
+    }
+    
+    public RegionalBranch getRegionalBranch() {
+        return regionalBranch;
+    }
+    // internal only
+    void setRegionalBranch(RegionalBranch regionalBranch) {
+        this.regionalBranch = regionalBranch;
     }
 
     @Override
