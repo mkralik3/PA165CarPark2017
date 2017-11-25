@@ -13,7 +13,7 @@ public interface UserFacade {
     
     UserOperationResult registerUser(UserDTO user, String password);
 
-    UserOperationResult changePassword(long userId, String oldPassword, String newPassword);
+    UserOperationResult changePassword(UserDTO user, String oldPassword, String newPassword);
 
     /*
     Activation/deactivation will be through this method
