@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.dto.results.*;
 import cz.muni.fi.pa165.dto.enums.*;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -52,22 +53,64 @@ public class UserFacadeImpl implements UserFacade{
 
     @Override
     public UserOperationResult updateUser(UserDTO user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        UserOperationResult result = new UserOperationResult();
+        try {
+            User userToUpdate = beanMappingService.mapTo(user, User.class);
+            List<UserOperationErrorCode> errors = beanMappingService.mapTo(userService.update(userToUpdate), UserOperationErrorCode.class);
+            if (errors.isEmpty()) {
+                result.setData(beanMappingService.mapTo(userToUpdate, UserDTO.class));
+                result.setIsSuccess(true);
+            }
+            errors.forEach((e) -> {
+                result.getErrorCodes().add(beanMappingService.mapTo(e, UserOperationErrorCode.class));
+            });
+        } catch (Exception ex) {
+            result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
+            // todo log
+        }
+        return result;
     }
 
     @Override
     public SimpleResult deleteUser(long userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        SimpleResult result = new SimpleResult();
+        try {
+            User deletedUser = userService.delete(userId);
+            result.setIsSuccess(deletedUser != null);
+        } catch (Exception ex) {
+            // todo log
+        }
+        return result;
     }
 
     @Override
     public List<UserDTO> findAllUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<UserDTO> result = new ArrayList<>();
+        try {
+            List<User> users = userService.getAll();
+            if (users != null) {
+                users.forEach((u) -> {
+                    result.add(beanMappingService.mapTo(u, UserDTO.class));
+                });
+            }
+        } catch (Exception ex) {
+            // todo log
+        }
+        return result;
     }
 
     @Override
     public UserDTO findUserByUserName(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        UserDTO result = null;
+        try {
+            User user = userService.findByUsername(userName);
+            if (user != null) {
+                result = beanMappingService.mapTo(user, UserDTO.class);
+            }
+        } catch (Exception ex) {
+            // todo log
+        }
+        return result;
     }
 
 }
