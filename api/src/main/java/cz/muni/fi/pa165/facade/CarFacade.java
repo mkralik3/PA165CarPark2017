@@ -1,17 +1,20 @@
 package cz.muni.fi.pa165.facade;
 
-import cz.muni.fi.pa165.dto.CarDTO;
+import cz.muni.fi.pa165.dto.*;
+import cz.muni.fi.pa165.dto.results.*;
 
 import java.util.List;
 
 public interface CarFacade {
-    void createCar(CarDTO car);
+    
+    SimpleResult createCar(CarDTO car);
 
-    void updateCar(CarDTO car);
+    /*
+    Activation/deactivation will be through this method
+    */
+    SimpleResult updateCar(CarDTO car);
 
-    void deleteCar(long id);
+    SimpleResult deleteCar(long carId);
 
-    CarDTO findCar(long id);
-
-    List<CarDTO> findAllCar();
+    List<CarDTO> findAllCars();
 }
