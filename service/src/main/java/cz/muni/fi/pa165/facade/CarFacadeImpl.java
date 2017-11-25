@@ -23,16 +23,16 @@ public class CarFacadeImpl implements CarFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public SimpleResult createCar(CarDTO car) {
-        SimpleResult result = new SimpleResult();
+    public CarOperationResult createCar(CarDTO car) {
+        CarOperationResult result = new CarOperationResult();
         carService.createCar(beanMappingService.mapTo(car,Car.class));
         result.setIsSuccess(true);
         return result;
     }
 
     @Override
-    public SimpleResult updateCar(CarDTO car) {
-        SimpleResult result = new SimpleResult();
+    public CarOperationResult updateCar(CarDTO car) {
+        CarOperationResult result = new CarOperationResult();
         carService.updateCar(beanMappingService.mapTo(car,Car.class));
         result.setIsSuccess(true);
         return result;

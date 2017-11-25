@@ -7,12 +7,12 @@ import java.util.List;
 public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
 
     @Override
-    public SimpleResult createRegionalBranch(RegionalBranchDTO branch) {
+    public RegionalBranchOperationResult createRegionalBranch(RegionalBranchDTO branch) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SimpleResult updateRegionalBranch(RegionalBranchDTO branch) {
+    public RegionalBranchOperationResult updateRegionalBranch(RegionalBranchDTO branch) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
