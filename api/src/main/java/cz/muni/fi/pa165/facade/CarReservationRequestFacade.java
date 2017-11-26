@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.dto.results.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public interface CarReservationRequestFacade {
 
@@ -17,8 +18,5 @@ public interface CarReservationRequestFacade {
 
     SimpleResult deleteCarReservationRequest(long id);
 
-    /*
-    If includeChildren is set to true, requests of sub branches (recursively) will be also returned.
-    */
-    List<CarReservationRequestDTO> getAllForRegionalBranch(RegionalBranchDTO regionalBranch, Boolean includeChildren, LocalDateTime dateFrom, LocalDateTime dateTo);
+    List<CarReservationRequestDTO> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo);
 }

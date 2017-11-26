@@ -5,6 +5,7 @@ import cz.muni.fi.pa165.dto.results.*;
 import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.service.BeanMappingService;
 import cz.muni.fi.pa165.service.RegionalBranchService;
+import cz.muni.fi.pa165.service.*;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
 
     @Inject
     private BeanMappingService beanMappingService;
-    
+   
     @Override
     public RegionalBranchOperationResult createRegionalBranch(RegionalBranchDTO branch) {
         RegionalBranchOperationResult result = new RegionalBranchOperationResult();

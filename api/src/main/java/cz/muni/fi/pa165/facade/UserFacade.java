@@ -5,9 +5,9 @@ import cz.muni.fi.pa165.dto.results.*;
 
 import java.util.List;
 /*
-@author Martin Miökeje
+@author Martin Mi≈°keje
 */
-public interface UserFacade {    
+public interface UserFacade {
     UserOperationResult registerUser(UserDTO user, String password);
 
     UserOperationResult changePassword(UserDTO user, String oldPassword, String newPassword);

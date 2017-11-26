@@ -6,12 +6,14 @@ import cz.muni.fi.pa165.dto.enums.*;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /*
-@author Martin Miökeje
+@author Martin Mi≈°keje
 */
 @Service
 @Transactional
@@ -26,13 +28,16 @@ public class UserFacadeImpl implements UserFacade{
         UserOperationResult result = new UserOperationResult();
         try {
             User userToCreate = beanMappingService.mapTo(user, User.class);
-            List<UserOperationErrorCode> errors = beanMappingService.mapTo(userService.create(userToCreate, password), UserOperationErrorCode.class);
+            Set<UserOperationErrorCode> errors = new HashSet<>();
+            userService.create(userToCreate, password).forEach((x) -> {
+                errors.add(beanMappingService.mapEnumTo(x, UserOperationErrorCode.class));
+            });
             if (errors.isEmpty()) {
                 result.setData(beanMappingService.mapTo(userToCreate, UserDTO.class));
                 result.setIsSuccess(true);
             }
             errors.forEach((e) -> {
-                result.getErrorCodes().add(beanMappingService.mapTo(e, UserOperationErrorCode.class));
+                result.getErrorCodes().add(beanMappingService.mapEnumTo(e, UserOperationErrorCode.class));
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
@@ -46,13 +51,16 @@ public class UserFacadeImpl implements UserFacade{
         UserOperationResult result = new UserOperationResult();
         try {
             User userToUpdate = beanMappingService.mapTo(user, User.class);
-            List<UserOperationErrorCode> errors = beanMappingService.mapTo(userService.changePassword(userToUpdate, oldPassword, newPassword), UserOperationErrorCode.class);
+            Set<UserOperationErrorCode> errors = new HashSet<>();
+            userService.changePassword(userToUpdate, oldPassword, newPassword).forEach((x) -> {
+                errors.add(beanMappingService.mapEnumTo(x, UserOperationErrorCode.class));
+            });
             if (errors.isEmpty()) {
                 result.setData(beanMappingService.mapTo(userToUpdate, UserDTO.class));
                 result.setIsSuccess(true);
             }
             errors.forEach((e) -> {
-                result.getErrorCodes().add(beanMappingService.mapTo(e, UserOperationErrorCode.class));
+                result.getErrorCodes().add(beanMappingService.mapEnumTo(e, UserOperationErrorCode.class));
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
@@ -66,13 +74,16 @@ public class UserFacadeImpl implements UserFacade{
         UserOperationResult result = new UserOperationResult();
         try {
             User userToUpdate = beanMappingService.mapTo(user, User.class);
-            List<UserOperationErrorCode> errors = beanMappingService.mapTo(userService.update(userToUpdate), UserOperationErrorCode.class);
+            Set<UserOperationErrorCode> errors = new HashSet<>();
+            userService.update(userToUpdate).forEach((x) -> {
+                errors.add(beanMappingService.mapEnumTo(x, UserOperationErrorCode.class));
+            });
             if (errors.isEmpty()) {
                 result.setData(beanMappingService.mapTo(userToUpdate, UserDTO.class));
                 result.setIsSuccess(true);
             }
             errors.forEach((e) -> {
-                result.getErrorCodes().add(beanMappingService.mapTo(e, UserOperationErrorCode.class));
+                result.getErrorCodes().add(beanMappingService.mapEnumTo(e, UserOperationErrorCode.class));
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);

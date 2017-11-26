@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author Matej Kralik
  */
+@org.springframework.stereotype.Repository
 public interface RegionalBranchDAO extends CrudRepository<RegionalBranch, Long> {
 
     /**
