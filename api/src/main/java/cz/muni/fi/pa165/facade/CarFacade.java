@@ -16,5 +16,7 @@ public interface CarFacade {
 
     SimpleResult deleteCar(long carId);
 
+    CarDTO findCarById(long carId);
+    
     List<CarDTO> findAllCars();
 }

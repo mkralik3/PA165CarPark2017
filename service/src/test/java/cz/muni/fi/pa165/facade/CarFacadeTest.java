@@ -14,8 +14,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -73,36 +71,31 @@ public class CarFacadeTest extends BaseFacadeTest {
     }
 
     @Test
-    public void testFindAllCar(){
-        when(carService.findAllCar()).thenReturn(Collections.singletonList(car));
+    public void testFindAllCars(){
+        when(carService.findAllCars()).thenReturn(Collections.singletonList(car));
 
-        List<CarDTO> cars = carFacade.findAllCar();
+        List<CarDTO> cars = carFacade.findAllCars();
 
         assertThat(car.getName()).isEqualTo(cars.get(0).getName());
-        verify(carService).findAllCar();
+        verify(carService).findAllCars();
         verify(beanMappingService).mapTo(Collections.singletonList(car), CarDTO.class);
     }
-
+    
     @Test
     public void testFindCarById(){
         when(carService.findCar(carId)).thenReturn(car);
 
-        CarDTO carDTO = carFacade.findCar(carId);
+        CarDTO carDTO = carFacade.findCarById(carId);
 
         assertThat(carDTO).isNotNull();
         assertThat(carDTO.getName()).isEqualTo(car.getName());
         verify(carService).findCar(carId);
         verify(beanMappingService).mapTo(car, CarDTO.class);
     }
-
+    
     @Test
-    public void testFindCarByIdReturnNull(){
-        when(carService.findCar(carId)).thenReturn(null);
-
-        CarDTO carDTO = carFacade.findCar(carId);
-
-        assertThat(carDTO).isNull();
-        verify(carService).findCar(carId);
-        verify(beanMappingService, never()).mapTo(any(), any());
+    public void testDeleteCar(){
+        carFacade.deleteCar(carId);
+        verify(carService).deleteCar(carId);
     }
 }

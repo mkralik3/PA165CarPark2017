@@ -11,12 +11,16 @@ import java.util.Set;
  */
 public interface UserService {
     Set<UserOperationErrorCode> create(User user, String password);
+    
     Set<UserOperationErrorCode> update(User user);
     /*
     Returns deleted entity.
     */
     User delete(long userId);
+    
     User findByUsername(String username);
+    
     List<User> getAll();
+    
     Set<UserOperationErrorCode> changePassword(User user, String oldPassword, String newPassword);
 }
