@@ -7,15 +7,12 @@ package cz.muni.fi.pa165.service.tests;
 
 import cz.muni.fi.pa165.dao.RegionalBranchDAO;
 import cz.muni.fi.pa165.entity.RegionalBranch;
-import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.service.RegionalBranchService;
 import cz.muni.fi.pa165.service.RegionalBranchServiceImpl;
 import cz.muni.fi.pa165.service.TimeService;
-import cz.muni.fi.pa165.service.enums.UserOperationErrorCode;
 import cz.muni.fi.pa165.tests.support.TestObjectFactory;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.hibernate.service.spi.ServiceException;
 import org.mockito.InjectMocks;
@@ -54,6 +51,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     @BeforeMethod
     public void setup() throws ServiceException {
         branch1 = objectFactory.createRegionalBranch(testName);
+        branch1.setId(Long.valueOf(1));
         branch2 = objectFactory.createRegionalBranch("testBranch2");
         
         when(regionalBranchDao.findOne(1L))
