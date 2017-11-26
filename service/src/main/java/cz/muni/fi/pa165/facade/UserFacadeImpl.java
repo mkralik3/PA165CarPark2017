@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /*
-@author Martin Miökeje
+@author Martin Mi≈°keje
 */
 @Service
 @Transactional
@@ -22,7 +22,7 @@ public class UserFacadeImpl implements UserFacade{
     private UserService userService;
     @Inject
     private BeanMappingService beanMappingService;
-    
+
     @Override
     public UserOperationResult registerUser(UserDTO user, String password) {
         UserOperationResult result = new UserOperationResult();

@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new NullPointerException("user");
         }
         // get user from db for change safety
-        User existingUser = userDao.findUserByUserName(user.getUserName());
+        User existingUser = userDao.findOne(user.getId());
         if (existingUser == null) {
             throw new IllegalArgumentException("user not exists");
         }
@@ -127,7 +127,8 @@ public class UserServiceImpl implements UserService {
         else if (newPassword.length() < MIN_PASSWORD_LENGTH) {
             errors.add(UserOperationErrorCode.PASSWORD_LENGTH);
         }
-        else if (!passwordSupport.createHash(oldPassword).equals(user.getPassword())){
+        //else if (!passwordSupport.createHash(oldPassword).equals(user.getPassword())){
+        else if (!passwordSupport.validatePassword(oldPassword, user.getPassword())){
             // possible improvement of security - count fail attempts
             errors.add(UserOperationErrorCode.PASSWORD_MISMATCH);
         }
