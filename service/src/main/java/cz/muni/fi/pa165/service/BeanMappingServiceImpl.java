@@ -33,4 +33,11 @@ public class BeanMappingServiceImpl implements BeanMappingService {
     public Mapper getMapper(){
         return dozer;
     }
+
+    @Override
+    // Dozer does not support direct enum mapping
+    public  <T extends Enum> T mapEnumTo(Enum u, Class<T> mapToClass) 
+    {
+        return (T)T.valueOf(mapToClass, u.name());
+    }
 }

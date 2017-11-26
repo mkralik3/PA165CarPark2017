@@ -7,8 +7,9 @@ import org.dozer.Mapper;
 
 public interface BeanMappingService {
 
-    public  <T> List<T> mapTo(Collection<?> objects, Class<T> mapToClass);
+    <T> List<T> mapTo(Collection<?> objects, Class<T> mapToClass);
 
-    public  <T> T mapTo(Object u, Class<T> mapToClass);
-    public Mapper getMapper();
+    <T> T mapTo(Object u, Class<T> mapToClass);
+    <T extends Enum> T mapEnumTo(Enum u, Class<T> mapToClass);
+    Mapper getMapper();
 }
