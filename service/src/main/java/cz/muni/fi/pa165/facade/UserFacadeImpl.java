@@ -10,14 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /*
 @author Martin Miškeje
 */
 @Service
-@Transactional(rollbackFor = JpaSystemException.class)
+@Transactional
 public class UserFacadeImpl implements UserFacade{
     @Inject
     private UserService userService;

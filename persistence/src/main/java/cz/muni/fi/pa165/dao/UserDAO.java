@@ -10,6 +10,7 @@ import java.util.List;
  * The interface for User entity
  * @author Matej Kralik
  */
+@org.springframework.stereotype.Repository
 public interface UserDAO extends CrudRepository<User, Long>{
 
     /**

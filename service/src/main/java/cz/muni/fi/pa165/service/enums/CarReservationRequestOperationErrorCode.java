@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.dto.enums;
+package cz.muni.fi.pa165.service.enums;
 
 /**
  *
