@@ -8,9 +8,11 @@ package cz.muni.fi.pa165.facade.tests;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.dto.results.SimpleResult;
 import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.enums.UserType;
 import cz.muni.fi.pa165.facade.UserFacade;
 import static cz.muni.fi.pa165.facade.tests.BaseFacadeTest.unwrapProxy;
 import cz.muni.fi.pa165.service.UserService;
+import cz.muni.fi.pa165.tests.support.TestObjectFactory;
 import java.util.Arrays;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -39,6 +41,8 @@ public class UserFacadeTest extends BaseFacadeTest {
     private UserDTO userDTO;
 
     private final String userName = "testUserName";
+    
+    private final TestObjectFactory factory = new TestObjectFactory();
 
     @BeforeMethod()
     public void setUp() throws Exception {
@@ -47,12 +51,9 @@ public class UserFacadeTest extends BaseFacadeTest {
         ReflectionTestUtils.setField(userFacade, "userService", userService);
         ReflectionTestUtils.setField(userFacade, "beanMappingService", beanMappingService);
 
-        user1 = new User();
-        user1.setUserName("TestUser");
+        user1 = factory.createUser(userName, UserType.USER);
         user1.setPassword("password123");
-        
-        user2 = new User();
-        user2.setUserName("TestUser2");
+        user2 = factory.createUser("TestUser2", UserType.USER);
 
         userDTO = new UserDTO();
         userDTO.setUserName("TestUser");

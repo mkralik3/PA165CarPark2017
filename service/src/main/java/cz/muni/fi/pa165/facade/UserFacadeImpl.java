@@ -20,11 +20,6 @@ public class UserFacadeImpl implements UserFacade{
     private UserService userService;
     @Inject
     private BeanMappingService beanMappingService;
-    
-    @Override
-    public ResultWithData<UserDTO> authenticate(AuthenticationDataDTO authData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public UserOperationResult registerUser(UserDTO user, String password) {

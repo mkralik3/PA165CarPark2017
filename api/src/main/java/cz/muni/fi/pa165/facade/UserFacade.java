@@ -7,10 +7,7 @@ import java.util.List;
 /*
 @author Martin Miškeje
 */
-public interface UserFacade {
-
-    ResultWithData<UserDTO> authenticate(AuthenticationDataDTO authData);
-    
+public interface UserFacade {    
     UserOperationResult registerUser(UserDTO user, String password);
 
     UserOperationResult changePassword(UserDTO user, String oldPassword, String newPassword);

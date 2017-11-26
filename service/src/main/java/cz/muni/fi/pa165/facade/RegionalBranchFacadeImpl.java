@@ -2,6 +2,7 @@ package cz.muni.fi.pa165.facade;
 
 import cz.muni.fi.pa165.dto.*;
 import cz.muni.fi.pa165.dto.results.*;
+import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.service.BeanMappingService;
 import cz.muni.fi.pa165.service.RegionalBranchService;
 import java.util.List;
@@ -20,7 +21,16 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
     
     @Override
     public RegionalBranchOperationResult createRegionalBranch(RegionalBranchDTO branch) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        RegionalBranchOperationResult result = new RegionalBranchOperationResult();
+        try {
+            RegionalBranch branchToCreate = beanMappingService.mapTo(branch, RegionalBranch.class);
+            branchService.create(branchToCreate);
+            result.setData(beanMappingService.mapTo(branchToCreate, RegionalBranchDTO.class));
+            result.setIsSuccess(true);
+        } catch (Exception ex) {
+            // todo log
+        }
+        return result;
     }
 
     @Override
