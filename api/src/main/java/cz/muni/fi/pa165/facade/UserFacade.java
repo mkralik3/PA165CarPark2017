@@ -8,8 +8,6 @@ import java.util.List;
 @author Martin Miškeje
 */
 public interface UserFacade {
-
-    ResultWithData<UserDTO> authenticate(AuthenticationDataDTO authData);
     
     UserOperationResult registerUser(UserDTO user, String password);
 
