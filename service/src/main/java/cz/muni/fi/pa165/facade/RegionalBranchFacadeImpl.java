@@ -17,6 +17,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
 
     @Inject
     private BeanMappingService beanMappingService;
+    
     @Override
     public RegionalBranchOperationResult createRegionalBranch(RegionalBranchDTO branch) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

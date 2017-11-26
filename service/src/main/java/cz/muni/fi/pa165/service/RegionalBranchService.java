@@ -13,7 +13,7 @@ public interface RegionalBranchService {
     
     void update(RegionalBranch regionalBranch);
 
-    void delete(long id);
+    RegionalBranch delete(long id);
 
     List<RegionalBranch> findAll();
 

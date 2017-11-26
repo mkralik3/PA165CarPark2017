@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.facade;
+package cz.muni.fi.pa165.facade.tests;
 
 import cz.muni.fi.pa165.config.ServiceConfiguration;
 import cz.muni.fi.pa165.service.BeanMappingService;

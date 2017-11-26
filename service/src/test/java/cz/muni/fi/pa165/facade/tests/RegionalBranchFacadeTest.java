@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package cz.muni.fi.pa165.facade;
+package cz.muni.fi.pa165.facade.tests;
 
 import cz.muni.fi.pa165.dto.RegionalBranchDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.entity.RegionalBranch;
+import cz.muni.fi.pa165.facade.RegionalBranchFacade;
 import cz.muni.fi.pa165.service.RegionalBranchService;
 import cz.muni.fi.pa165.tests.support.TestObjectFactory;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,6 +54,7 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
         ReflectionTestUtils.setField(branchFacade, "beanMappingService", beanMappingService);
 
         branch1 = factory.createRegionalBranch(name);
+        branch2 = factory.createRegionalBranch(name + "2");
 
         branchDTO = new RegionalBranchDTO();
         branchDTO.setName(name);
@@ -59,13 +62,14 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
     
     @Test
     public void testFindAllBranchesTest(){
-        when(branchService.findAll()).thenReturn(Collections.singletonList(branch1));
+        when(branchService.findAll()).thenReturn(Arrays.asList(branch1, branch2));
 
         List<RegionalBranchDTO> branches = branchFacade.findAll();
 
         assertThat(branch1.getName()).isEqualTo(branches.get(0).getName());
         verify(branchService).findAll();
-        verify(beanMappingService).mapTo(Collections.singletonList(branch1), UserDTO.class);
+        verify(beanMappingService).mapTo(branch1, UserDTO.class);
+        verify(beanMappingService).mapTo(branch2, UserDTO.class);
     }
     
     @Test
@@ -80,7 +84,7 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
     
     
     @Test
-    public void testUpdateUser(){
+    public void testUpdateBranch(){
         RegionalBranchDTO branchUpdatedDTO = branchDTO;
         branchUpdatedDTO.setName("UpdatedTest");
         RegionalBranch branchUpdated = branch1;
@@ -91,6 +95,16 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
         branchFacade.updateRegionalBranch(branchUpdatedDTO);
 
         verify(branchService).update(branchUpdated);
+        verify(beanMappingService).mapTo(branchDTO, RegionalBranch.class);
+    }
+    
+    @Test
+    public void testDeleteBranch(){
+        when(beanMappingService.mapTo(branchDTO, RegionalBranch.class)).thenReturn(branch1);
+
+        branchFacade.deleteRegionalBranch(branchDTO.getId());
+
+        verify(branchService).delete(branch1.getId());
         verify(beanMappingService).mapTo(branchDTO, RegionalBranch.class);
     }
 

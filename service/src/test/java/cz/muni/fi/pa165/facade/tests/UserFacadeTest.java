@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.facade;
+package cz.muni.fi.pa165.facade.tests;
 
 /**
  *
@@ -8,7 +8,8 @@ package cz.muni.fi.pa165.facade;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.dto.results.SimpleResult;
 import cz.muni.fi.pa165.entity.User;
-import static cz.muni.fi.pa165.facade.BaseFacadeTest.unwrapProxy;
+import cz.muni.fi.pa165.facade.UserFacade;
+import static cz.muni.fi.pa165.facade.tests.BaseFacadeTest.unwrapProxy;
 import cz.muni.fi.pa165.service.UserService;
 import java.util.Arrays;
 import org.mockito.InjectMocks;

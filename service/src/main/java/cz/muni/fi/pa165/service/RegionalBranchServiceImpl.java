@@ -34,7 +34,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
     }
 
     @Override
-    public void delete(long id) {
+    public RegionalBranch delete(long id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

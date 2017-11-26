@@ -25,10 +25,9 @@ public class TestObjectFactory {
         return result;
     }
 
-    public User createUser(String username, String password, UserType type) {
+    public User createUser(String username, UserType type) {
         User user = new User();
         user.setUserName(username);
-        user.setPassword(password);
         user.setCreationDate(currentTime);
         user.setModificationDate(currentTime);
         user.setType(type);

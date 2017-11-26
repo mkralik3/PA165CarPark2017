@@ -1,7 +1,8 @@
-package cz.muni.fi.pa165.facade;
+package cz.muni.fi.pa165.facade.tests;
 
 import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.entity.Car;
+import cz.muni.fi.pa165.facade.CarFacade;
 import cz.muni.fi.pa165.service.CarService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

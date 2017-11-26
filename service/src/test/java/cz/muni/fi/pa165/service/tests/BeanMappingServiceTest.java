@@ -1,4 +1,4 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.service.tests;
 
 import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.entity.Car;

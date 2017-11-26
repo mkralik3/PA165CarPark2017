@@ -1,7 +1,10 @@
-package cz.muni.fi.pa165.service;
+package cz.muni.fi.pa165.service.tests;
 import cz.muni.fi.pa165.dao.CarDAO;
 import cz.muni.fi.pa165.tests.support.TestObjectFactory;
 import cz.muni.fi.pa165.entity.Car;
+import cz.muni.fi.pa165.service.CarService;
+import cz.muni.fi.pa165.service.CarServiceImpl;
+import cz.muni.fi.pa165.service.TimeService;
 import java.util.Arrays;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,5 +135,4 @@ public class CarServiceTest extends BaseServiceTest {
         carService.deleteCar(1L);
         Mockito.verify(carDao, Mockito.times(1)).delete(1L);
     }
-    
 }
