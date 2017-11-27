@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CarReservationRequestServiceImpl implements CarReservationRequestService {
+
+    private final Logger log = LoggerFactory.getLogger(CarReservationRequestServiceImpl.class);
+
+
     @Inject
     private CarReservationRequestDAO requestsDao;
     @Inject
@@ -25,8 +32,10 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     
     @Override
     public Set<CarReservationRequestOperationErrorCode> create(CarReservationRequest request) {
+        log.info("arReservation will be created: " + request);
         if (request == null) {
-            throw new NullPointerException("request");
+            log.error("request argument is null");
+            throw new IllegalArgumentException("request is null");
         }
         Set<CarReservationRequestOperationErrorCode> errors = new HashSet<>();
         errors.addAll(validateInput(request, null));
@@ -39,7 +48,7 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
             }
             catch (DataAccessException ex) {
                 errors.add(CarReservationRequestOperationErrorCode.DATABASE_ERROR);
-                // todo log
+                log.error(ex.toString());
             }
         }
         return errors;
@@ -47,26 +56,27 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     
     @Override
     public Set<CarReservationRequestOperationErrorCode> update(CarReservationRequest request) {
+        log.info("CarReservation will be updated: " + request);
         if (request == null) {
-            throw new NullPointerException("request");
+            log.error("request argument is null");
+            throw new IllegalArgumentException("request is null");
         }
         // get user from db for change safety
         CarReservationRequest existing = requestsDao.findOne(request.getId());
         if (existing == null) {
+            log.error("request not exists");
             throw new IllegalArgumentException("request not exists");
         }
         Set<CarReservationRequestOperationErrorCode> errors = new HashSet<>();
         errors.addAll(validateInput(request, existing));
         if (errors.isEmpty()) {
             try {
-                request.setState(CarReservationRequestState.CREATED);
-                request.setCreationDate(timeService.getCurrentTime());
                 request.setModificationDate(timeService.getCurrentTime());
                 requestsDao.save(request);
             }
             catch (DataAccessException ex) {
                 errors.add(CarReservationRequestOperationErrorCode.DATABASE_ERROR);
-                // todo log
+                log.error(ex.toString());
             }
         }
         return errors;
@@ -74,9 +84,12 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     
     @Override
     public CarReservationRequest delete(long reservationRequestId) {
+        log.info("CarReservationRequest with id " + reservationRequestId + "  will be deleted");
         CarReservationRequest user = requestsDao.findOne(reservationRequestId);
         if (user != null) {
             requestsDao.delete(user);
+        }else{
+            log.debug("Car Reservation is not exist!");
         }
         return user;
     }

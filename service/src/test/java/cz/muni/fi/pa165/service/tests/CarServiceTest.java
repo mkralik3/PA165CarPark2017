@@ -39,6 +39,7 @@ public class CarServiceTest extends BaseServiceTest {
     @BeforeMethod
     public void setup() throws ServiceException {
         car1 = objectFactory.createCar("sampleCar");
+        car1.setId(Long.valueOf(1));
         car2 = objectFactory.createCar("sampleCar2");
         
         when(carDao.findOne(Long.valueOf(1)))
@@ -96,8 +97,8 @@ public class CarServiceTest extends BaseServiceTest {
     
     @Test
     public void createCar() throws IllegalArgumentException{
-        carService.createCar(car1);
-        assertThat(car1.getId()).isGreaterThan(0);
+        carService.createCar(car2);
+        assertThat(car2.getId()).isGreaterThan(0);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -125,14 +126,16 @@ public class CarServiceTest extends BaseServiceTest {
         carService.updateCar(null);
     }
     
-    @Test(expectedExceptions = IllegalArgumentException.class)
+    @Test
     public void deleteNonExistingCar() throws IllegalArgumentException{
-        carService.deleteCar(-1);
+        Car deletedCar = carService.deleteCar(-1L);
+        assertThat(deletedCar).isNull();
     }
     
     @Test
     public void deleteCar() throws IllegalArgumentException{
-        carService.deleteCar(1L);
-        Mockito.verify(carDao, Mockito.times(1)).delete(1L);
+        Car deletedCar = carService.deleteCar(car1.getId());
+        Mockito.verify(carDao, Mockito.times(1)).delete(deletedCar);
+        assertThat(deletedCar).isEqualToComparingFieldByField(car1);
     }
 }

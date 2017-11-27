@@ -133,4 +133,18 @@ public class User {
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", type=" + type +
+                ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", modificationDate=" + modificationDate +
+                ", regionalBranch=" + regionalBranch +
+                '}';
+    }
 }

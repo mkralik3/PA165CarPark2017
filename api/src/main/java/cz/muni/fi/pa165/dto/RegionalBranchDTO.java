@@ -64,5 +64,33 @@ public class RegionalBranchDTO {
     public void addCar(CarDTO car) {
         this.cars.add(car);
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof RegionalBranchDTO)) return false;
 
+        RegionalBranchDTO that = (RegionalBranchDTO) o;
+
+        return getName() != null ? getName().equals(that.getName()) : that.getName() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegionalBranch{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parent=" + parent +
+                ", children=" + children +
+                ", employees=" + employees +
+                ", cars=" + cars +
+                '}';
+    }
 }

@@ -4,7 +4,6 @@ import cz.muni.fi.pa165.enums.CarReservationRequestState;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.Clock;
 import java.time.LocalDateTime;
 
 /**
@@ -141,5 +140,19 @@ public class CarReservationRequest {
         result = 31 * result + (getReservationEndDate() != null ? getReservationEndDate().hashCode() : 0);
         result = 31 * result + (getState() != null ? getState().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CarReservationRequest{" +
+                "id=" + id +
+                ", car=" + car +
+                ", user=" + user +
+                ", reservationStartDate=" + reservationStartDate +
+                ", reservationEndDate=" + reservationEndDate +
+                ", state=" + state +
+                ", creationDate=" + creationDate +
+                ", modificationDate=" + modificationDate +
+                '}';
     }
 }

@@ -80,4 +80,15 @@ public class CarDTO {
         result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;
     }
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", modificationDate=" + modificationDate +
+                ", regionalBranch=" + regionalBranch +
+                '}';
+    }
 }

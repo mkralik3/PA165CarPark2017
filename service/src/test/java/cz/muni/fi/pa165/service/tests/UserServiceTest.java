@@ -128,7 +128,7 @@ public class UserServiceTest extends BaseServiceTest {
         assertThat(user2.getId()).isGreaterThan(0);
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void createNullUser() throws NullPointerException{
         userService.create(null, "validPassword");
     }
@@ -209,8 +209,8 @@ public class UserServiceTest extends BaseServiceTest {
         assertThat(user1.getUserName()).isEqualTo("UpdatedName");
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void updateNullUser() throws NullPointerException{
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void updateNullUser() {
         userService.update(null);
     }
     

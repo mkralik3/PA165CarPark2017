@@ -79,7 +79,7 @@ public class CarFacadeTest extends BaseFacadeTest {
 
         assertThat(car.getName()).isEqualTo(cars.get(0).getName());
         verify(carService).findAllCars();
-        verify(beanMappingService).mapTo(Collections.singletonList(car), CarDTO.class);
+        verify(beanMappingService).mapTo(car, CarDTO.class);
     }
     
     @Test

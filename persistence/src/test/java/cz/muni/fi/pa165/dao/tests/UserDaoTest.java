@@ -8,13 +8,10 @@ package cz.muni.fi.pa165.dao.tests;
 import cz.muni.fi.pa165.dao.tests.support.TestObjectFactory;
 import cz.muni.fi.pa165.entity.*;
 import cz.muni.fi.pa165.enums.UserType;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.testng.annotations.Test;
 

@@ -1,6 +1,7 @@
 package cz.muni.fi.pa165.dto;
 
 import cz.muni.fi.pa165.dto.enums.UserType;
+
 import java.time.LocalDateTime;
 
 public class UserDTO {
@@ -67,5 +68,38 @@ public class UserDTO {
 
     public void setRegionalBranch(RegionalBranchDTO regionalBranch) {
         this.regionalBranch = regionalBranch;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof UserDTO)) return false;
+
+        UserDTO user = (UserDTO) o;
+
+        if (getUserName() != null ? !getUserName().equals(user.getUserName()) : user.getUserName() != null)
+            return false;
+        return getType() == user.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUserName() != null ? getUserName().hashCode() : 0;
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", type=" + type +
+                ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", modificationDate=" + modificationDate +
+                ", regionalBranch=" + regionalBranch +
+                '}';
     }
 }

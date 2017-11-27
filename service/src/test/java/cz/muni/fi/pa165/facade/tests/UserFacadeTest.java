@@ -10,7 +10,6 @@ import cz.muni.fi.pa165.dto.results.SimpleResult;
 import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.UserType;
 import cz.muni.fi.pa165.facade.UserFacade;
-import static cz.muni.fi.pa165.facade.tests.BaseFacadeTest.unwrapProxy;
 import cz.muni.fi.pa165.service.UserService;
 import cz.muni.fi.pa165.tests.support.TestObjectFactory;
 import java.util.Arrays;
