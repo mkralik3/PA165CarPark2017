@@ -107,7 +107,8 @@ public class Car {
                 ", creationDate=" + creationDate +
                 ", activationDate=" + activationDate +
                 ", modificationDate=" + modificationDate +
-                ", regionalBranch=" + regionalBranch +
+                ", regionalBranchId=" + ((regionalBranch == null) ? null :regionalBranch.getId()) + //due to StackOverflowError because reginalBranch has car class
+                ", regionalBranchName=" + ((regionalBranch == null) ? null :regionalBranch.getName()) + //due to StackOverflowError because reginalBranch has car class
                 '}';
     }
 }

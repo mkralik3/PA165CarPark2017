@@ -64,7 +64,7 @@ public class UserServiceTest extends BaseServiceTest {
         user1 = objectFactory.createUser(testUsername, UserType.USER);
         user1.setPassword(hashedPassword);
         user2 = objectFactory.createUser("sampleUser2", UserType.BRANCH_MANAGER);
-        
+
         when(userDao.findUserByUserName(user1.getUserName()))
             .thenReturn(user1);
         
@@ -210,7 +210,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void updateNullUser() {
+    public void updateNullUser() throws NullPointerException{
         userService.update(null);
     }
     

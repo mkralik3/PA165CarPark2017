@@ -88,7 +88,8 @@ public class CarDTO {
                 ", creationDate=" + creationDate +
                 ", activationDate=" + activationDate +
                 ", modificationDate=" + modificationDate +
-                ", regionalBranch=" + regionalBranch +
+                ", regionalBranchId=" + ((regionalBranch == null) ? null :regionalBranch.getId()) +
+                ", regionalBranchName=" + ((regionalBranch == null) ? null :regionalBranch.getName()) +
                 '}';
     }
 }

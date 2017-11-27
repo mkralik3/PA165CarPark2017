@@ -41,8 +41,8 @@ public class CarServiceTest extends BaseServiceTest {
         car1 = objectFactory.createCar("sampleCar");
         car1.setId(Long.valueOf(1));
         car2 = objectFactory.createCar("sampleCar2");
-        
-        when(carDao.findOne(Long.valueOf(1)))
+
+        when(carDao.findOne(1L))
             .thenReturn(car1);
         
         when(carDao.findAll())
@@ -55,10 +55,6 @@ public class CarServiceTest extends BaseServiceTest {
             }
             
             Car car = (Car) argument;
-            if(car.getId() != null){
-                throw new IllegalArgumentException();
-            }
-            
             car.setId(Long.valueOf(1));
             return null;
         }).when(carDao).save(any(Car.class));
