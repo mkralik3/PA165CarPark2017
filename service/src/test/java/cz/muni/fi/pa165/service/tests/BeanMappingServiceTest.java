@@ -5,6 +5,11 @@ import cz.muni.fi.pa165.entity.Car;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * 
+ * @author mkralik
+ *
+ */
 public class BeanMappingServiceTest extends BaseServiceTest {
 
 

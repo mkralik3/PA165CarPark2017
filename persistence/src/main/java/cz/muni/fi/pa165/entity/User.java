@@ -133,4 +133,19 @@ public class User {
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", type=" + type +
+                ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", modificationDate=" + modificationDate +
+                ", regionalBranchId=" + ((regionalBranch == null) ? null :regionalBranch.getId()) + //due to StackOverflowError because reginalBranch has user class
+                ", regionalBranchName=" + ((regionalBranch == null) ? null :regionalBranch.getName()) + //due to StackOverflowError because reginalBranch has user class
+                '}';
+    }
 }

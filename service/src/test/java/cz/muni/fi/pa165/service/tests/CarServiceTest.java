@@ -37,11 +37,12 @@ public class CarServiceTest extends BaseServiceTest {
     private Car car2;
     
     @BeforeMethod
-    public void setup() throws ServiceException {
+    public void setup(){
         car1 = objectFactory.createCar("sampleCar");
+        car1.setId(Long.valueOf(1));
         car2 = objectFactory.createCar("sampleCar2");
-        
-        when(carDao.findOne(Long.valueOf(1)))
+
+        when(carDao.findOne(1L))
             .thenReturn(car1);
         
         when(carDao.findAll())
@@ -54,10 +55,6 @@ public class CarServiceTest extends BaseServiceTest {
             }
             
             Car car = (Car) argument;
-            if(car.getId() != null){
-                throw new IllegalArgumentException();
-            }
-            
             car.setId(Long.valueOf(1));
             return null;
         }).when(carDao).save(any(Car.class));
@@ -81,7 +78,7 @@ public class CarServiceTest extends BaseServiceTest {
     
     
     @Test
-    public void findCar() throws IllegalArgumentException{
+    public void findCar(){
         Car car = carService.findCar(Long.valueOf(1));
         
         assertThat(car).isNotNull();
@@ -89,24 +86,24 @@ public class CarServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void findNonExistingCar() throws IllegalArgumentException{
+    public void findNonExistingCar(){
         Car car = carService.findCar(Long.valueOf(-1));
         assertThat(car).isNull();
     }
     
     @Test
-    public void createCar() throws IllegalArgumentException{
-        carService.createCar(car1);
-        assertThat(car1.getId()).isGreaterThan(0);
+    public void createCar(){
+        carService.createCar(car2);
+        assertThat(car2.getId()).isGreaterThan(0);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void createNullCar() throws IllegalArgumentException{
+    public void createNullCar(){
         carService.createCar(null);
     }
     
     @Test
-    public void findAllCars() {
+    public void findAllCars(){
         List<Car> cars = carService.findAllCars();
         assertThat(cars).isNotNull();
         assertThat(cars.size()).isEqualTo(2);
@@ -114,25 +111,27 @@ public class CarServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void updateCar() throws IllegalArgumentException{
+    public void updateCar(){
         car1.setName("UpdatedName");
         carService.updateCar(car1);
         assertThat(car1.getName()).isEqualTo("UpdatedName");
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void updateNullCar() throws IllegalArgumentException{
+    public void updateNullCar(){
         carService.updateCar(null);
     }
     
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void deleteNonExistingCar() throws IllegalArgumentException{
-        carService.deleteCar(-1);
+    @Test
+    public void deleteNonExistingCar(){
+        Car deletedCar = carService.deleteCar(-1L);
+        assertThat(deletedCar).isNull();
     }
     
     @Test
-    public void deleteCar() throws IllegalArgumentException{
-        carService.deleteCar(1L);
-        Mockito.verify(carDao, Mockito.times(1)).delete(1L);
+    public void deleteCar(){
+        Car deletedCar = carService.deleteCar(car1.getId());
+        Mockito.verify(carDao, Mockito.times(1)).delete(deletedCar);
+        assertThat(deletedCar).isEqualToComparingFieldByField(car1);
     }
 }

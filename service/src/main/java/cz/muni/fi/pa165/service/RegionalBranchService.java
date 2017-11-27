@@ -12,11 +12,12 @@ import java.util.Set;
 
 /**
  *
- * @author Martin Miskeje
+ * @author Martin Miskeje, Matej Kralik
  */
 public interface RegionalBranchService {
+
 	Set<RegionalBranchOperationErrorCode> create(RegionalBranch regionalBranch);
-    
+
 	Set<RegionalBranchOperationErrorCode> update(RegionalBranch regionalBranch);
 
 	/**

@@ -12,15 +12,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /*
-@author Martin Miškeje
+@author Martin Miï¿½keje
 */
 @Service
 @Transactional
 public class CarReservationRequestFacadeImpl implements CarReservationRequestFacade{
+
+    private final Logger log = LoggerFactory.getLogger(CarReservationRequestFacadeImpl.class);
+
     @Inject
     private CarReservationRequestService reservationsService;
     @Inject
@@ -44,7 +50,7 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(CarReservationRequestOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -67,7 +73,7 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(CarReservationRequestOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -79,7 +85,7 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
             CarReservationRequest deleted = reservationsService.delete(id);
             result.setIsSuccess(deleted != null);
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -95,7 +101,7 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
                 });
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }

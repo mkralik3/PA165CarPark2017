@@ -1,15 +1,12 @@
 package cz.muni.fi.pa165.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * @author Matej Kralik, updated by Martin Miškeje
+ * @author Matej Kralik, updated by Martin Miï¿½keje
  */
 @Entity
 public class RegionalBranch {
@@ -157,5 +154,19 @@ public class RegionalBranch {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RegionalBranch{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parent=" + parent +
+                ", children=" + children +
+                ", employees=" + employees +
+                ", cars=" + cars +
+                ", creationDate=" + creationDate +
+                ", modificationDate=" + modificationDate +
+                '}';
     }
 }

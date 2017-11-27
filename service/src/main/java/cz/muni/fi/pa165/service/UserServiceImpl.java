@@ -2,11 +2,15 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.*;
 import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.facade.CarReservationRequestFacadeImpl;
 import cz.muni.fi.pa165.service.enums.UserOperationErrorCode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final int MIN_PASSWORD_LENGTH = 6;
     @Inject
     private UserDAO userDao;
@@ -26,14 +33,18 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public Set<UserOperationErrorCode> create(User user, String password) {
+        log.info("User will be created: " + user);
         if (user == null) {
-            throw new NullPointerException("user");
+            log.error("user argument is null");
+            throw new IllegalArgumentException("user is null");
         }
         Set<UserOperationErrorCode> errors = new HashSet<>();
         if (password == null) {
+            log.debug("user has not got password");
             errors.add(UserOperationErrorCode.PASSWORD_REQUIRED);
         }
         else if (password.length() < MIN_PASSWORD_LENGTH) {
+            log.debug("password is not big enough");
             errors.add(UserOperationErrorCode.PASSWORD_LENGTH);
         }
         errors.addAll(validateUserInput(user, null));
@@ -45,10 +56,9 @@ public class UserServiceImpl implements UserService {
                 user.setModificationDate(timeService.getCurrentTime());
                 userDao.save(user);
                 user.setPassword(null);
-            }
-            catch (DataAccessException ex) {
+            } catch (DataAccessException ex) {
                 errors.add(UserOperationErrorCode.DATABASE_ERROR);
-                // todo log
+                log.error(ex.toString());
             }
         }
         return errors;
@@ -56,12 +66,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<UserOperationErrorCode> update(User user) {
+        log.info("User will be updated: " + user);
         if (user == null) {
-            throw new NullPointerException("user");
+            log.error("user argument is null");
+            throw new IllegalArgumentException("user is null");
         }
         // get user from db for change safety
         User existingUser = userDao.findOne(user.getId());
         if (existingUser == null) {
+            log.error("user not exists");
             throw new IllegalArgumentException("user not exists");
         }
         Set<UserOperationErrorCode> errors = new HashSet<>();
@@ -80,11 +93,13 @@ public class UserServiceImpl implements UserService {
         Set<UserOperationErrorCode> errors = new HashSet<>();
         if (newUser.getUserName() == null) {
             errors.add(UserOperationErrorCode.USERNAME_REQUIRED);
+            log.debug("username required!");
         }
         if (errors.isEmpty()) {
             if (existingUser == null || !newUser.getUserName().equals(existingUser.getUserName())) {
                 if (userDao.findUserByUserName(newUser.getUserName()) != null) {
                     errors.add(UserOperationErrorCode.USERNAME_EXISTS);
+                    log.debug("username exists!");
                 }
             }
         }
@@ -93,9 +108,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User delete(long userId) {
+        log.info("User with id " + userId + "  will be deleted");
         User user = userDao.findOne(userId);
         if (user != null) {
             userDao.delete(user);
+        }else{
+            log.debug("User is not exist!");
         }
         return user;
     }

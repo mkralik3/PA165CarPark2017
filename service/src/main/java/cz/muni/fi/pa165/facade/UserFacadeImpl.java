@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /*
@@ -18,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserFacadeImpl implements UserFacade{
+
+    private final Logger log = LoggerFactory.getLogger(UserFacadeImpl.class);
+
     @Inject
     private UserService userService;
     @Inject
@@ -41,7 +47,7 @@ public class UserFacadeImpl implements UserFacade{
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -64,7 +70,7 @@ public class UserFacadeImpl implements UserFacade{
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -87,7 +93,7 @@ public class UserFacadeImpl implements UserFacade{
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -99,7 +105,7 @@ public class UserFacadeImpl implements UserFacade{
             User deletedUser = userService.delete(userId);
             result.setIsSuccess(deletedUser != null);
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -115,7 +121,7 @@ public class UserFacadeImpl implements UserFacade{
                 });
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -129,7 +135,7 @@ public class UserFacadeImpl implements UserFacade{
                 result = beanMappingService.mapTo(user, UserDTO.class);
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }

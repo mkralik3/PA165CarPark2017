@@ -16,12 +16,19 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
+
+import cz.muni.fi.pa165.service.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
+
+    private final Logger log = LoggerFactory.getLogger(RegionalBranchFacadeImpl.class);
+
     @Inject
     private RegionalBranchService branchService;
 
@@ -46,7 +53,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(RegionalBranchOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -69,7 +76,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(RegionalBranchOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -81,7 +88,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
             RegionalBranch deletedBranch = branchService.delete(regionalBranchId);
             result.setIsSuccess(deletedBranch != null);
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -104,7 +111,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(RegionalBranchOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -127,7 +134,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
             });
         } catch (Exception ex) {
             result.getErrorCodes().add(RegionalBranchOperationErrorCode.UNKNOWN_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return result;
     }
@@ -143,7 +150,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
                 });
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;  
     }
@@ -157,7 +164,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
                 result = beanMappingService.mapTo(branch, RegionalBranchDTO.class);
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result;
 	}
@@ -174,7 +181,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
                 });
             }
         } catch (Exception ex) {
-            // todo log
+            log.error(ex.toString());
         }
         return result; 
 	}

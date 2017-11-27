@@ -65,5 +65,43 @@ public class CarReservationRequestDTO {
     public void setState(CarReservationRequestState state) {
         this.state = state;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (!(o instanceof CarReservationRequestDTO)) return false;
 
+        CarReservationRequestDTO that = (CarReservationRequestDTO) o;
+
+        if (getCar() != null ? !getCar().equals(that.getCar()) : that.getCar() != null) return false;
+        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
+        if (getReservationStartDate() != null ? !getReservationStartDate().equals(that.getReservationStartDate()) : that.getReservationStartDate() != null)
+            return false;
+        if (getReservationEndDate() != null ? !getReservationEndDate().equals(that.getReservationEndDate()) : that.getReservationEndDate() != null)
+            return false;
+        return getState() == that.getState();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCar() != null ? getCar().hashCode() : 0;
+        result = 31 * result + (getUser() != null ? getUser().hashCode() : 0);
+        result = 31 * result + (getReservationStartDate() != null ? getReservationStartDate().hashCode() : 0);
+        result = 31 * result + (getReservationEndDate() != null ? getReservationEndDate().hashCode() : 0);
+        result = 31 * result + (getState() != null ? getState().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CarReservationRequest{" +
+                "id=" + id +
+                ", car=" + car +
+                ", user=" + user +
+                ", reservationStartDate=" + reservationStartDate +
+                ", reservationEndDate=" + reservationEndDate +
+                ", state=" + state +
+                '}';
+    }
 }

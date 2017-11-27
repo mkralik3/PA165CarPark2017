@@ -16,3 +16,5 @@ target/
 *.jar
 *.war
 *.ear
+
+test-output/

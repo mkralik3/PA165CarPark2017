@@ -15,6 +15,8 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RegionalBranchServiceImpl implements RegionalBranchService {
+
+    private final Logger log = LoggerFactory.getLogger(RegionalBranchServiceImpl.class);
 
     @Inject
     private RegionalBranchDAO regionalBranchDao;
@@ -39,7 +43,9 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
     
     @Override
     public Set<RegionalBranchOperationErrorCode> create(RegionalBranch regionalBranch) {
+        log.info("Regional branch will be created: " + regionalBranch);
         if (regionalBranch == null) {
+            log.error("regionalBranch argument is null");
             throw new IllegalArgumentException("regional branch is null");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
@@ -49,18 +55,21 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
             regionalBranchDao.save(regionalBranch);
         }catch (DataAccessException ex) {
             errors.add(RegionalBranchOperationErrorCode.DATABASE_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return errors;
     }
 
     @Override
     public Set<RegionalBranchOperationErrorCode> update(RegionalBranch regionalBranch) {
-    	if (regionalBranch == null) {
+        log.info("Regional branch will be updated: " + regionalBranch);
+        if (regionalBranch == null) {
+            log.error("regionalBranch argument is null");
             throw new IllegalArgumentException("regional branch is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranch.getId());
         if (existingBranch == null) {
+            log.error("regionalBranch doesn't exist");
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
@@ -69,13 +78,14 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
             regionalBranchDao.save(regionalBranch);
         }catch (DataAccessException ex) {
             errors.add(RegionalBranchOperationErrorCode.DATABASE_ERROR);
-            // todo log
+            log.error(ex.toString());
         }
         return errors;
     }
 
     @Override
     public RegionalBranch delete(long id) {
+        log.info("Regional branch with id " + id + "  will be deleted");
         regionalBranchDao.delete(id);
         RegionalBranch branch = regionalBranchDao.findOne(id);
         if (branch != null) {
@@ -88,7 +98,8 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         		}
         	}
         	regionalBranchDao.delete(branch);
-        	//TODO log
+        }else{
+            log.debug("Regional branch is not exist!");
         }
         return branch;
     }
@@ -105,48 +116,55 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
 
 	@Override
 	public Set<RegionalBranchOperationErrorCode> assignUser(long regionalBranchId, User user) {
-		if (user == null) {
+        log.info("User " + user + " will be assign to the branch with id " + regionalBranchId);
+        if (user == null) {
+            log.error("user argument is null");
             throw new IllegalArgumentException("user is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranchId);
         if (existingBranch == null) {
+            log.error("regionalBranch doesn't exist");
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
 		User findedUser = userDao.findOne(user.getId());
 		if(findedUser == null){
 	        errors.add(RegionalBranchOperationErrorCode.USER_DOESNT_EXIST);
-	        //todo log
+            log.debug("user doesn't exist! User: " + user);
 		}else{
 			if(findedUser.getRegionalBranch()!=null){ //remove from old branch
-				RegionalBranch old = findedUser.getRegionalBranch();
+                log.debug("User must be reassigned");
+                RegionalBranch old = findedUser.getRegionalBranch();
 				old.getEmployees().remove(findedUser);
 				this.update(old);
 			}
 			existingBranch.addEmployee(findedUser);
 			errors.addAll(this.update(existingBranch));
-			//todo log
 		}
 		return errors;
 	}
 
 	@Override
 	public Set<RegionalBranchOperationErrorCode> assignCar(long regionalBranchId, Car car) {
-		if (car == null) {
+        log.info("Car " + car + " will be assign to the branch with id " + regionalBranchId);
+        if (car == null) {
+            log.error("car argument is null");
             throw new IllegalArgumentException("car is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranchId);
         if (existingBranch == null) {
+            log.error("regionalBranch doesn't exist");
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
 		Car foundCar = carDao.findOne(car.getId());
 		if(foundCar == null){
                     errors.add(RegionalBranchOperationErrorCode.CAR_DOESNT_EXIST);
-	        //todo log
-		}else{
+            log.debug("car doesn't exist! Car: " + car);
+        }else{
 			if(foundCar.getRegionalBranch()!=null){ //remove from old branch
-				RegionalBranch old = foundCar.getRegionalBranch();
+                log.debug("Car must be reassigned");
+                RegionalBranch old = foundCar.getRegionalBranch();
 				if(old.getEmployees().remove(foundCar)){
 					errors.addAll(this.update(old));
 				}else{
@@ -155,7 +173,6 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
 			}
 			existingBranch.addCar(foundCar);
 			errors.addAll(this.update(existingBranch));
-			//todo log
 		}
 		return errors;
 	}

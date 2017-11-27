@@ -7,7 +7,6 @@ import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import cz.muni.fi.pa165.enums.UserType;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 
 /**

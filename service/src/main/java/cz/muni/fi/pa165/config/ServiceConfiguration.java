@@ -20,7 +20,7 @@ public class ServiceConfiguration {
     @Bean
     public Mapper dozer(){
         // currently mapping is being done only by properties name, type conversion is applied if necessary
-        List<String> mappingFiles = new ArrayList();
+        List<String> mappingFiles = new ArrayList<>();
         mappingFiles.add("dozerJdk8Converters.xml");
 
         DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();

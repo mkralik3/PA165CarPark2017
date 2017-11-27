@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * @author Matej Kralik, updated by Martin Miškeje
+ * @author Matej Kralik, updated by Martin Miï¿½keje
  */
 @Entity
 public class Car {
@@ -97,5 +97,18 @@ public class Car {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getCreationDate() != null ? getCreationDate().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", creationDate=" + creationDate +
+                ", activationDate=" + activationDate +
+                ", modificationDate=" + modificationDate +
+                ", regionalBranchId=" + ((regionalBranch == null) ? null :regionalBranch.getId()) + //due to StackOverflowError because reginalBranch has car class
+                ", regionalBranchName=" + ((regionalBranch == null) ? null :regionalBranch.getName()) + //due to StackOverflowError because reginalBranch has car class
+                '}';
     }
 }
