@@ -116,8 +116,8 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
         assertThat(branch2.getId()).isGreaterThan(0);
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
-    public void createNullBranch() throws NullPointerException{
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void createNullBranch() throws IllegalArgumentException{
         branchService.create(null);
     }
     
@@ -128,12 +128,12 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
         assertThat(branch1.getName()).isEqualTo("UpdatedName");
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void updateNullBranch() throws IllegalArgumentException{
         branchService.update(null);
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void deleteNonExistingUser(){
         branchService.delete(-1L);
     }
