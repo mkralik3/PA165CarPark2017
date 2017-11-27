@@ -8,24 +8,51 @@ import java.util.List;
 @author Martin Miškeje
 */
 public interface UserFacade {
+
+    /**
+     * Register user
+     * @param user user which will be registered
+     * @param password user's password
+     * @return operation with data
+     * @throws IllegalArgumentException if user is null
+     */
     UserOperationResult registerUser(UserDTO user, String password);
 
+    /**
+     * Change password for particular user
+     * @param user user which will be updated
+     * @param oldPassword old password
+     * @param newPassword new password
+     * @return operation with data
+     * @throws IllegalArgumentException if user is null or it is not exist
+     */
     UserOperationResult changePassword(UserDTO user, String oldPassword, String newPassword);
 
-    /*
-    Activation/deactivation will be through this method
-    */
+    /**
+     * Update user
+     * @param user user which will be updated
+     * @return operation with data
+     * @throws IllegalArgumentException if user is null or it is not exist
+     */
     UserOperationResult updateUser(UserDTO user);
 
-    /*
-    Returns isSuccess = true if found and deleted, otherwise false
-    */
+    /**
+     * Delete user
+     * @param userId id of user
+     * @return simple result (isSuccess = true if found and deleted, otherwise false)
+     */
     SimpleResult deleteUser(long userId);
 
+    /**
+     * Find all users
+     * @return all users
+     */
     List<UserDTO> findAllUsers();
 
-    /*
-    Returns user if exists, otherwise null
-    */
+    /**
+     * Find particular user
+     * @param userName userName of the user
+     * @return particular user
+     */
     UserDTO findUserByUserName(String userName);
 }

@@ -2,7 +2,6 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.CarDAO;
 import cz.muni.fi.pa165.entity.Car;
-import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.service.enums.CarOperationErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ public class CarServiceImpl implements CarService{
         log.info("Car will be created: " + car);
         if (car == null) {
             log.error("car argument is null");
-            throw new IllegalArgumentException("car is null");
+            throw new IllegalArgumentException("car argument is null");
         }
         Set<CarOperationErrorCode> errors = new HashSet<>();
         car.setActivationDate(timeService.getCurrentTime());
@@ -50,12 +49,12 @@ public class CarServiceImpl implements CarService{
         log.info("Car will be created: " + car);
         if (car == null) {
             log.error("car argument is null");
-            throw new IllegalArgumentException("car is null");
+            throw new IllegalArgumentException("car argument is null");
         }
         Car existingCar = carDAO.findOne(car.getId());
         if (existingCar == null) {
             log.error("car doesn't exist");
-            throw new IllegalArgumentException("car doesn't exist");
+            throw new IllegalArgumentException("car argument doesn't exist");
         }
         Set<CarOperationErrorCode> errors = new HashSet<>();
         car.setModificationDate(timeService.getCurrentTime());

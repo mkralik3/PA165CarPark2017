@@ -46,7 +46,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         log.info("Regional branch will be created: " + regionalBranch);
         if (regionalBranch == null) {
             log.error("regionalBranch argument is null");
-            throw new IllegalArgumentException("regional branch is null");
+            throw new IllegalArgumentException("regionalBranch argument is null");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
         regionalBranch.setCreationDate(timeService.getCurrentTime());
@@ -65,7 +65,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         log.info("Regional branch will be updated: " + regionalBranch);
         if (regionalBranch == null) {
             log.error("regionalBranch argument is null");
-            throw new IllegalArgumentException("regional branch is null");
+            throw new IllegalArgumentException("regionalBranch argument is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranch.getId());
         if (existingBranch == null) {
@@ -119,7 +119,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         log.info("User " + user + " will be assign to the branch with id " + regionalBranchId);
         if (user == null) {
             log.error("user argument is null");
-            throw new IllegalArgumentException("user is null");
+            throw new IllegalArgumentException("user argument is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranchId);
         if (existingBranch == null) {
@@ -135,8 +135,11 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
 			if(findedUser.getRegionalBranch()!=null){ //remove from old branch
                 log.debug("User must be reassigned");
                 RegionalBranch old = findedUser.getRegionalBranch();
-				old.getEmployees().remove(findedUser);
-				this.update(old);
+				if(old.getEmployees().remove(findedUser)){
+                    errors.addAll(this.update(old));
+                }else{
+				    throw new IllegalStateException("User has set branch but it was not in the branch as employee");
+                }
 			}
 			existingBranch.addEmployee(findedUser);
 			errors.addAll(this.update(existingBranch));
@@ -149,7 +152,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         log.info("Car " + car + " will be assign to the branch with id " + regionalBranchId);
         if (car == null) {
             log.error("car argument is null");
-            throw new IllegalArgumentException("car is null");
+            throw new IllegalArgumentException("car argument is null");
         }
     	RegionalBranch existingBranch = regionalBranchDao.findOne(regionalBranchId);
         if (existingBranch == null) {
@@ -165,11 +168,11 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
 			if(foundCar.getRegionalBranch()!=null){ //remove from old branch
                 log.debug("Car must be reassigned");
                 RegionalBranch old = foundCar.getRegionalBranch();
-				if(old.getEmployees().remove(foundCar)){
-					errors.addAll(this.update(old));
-				}else{
-					
-				}
+				if(old.getCars().remove(foundCar)){
+                    errors.addAll(this.update(old));
+                }else{
+                    throw new IllegalStateException("Car has set branch but it was not in the branch as employee");
+                }
 			}
 			existingBranch.addCar(foundCar);
 			errors.addAll(this.update(existingBranch));

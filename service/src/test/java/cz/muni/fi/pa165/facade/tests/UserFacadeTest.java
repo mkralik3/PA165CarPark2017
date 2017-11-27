@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -96,7 +95,8 @@ public class UserFacadeTest extends BaseFacadeTest {
     @Test
     public void testFindAllUsers(){
         when(userService.getAll()).thenReturn(Arrays.asList(user1, user2));
-        List<UserDTO> users = userFacade.findAllUsers();
+        
+        userFacade.findAllUsers();
 
         verify(userService).getAll();
         verify(beanMappingService).mapTo(user1, UserDTO.class);

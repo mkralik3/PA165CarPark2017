@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.hibernate.service.spi.ServiceException;
 import org.mockito.InjectMocks;
 import static org.mockito.Matchers.any;
 import org.mockito.Mock;
@@ -157,7 +156,7 @@ public class UserServiceTest extends BaseServiceTest {
         passwordSupport.validatePassword("newPassword", user1.getPassword());
     }
     
-    @Test(expectedExceptions = NullPointerException.class)
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void changePasswordForNullUser(){
         userService.changePassword(null, testPassword, "newPassword");
     }
