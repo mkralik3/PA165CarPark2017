@@ -60,7 +60,7 @@ public class UserServiceTest extends BaseServiceTest {
     private final String hashedPassword = passwordSupport.createHash(testPassword);
     
     @BeforeMethod
-    public void setup() throws ServiceException {
+    public void setup(){
         user1 = objectFactory.createUser(testUsername, UserType.USER);
         user1.setPassword(hashedPassword);
         user2 = objectFactory.createUser("sampleUser2", UserType.BRANCH_MANAGER);
@@ -107,7 +107,7 @@ public class UserServiceTest extends BaseServiceTest {
     
     
     @Test
-    public void findUser() throws IllegalArgumentException{
+    public void findUser(){
         User user = userService.findByUsername(testUsername);
         
         assertThat(user).isNotNull();
@@ -115,13 +115,13 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void findNonExistingUser() throws IllegalArgumentException{
+    public void findNonExistingUser(){
         User user = userService.findByUsername("nonexisting");
         assertThat(user).isNull();
     }
     
     @Test
-    public void createUser() throws IllegalArgumentException{
+    public void createUser(){
         Set<UserOperationErrorCode> errors = userService.create(user2, testPassword);
         
         assertThat(errors).isEmpty();
@@ -129,12 +129,12 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void createNullUser() throws NullPointerException{
+    public void createNullUser(){
         userService.create(null, "validPassword");
     }
     
     @Test
-    public void createUserWithNullPassword() throws IllegalArgumentException{
+    public void createUserWithNullPassword(){
         Set<UserOperationErrorCode> errors = userService.create(user1, null);
         
         assertThat(errors).isNotNull();
@@ -142,7 +142,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void createUserWithTooShortPassword() throws IllegalArgumentException{
+    public void createUserWithTooShortPassword(){
         Set<UserOperationErrorCode> errors = userService.create(user1, "a");
         
         assertThat(errors).isNotNull();
@@ -150,7 +150,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void changePassword() throws IllegalArgumentException{
+    public void changePassword(){
         Set<UserOperationErrorCode> errors = userService.changePassword(user1, testPassword, "newPassword");
         
         assertThat(errors).isEmpty();
@@ -158,12 +158,12 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test(expectedExceptions = NullPointerException.class)
-    public void changePasswordForNullUser() throws NullPointerException{
+    public void changePasswordForNullUser(){
         userService.changePassword(null, testPassword, "newPassword");
     }
     
     @Test
-    public void changePasswordToNull() throws IllegalArgumentException{
+    public void changePasswordToNull(){
         Set<UserOperationErrorCode> errors = userService.changePassword(user1, testPassword, null);
         
         assertThat(errors).isNotNull();
@@ -171,7 +171,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void changePasswordFromNull() throws IllegalArgumentException{
+    public void changePasswordFromNull(){
         Set<UserOperationErrorCode> errors = userService.changePassword(user1, null, "newPassword");
         
         assertThat(errors).isNotNull();
@@ -179,7 +179,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void changePasswordToTooShortPassword() throws IllegalArgumentException{
+    public void changePasswordToTooShortPassword(){
         Set<UserOperationErrorCode> errors = userService.changePassword(user1, testPassword, "a");
         
         assertThat(errors).isNotNull();
@@ -187,7 +187,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void changePasswordInvalidOldPassword() throws IllegalArgumentException{
+    public void changePasswordInvalidOldPassword(){
         Set<UserOperationErrorCode> errors = userService.changePassword(user1, "invalid", "testPassword");
         
         assertThat(errors).isNotNull();
@@ -203,14 +203,14 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void updateUser() throws IllegalArgumentException{
+    public void updateUser(){
         user1.setUserName("UpdatedName");
         userService.update(user1);
         assertThat(user1.getUserName()).isEqualTo("UpdatedName");
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void updateNullUser() throws NullPointerException{
+    public void updateNullUser(){
         userService.update(null);
     }
     
@@ -221,7 +221,7 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void deleteUser() throws IllegalArgumentException{
+    public void deleteUser(){
         User deletedUser = userService.delete(user1.getId());
         Mockito.verify(userDao, Mockito.times(1)).delete(user1);
         

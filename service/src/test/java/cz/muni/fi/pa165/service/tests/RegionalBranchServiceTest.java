@@ -63,7 +63,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     private final String testName = "testBranch";
     
     @BeforeMethod
-    public void setup() throws ServiceException {
+    public void setup(){
         branch1 = objectFactory.createRegionalBranch(testName);
         branch1.setId(Long.valueOf(1));
         branch2 = objectFactory.createRegionalBranch("testBranch2");
@@ -103,7 +103,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void findRegionalBranch() throws IllegalArgumentException{
+    public void findRegionalBranch(){
         RegionalBranch branch = branchService.findOne(1L);
         
         assertThat(branch).isNotNull();
@@ -111,13 +111,13 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void findNonExistingBranch() throws IllegalArgumentException{
+    public void findNonExistingBranch(){
         RegionalBranch branch = branchService.findOne(-1);
         assertThat(branch).isNull();
     }
     
     @Test
-    public void findAllBranches() {
+    public void findAllBranches(){
         List<RegionalBranch> branches = branchService.findAll();
         assertThat(branches).isNotNull();
         assertThat(branches.size()).isEqualTo(2);
@@ -125,25 +125,25 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void createBranch() throws IllegalArgumentException{
+    public void createBranch(){
         branchService.create(branch2);
         assertThat(branch2.getId()).isGreaterThan(0);
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void createNullBranch() throws IllegalArgumentException{
+    public void createNullBranch(){
         branchService.create(null);
     }
     
     @Test
-    public void updateBranch() throws IllegalArgumentException{
+    public void updateBranch(){
         branch1.setName("UpdatedName");
         branchService.update(branch1);
         assertThat(branch1.getName()).isEqualTo("UpdatedName");
     }
     
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void updateNullBranch() throws IllegalArgumentException{
+    public void updateNullBranch(){
         branchService.update(null);
     }
     
@@ -153,7 +153,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void deleteBranch() throws IllegalArgumentException{
+    public void deleteBranch(){
         RegionalBranch deletedBranch = branchService.delete(branch1.getId());
         Mockito.verify(regionalBranchDao, Mockito.times(1)).delete(branch1);
         
@@ -161,7 +161,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void assignUser() throws IllegalArgumentException{
+    public void assignUser(){
         User user = objectFactory.createUser("testUser", UserType.USER);
         user.setId(Long.valueOf(1));
         when(userDao.findOne(1L))
@@ -197,7 +197,7 @@ public class RegionalBranchServiceTest extends BaseServiceTest {
     }
     
     @Test
-    public void assignCar() throws IllegalArgumentException{
+    public void assignCar(){
         Car car = objectFactory.createCar("testCar");
         car.setId(Long.valueOf(1));
         when(carDao.findOne(1L))
