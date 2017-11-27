@@ -5,13 +5,18 @@
  */
 package cz.muni.fi.pa165.facade.tests;
 
+import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.dto.RegionalBranchDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
 import cz.muni.fi.pa165.dto.results.SimpleResult;
+import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.RegionalBranch;
+import cz.muni.fi.pa165.entity.User;
+import cz.muni.fi.pa165.enums.UserType;
 import cz.muni.fi.pa165.facade.RegionalBranchFacade;
 import cz.muni.fi.pa165.service.RegionalBranchService;
 import cz.muni.fi.pa165.tests.support.TestObjectFactory;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +49,7 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
     
     private final TestObjectFactory factory = new TestObjectFactory();
 
-    private String name = "testName";
+    private final String name = "testName";
 
     @BeforeMethod()
     public void setUp() throws Exception {
@@ -69,18 +74,19 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
 
         assertThat(branch1.getName()).isEqualTo(branches.get(0).getName());
         verify(branchService).findAll();
-        verify(beanMappingService).mapTo(branch1, UserDTO.class);
-        verify(beanMappingService).mapTo(branch2, UserDTO.class);
+        verify(beanMappingService).mapTo(branch1, RegionalBranchDTO.class);
+        verify(beanMappingService).mapTo(branch2, RegionalBranchDTO.class);
     }
     
     @Test
     public void testCreateBranch(){
         when(beanMappingService.mapTo(branchDTO, RegionalBranch.class)).thenReturn(branch1);
 
-        branchFacade.createRegionalBranch(branchDTO);
+        SimpleResult res = branchFacade.createRegionalBranch(branchDTO);
 
         verify(branchService).create(branch1);
         verify(beanMappingService).mapTo(branchDTO, RegionalBranch.class);
+        assertThat(res.getIsSuccess()).isEqualTo(true);
     }
     
     
@@ -101,10 +107,66 @@ public class RegionalBranchFacadeTest extends BaseFacadeTest {
     
     @Test
     public void testDeleteBranch(){
+        branch1.setId(Long.valueOf(1));
         when(branchService.delete(branchDTO.getId())).thenReturn(branch1);
         SimpleResult res = branchFacade.deleteRegionalBranch(branchDTO.getId());
 
         verify(branchService).delete(branch1.getId());
         assertThat(res.getIsSuccess()).isEqualTo(true);
+    }
+    
+    @Test
+    public void testAssignCar(){
+        CarDTO carDTO = new CarDTO();
+        Car car = factory.createCar("testCar");
+        branch1.setId(Long.valueOf(1));
+        when(beanMappingService.mapTo(carDTO, Car.class)).thenReturn(car);
+
+        branchFacade.assignCar(branch1.getId(), carDTO);
+
+        verify(branchService).assignCar(branch1.getId(), car);
+        verify(beanMappingService).mapTo(carDTO, Car.class);
+    }
+    
+    @Test
+    public void testAssignUser(){
+        UserDTO userDTO = new UserDTO();
+        User user = factory.createUser("testUser", UserType.USER);
+        branch1.setId(Long.valueOf(1));
+        when(beanMappingService.mapTo(userDTO, User.class)).thenReturn(user);
+
+        branchFacade.assignUser(branch1.getId(), userDTO);
+
+        verify(branchService).assignUser(branch1.getId(), user);
+        verify(beanMappingService).mapTo(userDTO, User.class);
+    }
+    
+    @Test
+    public void testFindAllAvailableCarsForDay(){
+        CarDTO availableCarDTO = new CarDTO();
+        availableCarDTO.setId(1L);
+        availableCarDTO.setName("testCar");
+        Car availableCar = factory.createCar("testCar");
+        CarDTO unavailableCarDTO = new CarDTO();
+        unavailableCarDTO.setId(2L);
+        unavailableCarDTO.setName("testCar2");
+        Car unavailableCar = factory.createCar("testCar2");
+        
+        LocalDateTime today = LocalDateTime.now();
+        
+        when(branchService.findAllAvailableCarsForBranch(branch1, today))
+                .thenReturn(Arrays.asList(availableCar));
+        
+        when(beanMappingService.mapTo(availableCar, CarDTO.class)).thenReturn(availableCarDTO);
+        when(beanMappingService.mapTo(unavailableCar, CarDTO.class)).thenReturn(unavailableCarDTO);
+        when(beanMappingService.mapTo(branchDTO, RegionalBranch.class)).thenReturn(branch1);
+
+        List<CarDTO> res = branchFacade.findAllAvailableCarsForBranch(branchDTO, today);
+        
+        verify(branchService).findAllAvailableCarsForBranch(branch1, today);
+        verify(beanMappingService).mapTo(branchDTO, RegionalBranch.class);
+        
+        assertThat(res).contains(availableCarDTO);
+        assertThat(res).doesNotContain(unavailableCarDTO);
     }
 }

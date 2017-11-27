@@ -140,20 +140,20 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
-		Car findedCar = carDao.findOne(car.getId());
-		if(findedCar == null){
-	        errors.add(RegionalBranchOperationErrorCode.CAR_DOESNT_EXIST);
+		Car foundCar = carDao.findOne(car.getId());
+		if(foundCar == null){
+                    errors.add(RegionalBranchOperationErrorCode.CAR_DOESNT_EXIST);
 	        //todo log
 		}else{
-			if(findedCar.getRegionalBranch()!=null){ //remove from old branch
-				RegionalBranch old = findedCar.getRegionalBranch();
-				if(old.getEmployees().remove(findedCar)){
+			if(foundCar.getRegionalBranch()!=null){ //remove from old branch
+				RegionalBranch old = foundCar.getRegionalBranch();
+				if(old.getEmployees().remove(foundCar)){
 					errors.addAll(this.update(old));
 				}else{
 					
 				}
 			}
-			existingBranch.addCar(findedCar);
+			existingBranch.addCar(foundCar);
 			errors.addAll(this.update(existingBranch));
 			//todo log
 		}

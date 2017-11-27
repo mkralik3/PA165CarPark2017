@@ -57,7 +57,7 @@ public class RegionalBranchFacadeImpl implements RegionalBranchFacade {
         try {
             RegionalBranch branchToUpdate = beanMappingService.mapTo(branch, RegionalBranch.class);
             Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
-            branchService.create(branchToUpdate).forEach((x) -> {
+            branchService.update(branchToUpdate).forEach((x) -> {
                 errors.add(beanMappingService.mapEnumTo(x, RegionalBranchOperationErrorCode.class));
             });
             if (errors.isEmpty()) {
