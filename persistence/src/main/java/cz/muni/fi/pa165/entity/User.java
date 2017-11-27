@@ -1,8 +1,6 @@
 package cz.muni.fi.pa165.entity;
 
 import cz.muni.fi.pa165.enums.UserType;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
- * @author Matej Kralik, updated by Martin Miškeje
+ * @author Matej Kralik, updated by Martin Miï¿½keje
  */
 
 @Entity
