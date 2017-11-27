@@ -35,7 +35,7 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         log.info("arReservation will be created: " + request);
         if (request == null) {
             log.error("request argument is null");
-            throw new IllegalArgumentException("request is null");
+            throw new IllegalArgumentException("request argument is null");
         }
         Set<CarReservationRequestOperationErrorCode> errors = new HashSet<>();
         errors.addAll(validateInput(request, null));
@@ -59,13 +59,13 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         log.info("CarReservation will be updated: " + request);
         if (request == null) {
             log.error("request argument is null");
-            throw new IllegalArgumentException("request is null");
+            throw new IllegalArgumentException("request argument is null");
         }
         // get user from db for change safety
         CarReservationRequest existing = requestsDao.findOne(request.getId());
         if (existing == null) {
             log.error("request not exists");
-            throw new IllegalArgumentException("request not exists");
+            throw new IllegalArgumentException("request argument not exists");
         }
         Set<CarReservationRequestOperationErrorCode> errors = new HashSet<>();
         errors.addAll(validateInput(request, existing));

@@ -2,7 +2,6 @@ package cz.muni.fi.pa165.service;
 
 import cz.muni.fi.pa165.dao.*;
 import cz.muni.fi.pa165.entity.User;
-import cz.muni.fi.pa165.facade.CarReservationRequestFacadeImpl;
 import cz.muni.fi.pa165.service.enums.UserOperationErrorCode;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
         log.info("User will be created: " + user);
         if (user == null) {
             log.error("user argument is null");
-            throw new IllegalArgumentException("user is null");
+            throw new IllegalArgumentException("user argument is null");
         }
         Set<UserOperationErrorCode> errors = new HashSet<>();
         if (password == null) {
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService {
         log.info("User will be updated: " + user);
         if (user == null) {
             log.error("user argument is null");
-            throw new IllegalArgumentException("user is null");
+            throw new IllegalArgumentException("user argument is null");
         }
         // get user from db for change safety
         User existingUser = userDao.findOne(user.getId());
@@ -131,7 +130,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Set<UserOperationErrorCode> changePassword(User user, String oldPassword, String newPassword) {
         if (user == null) {
-            throw new NullPointerException("user");
+            throw new IllegalArgumentException("user argument is null");
         }
         // get user from db for change safety
         user = userDao.findOne(user.getId());

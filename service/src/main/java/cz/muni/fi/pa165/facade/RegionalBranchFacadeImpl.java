@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import cz.muni.fi.pa165.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
