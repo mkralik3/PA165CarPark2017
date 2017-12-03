@@ -27,7 +27,9 @@
     <modules>
         <module>api</module>
         <module>persistence</module>
+        <module>sample-data</module>
         <module>service</module>
+        <module>web</module>
     </modules>
 
     <dependencyManagement>

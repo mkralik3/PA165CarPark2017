@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>car-park-parent</artifactId>
+        <groupId>cz.fi.muni.pa165</groupId>
+        <version>2.0-milestone2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>car-park-sample</artifactId>
+    <name>Sample data</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cz.fi.muni.pa165</groupId>
+            <artifactId>car-park-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+
+</project>
