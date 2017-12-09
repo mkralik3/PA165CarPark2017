@@ -1,0 +1,31 @@
+﻿{
+  "ROOT": {
+    "PAGE_TITLE": "Car Park System",
+    "LOGGED_USER": "Logged user:",
+    "LOGGED_USER_BRANCH": "Branch: ",
+    "LOGOUT": "Logout",
+    "MENU": "Menu:"
+  },
+  "CARS": {
+    "PAGE_SUBTITLE": "Cars management"
+  },
+  "BRANCHES": {
+    "PAGE_SUBTITLE": "Branches management"
+  },
+  "LOGIN": {
+    "PAGE_SUBTITLE": "Login",
+    "USERNAME": "Username:",
+    "PASSWORD": "Password:",
+    "LOGON": "Log on",
+    "LOGIN_FAILED_SERVER_ERROR": "Login failed - server error, try later.",
+    "LOGIN_FAILED_NONAUTHENTICATED": "Wrong username or password, try again.",
+    "LOGIN_FAILED_LOCKED": "Login disabled from security reasons. Try later.",
+    "LOGIN_FAILED_DISABLED": "Login disabled from security reasons. Contact technical support.",
+    "LOGIN_FAILED_UNKNOWN": "Login failed - unknown error. Contact technical support."
+  },
+  "RESERVATIONS": {
+    "PAGE_SUBTITLE": "Reservations management",
+    "UNKNOWN_ERROR": "An unknown error occured.",
+    "UNKNOWN_SERVER_ERROR": "A server error occured. Try later."
+  }
+}

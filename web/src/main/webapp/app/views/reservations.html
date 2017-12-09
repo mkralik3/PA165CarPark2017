@@ -1,0 +1,90 @@
+﻿<div class="container-fluid h-100">
+    <div class="row align-items-center" style="min-height: 3em">
+        <div class="col">
+            <!-- here may be some filtering -->
+        </div>
+    </div>
+    <div class="row h-100">
+        <div class="col">
+            <div id="reservations_calendar"></div>
+        </div>
+        <div class="col-2" style="min-width:150px; border-left: solid 1px #d0d0d0;">
+            <div class="container-fluid command-menu">
+                <h3>General actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.showNewReservationDialog($event)">Create new reservation</li>
+                </ul>
+            </div>
+            <br />
+            <br />
+            <div class="container-fluid command-menu" ng-show="viewModel.selectedEvent != null">
+                <h3>Selected item actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.deleteSelectedReservation()">Delete reservation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="visibility: collapse">
+    <div class="md-dialog-container" id="newReservationDialog">
+        <md-dialog layout-padding style="min-width:350px">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>New reservation</h2>
+                        <span flex></span>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content layout="column">
+                    <md-content layout-padding >
+                        <div>
+                            <form name="newReservationDialogFrom">
+                                <md-input-container class="md-block">
+                                    <label>Car</label>
+                                    <md-select ng-model="viewModel.newReservation.car"  required>
+                                        <md-option ng-repeat="car in viewModel.cars" ng-value="car" >
+                                            {{car.name}}
+                                        </md-option>
+                                    </md-select>
+                                    <div ng-messages="viewModel.newReservation.car.$error" multiple md-auto-hide="true">
+                                        <div ng-message="required">
+                                            Car is required.
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <div layout-gt-sm="row">
+                                    <md-input-container>
+                                        <label>Start date</label>
+                                        <md-datepicker ng-model="viewModel.newReservation.startDate" required></md-datepicker>
+                                        <div ng-messages="viewModel.newReservation.startDate.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                Start date is required.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <md-input-container>
+                                        <label>End date</label>
+                                        <md-datepicker ng-model="viewModel.newReservation.endDate" required></md-datepicker>
+                                        <div ng-messages="viewModel.newReservation.endDate.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                End date is required.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </form>
+                        </div>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary" ng-click="actions.createNewReservation()" ng-disabled="newReservationDialogFrom.$invalid">
+                        Create
+                    </md-button>
+                    <md-button ng-click="actions.cancelNewReservation()">
+                        Cancel
+                    </md-button>
+                </md-dialog-actions>
+        </md-dialog>
+    </div>
+</div>
