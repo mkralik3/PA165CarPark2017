@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular-route.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+
+    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/controllers.js" type="text/javascript"></script>
+    <script src="js/services.js" type="text/javascript"></script>
+</head>
+
+<body ng-app="carPark">
+
+<div class="container">
+    <nav class="navbar navbar-light bg-faded" style="margin: 20px 0px 20px;">
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header"
+                aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-toggleable-xs" id="navbar-header">
+            <a class="navbar-brand" href="#!/home.html">Car park</a>
+
+
+            <div id="navbar" class="nav nav-pills float-xs-right">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#!/car">Cars</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" a href="https://github.com/marmiskeje/PA165CarPark2017"
+                           target="_blank">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jumbotron" style="background-color:#f7f7f9">
+        <div class="row">
+            <div ng-view/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
