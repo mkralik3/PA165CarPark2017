@@ -1,0 +1,28 @@
+﻿html, body {
+    height: 100%;
+}
+
+.decent-bottom-space {
+    margin-bottom: 5px;
+}
+
+.webpage-header {
+    min-height: 3em;
+    border-bottom: solid 1px #d0d0d0;
+}
+
+.webpage-menu {
+    border-right: solid 1px #d0d0d0;
+    min-width: 150px;
+}
+
+.webpage-maincontent {
+    margin: 20px 10px 20px 10px;
+}
+
+.command-menu ul li {
+    cursor: pointer;
+}
+.command-menu ul li:hover {
+    text-decoration: underline;
+}

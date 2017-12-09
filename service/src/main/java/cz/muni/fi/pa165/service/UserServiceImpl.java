@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
                 user.setCreationDate(timeService.getCurrentTime());
                 user.setModificationDate(timeService.getCurrentTime());
                 userDao.save(user);
-                user.setPassword(null);
+                //user.setPassword(null);
             } catch (DataAccessException ex) {
                 errors.add(UserOperationErrorCode.DATABASE_ERROR);
                 log.error(ex.toString());
