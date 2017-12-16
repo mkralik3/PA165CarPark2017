@@ -10,7 +10,7 @@
             <div id="branches_list">
                 <div ng-model="viewModel.branches" required/>
                 <ul>
-                    <li ng-repeat="branch in viewModel.branches" ng-click="updateEventColor(branch, branch.color)">{{branch.name}}</li>
+                    <li ng-repeat="branch in viewModel.branches" ng-click="setSelected(branch)">{{branch.name}}</li>
                 </ul>
             </div>
         </div>
@@ -23,7 +23,7 @@
             </div>
             <br />
             <br />
-            <div class="container-fluid command-menu" ng-show="viewModel.selectedEvent != null">
+            <div class="container-fluid command-menu" ng-show="viewModel.selectedItem != null">
                 <h3>Selected item actions:</h3>
                 <ul class="nav navbar-nav">
                     <li ng-click="actions.deleteSelectedRegionalBranch()">Remove existing branch</li>

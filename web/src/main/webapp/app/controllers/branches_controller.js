@@ -186,10 +186,15 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
 
     $scope.actions = new Object();
     $scope.actions.deleteSelectedRegionalBranch = function () {
-        if ($scope.viewModel.selectedEvent != null) {
-            var selectedEvent = $scope.viewModel.selectedEvent;
-            //$scope.calendarElement.fullCalendar('removeEvents', selectedEvent.id);
-            $scope.viewModel.selectedEvent = null;
+        if ($scope.viewModel.selectedItem != null) {
+            var selectedEvent = $scope.viewModel.selectedItem;
+            var selectedHashKey = $scope.viewModel.selectedItem.$$hashKey;
+            for(var i = 0; i < $scope.viewModel.branches.length; i++) {
+                if ($scope.viewModel.branches[i].$$hashKey === selectedHashKey) {
+                    $scope.viewModel.branches.splice(i, 1);
+                }
+            }
+            $scope.viewModel.selectedItem = null;
         }
     };
     
@@ -213,15 +218,10 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
     };
     
     $scope.actions.addBranch = function () {
-        /*$scope.manager = null;
-        angular.forEach($scope.viewModel.users, function(user){
-            if (!!user.selected) $scope.viewModel.manager = user;
-        })*/
         $scope.selectedCars = [];
         angular.forEach($scope.viewModel.cars, function(car){
             if (!!car.selected) $scope.selectedCars.push(car.name);
         })
-        //$scope.viewModel.addBranch.name = 
         $mdDialog.cancel();
     }
     $scope.actions.cancelAddBranch = function () {
@@ -229,7 +229,7 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
     }
     
     $scope.setSelected = function(item) {
-        $scope.viewModel.selectedEvent = item;
+        $scope.viewModel.selectedItem = item;
     }
     
     $rootScope.pageSubtitle = "BRANCHES.PAGE_SUBTITLE";
@@ -240,8 +240,7 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
     $scope.viewModel.users = [];
     $scope.viewModel.cars = [];
     $scope.viewModel.manager = null;
-    $scope.viewModel.selectedEvent = null;
-    $scope.viewModel.selected = null;
+    $scope.viewModel.selectedItem = null;
     $scope.viewModel.addBranch = null;
     initList();
 }
