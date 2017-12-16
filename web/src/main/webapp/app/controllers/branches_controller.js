@@ -23,6 +23,52 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
             $scope.viewModel.selectedEvent = null;
             notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
         });
+        var requestUsers = new Web.Data.GetUsersRequest();
+        branchesService.getAllUsers(requestUsers, function (httpResponse) {
+            var response = httpResponse.data;
+            if (response !== null) {
+                var data = response.data;
+                if (response.isSuccess && data !== null) {
+                    $scope.viewModel.users = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var toAdd = contractConverter.convertUserToViewModel(data[i]);
+                        $scope.viewModel.users.push(toAdd);
+                    }
+                } else {
+                    notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
+                }
+            } else {
+                notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
+            }
+            $scope.viewModel.selectedEvent = null;
+            $scope.$digest();
+        }, function (httpResponse) {
+            $scope.viewModel.selectedEvent = null;
+            notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
+        });
+        var request = new Web.Data.GetCarsRequest();
+            carService.getCars(request, function (httpResponse) {
+                var response = httpResponse.data;
+                if (response != null) {
+                    var data = response.data;
+                    if (response.isSuccess && data != null) {
+                        $scope.viewModel.cars = [];
+                        var cars = []
+                        for (var i = 0; i < data.length; i++) {
+                            var toAdd = contractConverter.convertCarToViewModel(data[i]);
+                            $scope.viewModel.cars.push(toAdd);
+                        }
+                        //callback(cars);
+                    } else {
+                        notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
+                    }
+                } else {
+                    notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
+                }
+                $scope.$digest();
+            }, function (httpResponse) {
+                notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
+        });
         //$scope.calendarElement.fullCalendar('destroy');
         /*$scope.calendarElement.fullCalendar({
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
@@ -165,21 +211,37 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
             clickOutsideToClose: true
         });
     };
+    
     $scope.actions.addBranch = function () {
+        /*$scope.manager = null;
+        angular.forEach($scope.viewModel.users, function(user){
+            if (!!user.selected) $scope.viewModel.manager = user;
+        })*/
+        $scope.selectedCars = [];
+        angular.forEach($scope.viewModel.cars, function(car){
+            if (!!car.selected) $scope.selectedCars.push(car.name);
+        })
+        //$scope.viewModel.addBranch.name = 
         $mdDialog.cancel();
     }
     $scope.actions.cancelAddBranch = function () {
         $mdDialog.cancel();
     }
     
+    $scope.setSelected = function(item) {
+        $scope.viewModel.selectedEvent = item;
+    }
+    
     $rootScope.pageSubtitle = "BRANCHES.PAGE_SUBTITLE";
     $scope.branchesList = $('#branches_list');
     $scope.viewModel = new Web.ViewModels.BranchesViewModel();//new Object();
+    $scope.selectedCars = [];
     $scope.viewModel.branches = [];
     $scope.viewModel.users = [];
     $scope.viewModel.cars = [];
     $scope.viewModel.manager = null;
     $scope.viewModel.selectedEvent = null;
+    $scope.viewModel.selected = null;
     $scope.viewModel.addBranch = null;
     initList();
 }
