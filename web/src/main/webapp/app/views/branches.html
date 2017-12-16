@@ -8,7 +8,7 @@
     <div class="row h-100">
         <div class="col">
             <div id="branches_list">
-                <div ng-model="viewModel.newReservation.branches"  required/>
+                <div ng-model="viewModel.branches" required/>
                 <p ng-repeat="branch in viewModel.branches" ng-value="branch" >
                 {{branch.name}}
                 </p>
@@ -46,11 +46,10 @@
                         <div>
                             <form name="addBranchDialogFrom">
                                 <md-input-container class="md-block">
-                                    <label>Branch</label>
                                     <div layout-gt-sm="row">
                                         <md-input-container class="md-block">
                                             <label>Name</label>
-                                            <md-input ng-model="viewModel.addBranch.name" required></md-input>
+                                            <input type="text" ng-model="viewModel.addBranch.name" required></input>
                                             <div ng-messages="viewModel.addBranch.name.$error" multiple md-auto-hide="true">
                                                 <div ng-message="required">
                                                     Name is required.
@@ -58,39 +57,7 @@
                                             </div>
                                         </md-input-container>
                                     </div>
-                                    <!--<md-select ng-model="viewModel.newReservation.branches"  required>
-                                        <md-option ng-repeat="branch in viewModel.branches" ng-value="branch" >
-                                            {{branch.name}}
-                                        </md-option>
-                                    </md-select>
-                                    <div ng-messages="viewModel.newReservation.car.$error" multiple md-auto-hide="true">
-                                        <div ng-message="required">
-                                            Car is required.
-                                        </div>
-                                    </div>
                                 </md-input-container>
-                                <div layout-gt-sm="row">
-                                    <md-input-container>
-                                        <label>Start date</label>
-                                        <md-datepicker ng-model="viewModel.newReservation.startDate" required></md-datepicker>
-                                        <div ng-messages="viewModel.newReservation.startDate.$error" multiple md-auto-hide="true">
-                                            <div ng-message="required">
-                                                Start date is required.
-                                            </div>
-                                        </div>
-                                    </md-input-container>
-                                </div>
-                                <div layout-gt-sm="row">
-                                    <md-input-container>
-                                        <label>End date</label>
-                                        <md-datepicker ng-model="viewModel.newReservation.endDate" required></md-datepicker>
-                                        <div ng-messages="viewModel.newReservation.endDate.$error" multiple md-auto-hide="true">
-                                            <div ng-message="required">
-                                                End date is required.
-                                            </div>
-                                        </div>-->
-                                    </md-input-container>
-                                <!--</div>-->
                                 <md-input-container class="md-block">
                                     <label>Manager</label>
                                     <md-select ng-model="viewModel.users"  required>
@@ -100,7 +67,7 @@
                                     </md-select>
                                     <div ng-messages="viewModel.newReservation.car.$error" multiple md-auto-hide="true">
                                         <div ng-message="required">
-                                            User is required.
+                                            Manager is required.
                                         </div>
                                     </div>
                                 </md-input-container>

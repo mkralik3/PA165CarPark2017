@@ -1,7 +1,5 @@
-Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, notificationsService, contractConverter, settingsProvider, branchesService) {
+Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, notificationsService, contractConverter, settingsProvider, carService, branchesService) {
     var initList = function () {
-        //$scope.list.push(name);
-        //$scope.branchesList('destroy');
         var request = new Web.Data.GetBranchesRequest();
         branchesService.getBranches(request, function (httpResponse) {
             var response = httpResponse.data;
@@ -177,7 +175,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
     $rootScope.pageSubtitle = "BRANCHES.PAGE_SUBTITLE";
     $scope.branchesList = $('#branches_list');
     $scope.viewModel = new Web.ViewModels.BranchesViewModel();//new Object();
-    $scope.actions = new Object();
     $scope.viewModel.branches = [];
     $scope.viewModel.users = [];
     $scope.viewModel.cars = [];
