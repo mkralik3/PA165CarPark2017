@@ -1,0 +1,13 @@
+{
+    "elements": {
+        "md-dialog-content": {},
+        "md-dialog": {},
+        "md-toolbar": {},
+        "md-content": {}
+    },
+    "attributes": {
+        "flex": {
+            "context": "span"
+        }
+    }
+}

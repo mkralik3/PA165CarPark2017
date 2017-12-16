@@ -41,6 +41,7 @@ public class InitializerImpl implements Initializer {
         createCars();
         createBranches();
         createUsers(); //TODO missing password ??
+        createBranches();
         /*TODO add other data*/
     }
 
