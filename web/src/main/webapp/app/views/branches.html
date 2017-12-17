@@ -75,11 +75,13 @@
                                     </md-input-container>
                                 </div>
                                 <div layout-gt-sm="row">
-                                    <label style="padding: 0.2em" float="left">Cars</label>
+                                    <label style="padding: 0.2em" float="left">Cars:</label>
                                     <div ng-repeat="car in viewModel.cars">
+                                        <ul>
                                         <label for="chkCar_{{car.id}}">
                                         <input id="chkCar_{{car.id}}" type="checkbox" ng-model="vievModel.selected"/>
                                         {{car.name}}
+                                        </ul>
                                     </div>
                                 </div>
                             </form>

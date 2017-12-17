@@ -48,5 +48,16 @@ Web.Services.BranchesService = function ($http) {
             onSuccess(response);
         }, 0);
     }
+    
+    this.getAllCars = function() {
+        var urlBase = "http://localhost:8080/car-park-web/rest";
+        var urlCar = urlBase.concat("/car");
+
+        var dataFactory={};
+        dataFactory.getAllCars = function(success, error) {
+            return $http.get(urlCar).then(success, error);
+        };
+        return dataFactory;
+    }
 }
 Web.App.service('branchesService', ['$http', Web.Services.BranchesService]);

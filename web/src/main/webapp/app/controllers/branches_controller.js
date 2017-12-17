@@ -1,6 +1,7 @@
-Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, notificationsService, contractConverter, settingsProvider, carService, branchesService) {
+Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDialog, notificationsService, contractConverter, settingsProvider, carService, branchesService) {
     var initList = function () {
         var request = new Web.Data.GetBranchesRequest();
+        
         branchesService.getBranches(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
@@ -154,4 +155,4 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
     initList();
 }
 
-angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', Web.Controllers.BranchesController]);
+angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', Web.Controllers.BranchesController]);
