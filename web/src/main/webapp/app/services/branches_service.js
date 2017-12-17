@@ -11,18 +11,6 @@ Web.Services.BranchesService = function ($http) {
             toAdd.name = "Branch " + (i + 1);
             branches.push(toAdd);
         }
-        
-        /*var response = {};
-        response.data = new Web.Data.Get();
-        response.data.isSuccess = true;
-
-        var branches = [];
-        for (var i = 0; i < 5; i++) {
-            var toAdd = new Web.Data.Branch();
-            toAdd.id = i + 1;
-            toAdd.name = "Branch " + (i + 1);
-            branches.push(toAdd);
-        }*/
 
         response.data.data = branches;
         setTimeout(function () { // simulation of async api call
@@ -47,17 +35,6 @@ Web.Services.BranchesService = function ($http) {
         setTimeout(function () { 
             onSuccess(response);
         }, 0);
-    }
-    
-    this.getAllCars = function() {
-        var urlBase = "http://localhost:8080/car-park-web/rest";
-        var urlCar = urlBase.concat("/car");
-
-        var dataFactory={};
-        dataFactory.getAllCars = function(success, error) {
-            return $http.get(urlCar).then(success, error);
-        };
-        return dataFactory;
     }
 }
 Web.App.service('branchesService', ['$http', Web.Services.BranchesService]);
