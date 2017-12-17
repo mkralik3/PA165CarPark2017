@@ -71,8 +71,14 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         errors.addAll(validateInput(request, existing));
         if (errors.isEmpty()) {
             try {
-                request.setModificationDate(timeService.getCurrentTime());
-                requestsDao.save(request);
+                //change is permitted only for this properties:
+                existing.setUser(request.getUser());
+                existing.setCar(request.getCar());
+                existing.setReservationStartDate(request.getReservationStartDate());
+                existing.setReservationEndDate(request.getReservationEndDate());
+                existing.setState(request.getState());
+                existing.setModificationDate(timeService.getCurrentTime());
+                requestsDao.save(existing);
             }
             catch (DataAccessException ex) {
                 errors.add(CarReservationRequestOperationErrorCode.DATABASE_ERROR);

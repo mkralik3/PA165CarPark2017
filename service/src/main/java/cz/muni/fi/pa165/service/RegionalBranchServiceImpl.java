@@ -74,7 +74,7 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
         regionalBranch.setModificationDate(timeService.getCurrentTime());
-        try{
+        try{ //TODO use existing branch instead of input branch
             regionalBranchDao.save(regionalBranch);
         }catch (DataAccessException ex) {
             errors.add(RegionalBranchOperationErrorCode.DATABASE_ERROR);

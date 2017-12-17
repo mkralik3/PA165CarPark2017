@@ -57,9 +57,12 @@ public class CarServiceImpl implements CarService{
             throw new IllegalArgumentException("car argument doesn't exist");
         }
         Set<CarOperationErrorCode> errors = new HashSet<>();
-        car.setModificationDate(timeService.getCurrentTime());
         try{
-            carDAO.save(car);
+            //change is permitted only for this properties:
+            existingCar.setName(car.getName());
+            existingCar.setActivationDate(car.getActivationDate());
+            existingCar.setModificationDate(timeService.getCurrentTime());
+            carDAO.save(existingCar);
         }catch (DataAccessException ex) {
             errors.add(CarOperationErrorCode.DATABASE_ERROR);
             log.error(ex.toString());
