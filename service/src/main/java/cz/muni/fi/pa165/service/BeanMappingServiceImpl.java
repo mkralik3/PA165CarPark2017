@@ -52,7 +52,7 @@ public class BeanMappingServiceImpl implements BeanMappingService {
 		RegionalBranch result = new RegionalBranch();
         result.setId(input.getId());
         result.setName(input.getName());
-        result.setParent((input.getParent()==null ? null : this.mapTo(input.getParent(), RegionalBranch.class)));
+  //      result.setParent((input.getParent()==null ? null : this.mapTo(input.getParent(), RegionalBranch.class))); //TODO circular recursion
         result.setModificationDate(null);
         result.setCreationDate(null);
         input.getCars().forEach(item->
@@ -75,7 +75,7 @@ public class BeanMappingServiceImpl implements BeanMappingService {
 		RegionalBranchDTO result = new RegionalBranchDTO();
         result.setId(input.getId());
         result.setName(input.getName());
-        result.setParent((input.getParent()==null ? null : this.mapTo(input.getParent(), RegionalBranchDTO.class)));
+  //      result.setParent((input.getParent()==null ? null : this.mapTo(input.getParent(), RegionalBranchDTO.class))); //TODO circular recursion
         input.getCars().forEach(item->
         	result.addCar(this.mapTo(item, CarDTO.class))
         );
