@@ -6,5 +6,9 @@ import java.time.LocalDateTime;
 
 @Service
 public interface TimeService {
+    /**
+     * Get current time
+     * @return current time
+     */
     public LocalDateTime getCurrentTime();
 }

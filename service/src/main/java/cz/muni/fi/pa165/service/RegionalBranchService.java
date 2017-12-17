@@ -16,8 +16,20 @@ import java.util.Set;
  */
 public interface RegionalBranchService {
 
+    /**
+     * Create branch
+     * @param regionalBranch branch which will be created
+     * @return error codes if happen
+     * @throws IllegalArgumentException if branch is null
+     */
 	Set<RegionalBranchOperationErrorCode> create(RegionalBranch regionalBranch);
 
+    /**
+     * Update branch
+     * @param regionalBranch ranch which will be updated
+     * @return error codes if happen
+     * @throws IllegalArgumentException if branch is null or it is not exist
+     */
 	Set<RegionalBranchOperationErrorCode> update(RegionalBranch regionalBranch);
 
 	/**
@@ -51,8 +63,8 @@ public interface RegionalBranchService {
     
     /**
      * Find all available car for particular day in particular branch
-     * @param regionalBranch
-     * @param day
+     * @param regionalBranch - particular branch
+     * @param day - date
      * @return - all available car 
      */
     List<Car> findAllAvailableCarsForBranch(RegionalBranch regionalBranch, LocalDateTime day);

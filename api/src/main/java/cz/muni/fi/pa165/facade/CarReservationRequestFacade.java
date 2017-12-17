@@ -18,7 +18,7 @@ public interface CarReservationRequestFacade {
     CarReservationRequestOperationResult createCarReservationRequest(CarReservationRequestDTO reservation);
 
     /**
-     * Update car
+     * Update reservation
      * @param reservation reservation which will be updated
      * @return result of operation with data
      * @throws IllegalArgumentException if reservation is null or it is not exist
