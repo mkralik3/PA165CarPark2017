@@ -2,6 +2,18 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     var initList = function () {
         var request = new Web.Data.GetBranchesRequest();
         
+        var urlBase = "http://localhost:8080/car-park-web/rest";
+        var urlCar = urlBase.concat("/car");
+        $http.get(urlCar)
+            .then(function(response){ 
+                $scope.details = response.data; 
+        });
+        /*branchesService.getAllCars(
+            function (response) {
+                $scope.laboratories = response.data;
+        },
+        $rootScope.unsuccessfulResponse);*/
+        
         branchesService.getBranches(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
