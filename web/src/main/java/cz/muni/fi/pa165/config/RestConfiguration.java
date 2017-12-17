@@ -31,8 +31,8 @@ import java.util.Locale;
 
 @Configuration
 @EnableWebMvc
-@Import({ServiceConfiguration.class, SampleDataConfiguration.class})
-@ComponentScan(basePackageClasses = {CarController.class})
+@Import({SampleDataConfiguration.class})
+@ComponentScan(basePackages = {"cz.muni.fi.pa165.controllers"})
 public class RestConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
