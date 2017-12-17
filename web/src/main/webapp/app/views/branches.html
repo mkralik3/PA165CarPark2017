@@ -1,1 +1,100 @@
 ﻿Branches
+﻿<div class="container-fluid h-100">
+    <div class="row align-items-center" style="min-height: 3em">
+        <div class="col">
+            <!-- here may be some filtering -->
+        </div>
+    </div>
+    <div class="row h-100">
+        <div class="col">
+            <div id="branches_list">
+                <div ng-model="viewModel.branches" required/>
+                <ul>
+                    <li ng-repeat="branch in viewModel.branches" ng-click="setSelected(branch)">{{branch.name}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-2" style="min-width:150px; border-left: solid 1px #d0d0d0;">
+            <div class="container-fluid command-menu">
+                <h3>General actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.showAddBranchDialog($event)">Add new branch</li>
+                </ul>
+            </div>
+            <br />
+            <br />
+            <div class="container-fluid command-menu" ng-show="viewModel.selectedItem != null">
+                <h3>Selected item actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.deleteSelectedRegionalBranch()">Remove selected branch</li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.editSelectedBranch($event)">Edit selected branch</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="visibility: collapse">
+    <div class="md-dialog-container" id="addBranchDialog">
+        <md-dialog layout-padding style="min-width:350px">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add Regional Branch</h2>
+                        <span flex></span>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content layout="column">
+                    <md-content layout-padding >
+                        <div>
+                            <form name="addBranchDialogFrom">
+                                <md-input-container class="md-block">
+                                    <div layout-gt-sm="row">
+                                        <label>Name</label>
+                                        <input ng-model="viewModel.addBranch.name" required ng-value="viewModel.addBranch.name"></input>
+                                        <div ng-messages="viewModel.addBranch.name.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                Name is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block">
+                                        <label>Manager</label>
+                                        <md-select id="manager" ng-model="viewModel.manager" required>
+                                            <md-option ng-repeat="user in viewModel.users" ng-value="user" >
+                                                {{user.name}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="viewModel.manager.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                Manager is required.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <label style="padding: 0.2em" float="left">Cars:</label>
+                                    <div ng-repeat="car in viewModel.cars">
+                                        <ul>
+                                        <label for="chkCar_{{car.id}}">
+                                        <input id="chkCar_{{car.id}}" type="checkbox" ng-model="vievModel.selected"/>
+                                        {{car.name}}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary" ng-click="actions.addBranch()" ng-disabled="addBranchDialogFrom.$invalid">
+                        Create
+                    </md-button>
+                    <md-button ng-click="actions.cancelAddBranch()">
+                        Cancel
+                    </md-button>
+                </md-dialog-actions>
+        </md-dialog>
+    </div>
+</div>

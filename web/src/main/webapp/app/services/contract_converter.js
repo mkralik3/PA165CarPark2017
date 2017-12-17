@@ -45,5 +45,14 @@
         }
         return result;
     }
+    
+    this.convertBranchToViewModel = function (source) {
+        var result = new Web.ViewModels.BranchesViewModel();
+        if (source != null) {
+            result.id = source.id;
+            result.name = source.name;
+        }
+        return result;
+    }
 }
 Web.App.service('contractConverter', [Web.Services.ContractConverter]);

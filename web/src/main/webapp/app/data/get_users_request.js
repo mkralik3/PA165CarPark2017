@@ -1,0 +1,3 @@
+﻿Web.Data.GetUsersRequest = function () {
+
+}

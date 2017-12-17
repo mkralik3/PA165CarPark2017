@@ -82,7 +82,6 @@ public class InitializerImpl implements Initializer {
         CarReservationRequest first = this.createReservationRequest(audi, denis, currentTime, currentTime.plus(8, ChronoUnit.DAYS), CarReservationRequestState.CREATED);
         CarReservationRequest second = this.createReservationRequest(ford, pepa, currentTime, currentTime.plus(4, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
         CarReservationRequest third = this.createReservationRequest(volvo, franta, currentTime, currentTime.plus(40, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
-
     }
 
     private Car createCar(String name) {
