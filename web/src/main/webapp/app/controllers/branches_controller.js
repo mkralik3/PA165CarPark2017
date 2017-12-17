@@ -105,8 +105,34 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $mdDialog, no
         angular.forEach($scope.viewModel.cars, function(car){
             if (!!car.selected) $scope.selectedCars.push(car.name);
         })
+        $scope.viewModel.branches.push($scope.viewModel.addBranch);
+        $scope.viewModel.addBranch = null;
+        $scope.viewModel.manager = null;
         $mdDialog.cancel();
     }
+    
+    $scope.actions.editSelectedBranch = function (ev) {
+        //$scope.viewModel.manager = $scope.viewModel.selectedItem.manager;
+        //$scope.viewModel.cars = $scope.viewModel.selectedItem.cars;
+        $scope.viewModel.addBranch = $scope.viewModel.selectedItem;
+        $mdDialog.show({
+            contentElement: '#addBranchDialog',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        });
+        
+        
+        /*d$scope.selectedCars = [];
+        angular.forEach($scope.viewModel.cars, function(car){
+            if (!!car.selected) $scope.selectedCars.push(car.name);
+        })
+        $scope.viewModel.branches.push($scope.viewModel.addBranch);
+        $scope.viewModel.addBranch = null;
+        $scope.viewModel.manager = null;
+        $mdDialog.cancel();*/
+    }
+    
     $scope.actions.cancelAddBranch = function () {
         $mdDialog.cancel();
     }

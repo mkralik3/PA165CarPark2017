@@ -1,6 +1,8 @@
 ﻿Web.ViewModels.BranchesViewModel = function () {
     this.id = null;
     this.name = null;
+    this.manager = null;
+    this.cars = [];
 
     this.convertToEvent = function () {
         result = {};

@@ -26,7 +26,10 @@
             <div class="container-fluid command-menu" ng-show="viewModel.selectedItem != null">
                 <h3>Selected item actions:</h3>
                 <ul class="nav navbar-nav">
-                    <li ng-click="actions.deleteSelectedRegionalBranch()">Remove existing branch</li>
+                    <li ng-click="actions.deleteSelectedRegionalBranch()">Remove selected branch</li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.editSelectedBranch($event)">Edit selected branch</li>
                 </ul>
             </div>
         </div>
@@ -47,36 +50,38 @@
                             <form name="addBranchDialogFrom">
                                 <md-input-container class="md-block">
                                     <div layout-gt-sm="row">
-                                        <md-input-container class="md-block">
-                                            <label>Name</label>
-                                            <input type="text" ng-model="viewModel.addBranch.name" required></input>
-                                            <div ng-messages="viewModel.addBranch.name.$error" multiple md-auto-hide="true">
-                                                <div ng-message="required">
-                                                    Name is required.
-                                                </div>
+                                        <label>Name</label>
+                                        <input ng-model="viewModel.addBranch.name" required ng-value="viewModel.addBranch.name"></input>
+                                        <div ng-messages="viewModel.addBranch.name.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                Name is required.
                                             </div>
-                                        </md-input-container>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container class="md-block">
-                                    <label>Manager</label>
-                                    <md-select id="manager" ng-model="viewModel.manager" required placeholder="Select a branch manager">
-                                        <md-option ng-repeat="user in viewModel.users" ng-value="user" >
-                                            {{user.name}}
-                                        </md-option>
-                                    </md-select>
-                                    <div ng-messages="viewModel.manager.$error" multiple md-auto-hide="true">
-                                        <div ng-message="required">
-                                            Manager is required.
                                         </div>
                                     </div>
                                 </md-input-container>
-                                <label style="padding: 0.2em" float="left">Cars</label>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block">
+                                        <label>Manager</label>
+                                        <md-select id="manager" ng-model="viewModel.manager" required>
+                                            <md-option ng-repeat="user in viewModel.users" ng-value="user" >
+                                                {{user.name}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="viewModel.manager.$error" multiple md-auto-hide="true">
+                                            <div ng-message="required">
+                                                Manager is required.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout-gt-sm="row">
+                                    <label style="padding: 0.2em" float="left">Cars</label>
                                     <div ng-repeat="car in viewModel.cars">
                                         <label for="chkCar_{{car.id}}">
                                         <input id="chkCar_{{car.id}}" type="checkbox" ng-model="vievModel.selected"/>
                                         {{car.name}}
                                     </div>
+                                </div>
                             </form>
                         </div>
                 </md-dialog-content>
