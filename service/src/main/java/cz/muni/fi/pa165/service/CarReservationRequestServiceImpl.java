@@ -105,6 +105,16 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         return requestsDao.getAllForRegionalBranch(regionalBranchIds, dateFrom, dateTo);
     }
 
+    @Override
+    public List<CarReservationRequest> findAll() {
+        return requestsDao.findAll();
+    }
+
+    @Override
+    public CarReservationRequest findOne(long id) {
+        return requestsDao.findOne(id);
+    }
+
     private Set<CarReservationRequestOperationErrorCode> validateInput(CarReservationRequest newRequest, CarReservationRequest existingRequest){
         Set<CarReservationRequestOperationErrorCode> errors = new HashSet<>();
         if (newRequest.getCar() == null) {

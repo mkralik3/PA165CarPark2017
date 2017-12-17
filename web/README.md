@@ -17,6 +17,10 @@ data: {id: 1, name: "Audi A3"}
 
 #Reservation
 
+Get all reservations: curl -X GET http://localhost:8080/pa165/rest/reservation
+
+Find reservation by ID: curl -X GET http://localhost:8080/pa165/rest/reservation/1
+
 Create new reservation: curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation
 data: {
              "name": "reservation",

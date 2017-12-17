@@ -106,4 +106,33 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
         return result;
     }
 
+    @Override
+    public List<CarReservationRequestDTO> findAll() {
+        List<CarReservationRequestDTO> result = new ArrayList<>();
+        try {
+            List<CarReservationRequest> branches = reservationsService.findAll();
+            if (branches != null) {
+                branches.forEach((u) -> {
+                    result.add(beanMappingService.mapTo(u, CarReservationRequestDTO.class));
+                });
+            }
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public CarReservationRequestDTO findOne(long id) {
+        CarReservationRequestDTO result = null;
+        try {
+            CarReservationRequest branch = reservationsService.findOne(id);
+            if (branch != null) {
+                result = beanMappingService.mapTo(branch, CarReservationRequestDTO.class);
+            }
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return result;
+    }
 }

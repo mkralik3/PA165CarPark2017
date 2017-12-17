@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.controllers;
 
+import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.results.CarReservationRequestOperationResult;
 import cz.muni.fi.pa165.exceptions.ResourceNotFound;
@@ -23,6 +24,25 @@ public class CarReservationController {
 
     @Inject
     private CarReservationRequestFacade reservationRequestFacade;
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final List<CarReservationRequestDTO> getAllReservations(){
+        List<CarReservationRequestDTO> result = reservationRequestFacade.findAll();
+        if(result == null) {
+            result = Collections.emptyList();
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/{id}" , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final CarReservationRequestDTO getReservationById(@PathVariable("id") long id) {
+        CarReservationRequestDTO result = reservationRequestFacade.findOne(id);
+        if (result != null) {
+            return result;
+        } else {
+            throw new ResourceNotFound();
+        }
+    }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

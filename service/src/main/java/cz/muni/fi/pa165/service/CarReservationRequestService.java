@@ -15,4 +15,15 @@ public interface CarReservationRequestService {
     Set<CarReservationRequestOperationErrorCode> update(CarReservationRequest request);
     CarReservationRequest delete(long reservationRequestId);
     List<CarReservationRequest> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo);
+    /**
+     * Find all reservation
+     * @return all reservation
+     */
+    List<CarReservationRequest> findAll();
+
+    /**
+     * Find particular reservation
+     * @return particular reservation
+     */
+    CarReservationRequest findOne(long id);
 }
