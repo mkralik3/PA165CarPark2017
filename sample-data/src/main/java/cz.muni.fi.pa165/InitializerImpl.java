@@ -50,31 +50,33 @@ public class InitializerImpl implements Initializer {
         //create Users
         User admin = this.createUser("admin", "admin", UserType.ADMIN);
         User mato = this.createUser("Mato","testTest", UserType.BRANCH_MANAGER);
+        User standa = this.createUser("Standa", "testTest", UserType.BRANCH_MANAGER);
         User denis = this.createUser("Denis", "testTest", UserType.USER);
-        User tomas = this.createUser("Tomas", "testTest", UserType.BRANCH_MANAGER);
+        User tomas = this.createUser("Tomas", "testTest", UserType.USER);
         User pepa = this.createUser("Pepa", "testTest", UserType.USER);
         User franta = this.createUser("Franta", "testTest", UserType.USER);
-        User standa = this.createUser("Standa", "testTest", UserType.BRANCH_MANAGER);
         User maria = this.createUser("Maria", "testTest", UserType.USER);
 
         //create Branches
         List<Car> headquarterCars = new ArrayList<>();
-        headquarterCars.add(audi);
-        headquarterCars.add(bmw);
-        headquarterCars.add(volvo);
+
 
         List<User> headquartersEmployees = new ArrayList<>();
-        headquartersEmployees.add(mato);
-        headquartersEmployees.add(pepa);
-        headquartersEmployees.add(franta);
+
 
         List<Car> brnoCars = new ArrayList<>();
         brnoCars.add(skoda);
         brnoCars.add(ford);
+        brnoCars.add(audi);
+        brnoCars.add(bmw);
+        brnoCars.add(volvo);
 
         List<User> brnoEmployees = new ArrayList<>();
         brnoEmployees.add(tomas);
         brnoEmployees.add(denis);
+        brnoEmployees.add(mato);
+        brnoEmployees.add(pepa);
+        brnoEmployees.add(franta);
 
         RegionalBranch headquarters = this.createRegionalBranch("Headquarters",headquartersEmployees, headquarterCars, null, null );
         RegionalBranch brno = this.createRegionalBranch("Brno", brnoEmployees, brnoCars,null, headquarters);

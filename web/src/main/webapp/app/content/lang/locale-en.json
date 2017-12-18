@@ -7,7 +7,12 @@
     "MENU": "Menu:"
   },
   "CARS": {
-    "PAGE_SUBTITLE": "Cars management"
+    "PAGE_SUBTITLE": "Cars management",
+    "DELETE_SUCCESS": "Car was successfully deleted.",
+    "DELETE_FAIL": "An unknown error ocurred.",
+    "NEW_CREATED": "New car was sucessfully created.",
+    "UNKNOWN_ERROR": "An unknown error occured."
+
   },
   "BRANCHES": {
     "PAGE_SUBTITLE": "Branches management"
