@@ -58,7 +58,7 @@ Web.Services.BranchesService = function ($http) {
     	var response = {};
     	var name = request.name;
     	var req = {
-                    method: 'PUT',
+                    method: 'POST',
                     url: urlBranch,
                     headers: {
                       'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ Web.Services.BranchesService = function ($http) {
     this.assignCar = function (request, onSuccess, onError) {    
     	var response = {};
     	var id = request.id;
-        var car = JSON.stringify(request.car, this.replacer);
+        var car = request.car;
         var urlBranch = urlBase.concat("/branch/").concat(id).concat("/assignCar");
     	var req = {
                     method: 'PUT',
@@ -117,7 +117,7 @@ Web.Services.BranchesService = function ($http) {
                     headers: {
                       'Content-Type': 'application/json'
                     },
-                    data: {car}
+                    data: car
 		}
     	
     	$http(req)
@@ -143,7 +143,7 @@ Web.Services.BranchesService = function ($http) {
                     headers: {
                       'Content-Type': 'application/json'
                     },
-                    data: {user}
+                    data: user
 		}
     	
     	$http(req)

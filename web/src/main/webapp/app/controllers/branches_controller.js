@@ -19,7 +19,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
             }
             $scope.viewModel.selectedEvent = null;
-            $scope.$digest();
         }, function (httpResponse) {
             $scope.viewModel.selectedEvent = null;
             notificationsService.showSimple("BRANCHES.UNKNOWN_SERVER_ERROR");
@@ -42,7 +41,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
             }
             $scope.viewModel.selectedEvent = null;
-            $scope.$digest();
         }, function (httpResponse) {
             $scope.viewModel.selectedEvent = null;
             notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
@@ -50,9 +48,9 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
         var request = new Web.Data.GetCarsRequest();
             carService.getCars(request, function (httpResponse) {
                 var response = httpResponse.data;
-                if (response != null) {
+                if (response !== null) {
                     var data = response.data;
-                    if (response.isSuccess && data != null) {
+                    if (response.isSuccess && data !== null) {
                         $scope.viewModel.cars = [];
                         var cars = []
                         for (var i = 0; i < data.length; i++) {
@@ -66,7 +64,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 } else {
                     notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
                 }
-                $scope.$digest();
             }, function (httpResponse) {
                 notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
         });
@@ -74,7 +71,7 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
 
     $scope.actions = new Object();
     $scope.actions.deleteSelectedRegionalBranch = function () {
-        if ($scope.viewModel.selectedItem != null) {
+        if ($scope.viewModel.selectedItem !== null) {
             var selectedEvent = $scope.viewModel.selectedItem;
             var selectedHashKey = $scope.viewModel.selectedItem.$$hashKey;
             for(var i = 0; i < $scope.viewModel.branches.length; i++) {
@@ -86,14 +83,12 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                             var data = response.data;
                             if (response.isSuccess && data !== null) {
                                 $scope.viewModel.branches.splice(i, 1);
-                                $scope.$digest();
                             } else {
                                 notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                             }
                         } else {
                             notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                         }
-                        $scope.$digest();
                     }, function (httpResponse) {
                         notificationsService.showSimple("BRANCHES.UNKNOWN_SERVER_ERROR");
                     });
@@ -145,7 +140,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
                     $scope.viewModel.selectedItem.employees.push($scope.viewModel.userToAssign);
-                    $scope.$digest();
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
@@ -168,7 +162,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
                     $scope.viewModel.selectedItem.cars.push($scope.viewModel.carToAssign);
-                    $scope.$digest();
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
@@ -196,7 +189,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
                     $scope.viewModel.branches.push($scope.viewModel.addBranch);
-                    $scope.$digest();
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
