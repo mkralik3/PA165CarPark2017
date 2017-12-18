@@ -1,9 +1,8 @@
 package cz.muni.fi.pa165.controllers;
 
+import cz.muni.fi.pa165.config.ApiDefinition;
 import cz.muni.fi.pa165.dto.CarDTO;
-import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.results.CarOperationResult;
-import cz.muni.fi.pa165.dto.results.CarReservationRequestOperationResult;
 import cz.muni.fi.pa165.exceptions.ResourceNotFound;
 import cz.muni.fi.pa165.exceptions.ResourceNotValid;
 import cz.muni.fi.pa165.facade.CarFacade;
@@ -19,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/car")
+@RequestMapping(ApiDefinition.Car.BASE)
 public class CarController {
 
     private final static Logger logger = LoggerFactory.getLogger(CarController.class);
@@ -36,8 +35,8 @@ public class CarController {
         return result;
     }
 
-    @RequestMapping(value = "/{id}" , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final CarDTO getCarById(@PathVariable("id") long id) {
+    @RequestMapping(value = ApiDefinition.Car.ID , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final CarDTO getCarById(@PathVariable(ApiDefinition.Car.PATH_ID) long id) {
         CarDTO result = carFacade.findCarById(id);
         if (result != null) {
             return result;
@@ -70,8 +69,8 @@ public class CarController {
         return carFacade.createCar(car);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void deleteCar(@PathVariable("id") long id){
+    @RequestMapping(value = ApiDefinition.Car.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final void deleteCar(@PathVariable(ApiDefinition.Car.PATH_ID) long id){
         logger.debug("REST delete car with id: ", id);
         try {
             carFacade.deleteCar(id);

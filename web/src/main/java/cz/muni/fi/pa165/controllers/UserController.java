@@ -1,8 +1,7 @@
 package cz.muni.fi.pa165.controllers;
 
-import cz.muni.fi.pa165.dto.RegionalBranchDTO;
+import cz.muni.fi.pa165.config.ApiDefinition;
 import cz.muni.fi.pa165.dto.UserDTO;
-import cz.muni.fi.pa165.facade.RegionalBranchFacade;
 import cz.muni.fi.pa165.facade.UserFacade;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(ApiDefinition.User.BASE)
 public class UserController {
 
     @Inject
