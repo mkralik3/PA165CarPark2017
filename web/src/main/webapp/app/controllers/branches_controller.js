@@ -105,7 +105,6 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
                 }
             }
             $scope.viewModel.selectedItem = null;
-            $scope.viewModel.selectedCars = [];
             $scope.viewModel.manager = null;
         }
     };
@@ -164,6 +163,11 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     
     $scope.actions.cancelAddBranch = function () {
         $mdDialog.cancel();
+        $scope.viewModel.selectedItem = null;
+        $scope.viewModel.manager = null;
+        angular.forEach($scope.viewModel.cars, function(car){
+            car.selected = false;
+        })
     }
     
     $scope.setSelected = function(item) {

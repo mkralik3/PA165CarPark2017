@@ -57,7 +57,10 @@ Web.Services.BranchesService = function ($http) {
         var urlBranch = urlBase.concat("/branch");     
     	var response = {};
     	var name = request.name;
-        var cars = request.cars;
+        
+        var cars = JSON.stringify(request.cars, this.replacer);
+        
+        
     	var req = {
                     method: 'POST',
                     url: urlBranch,
@@ -77,6 +80,13 @@ Web.Services.BranchesService = function ($http) {
                 response.data.isSuccess = false;
                 error(response);
 		    });
+    }
+    
+    this.replacer = function replacer(key,value) {
+        if (key=="$$hashKey") return undefined;
+        else if (key=="object") return undefined;
+        else if (key=="selected") return undefined;
+        else return value;
     }
 }
 Web.App.service('branchesService', ['$http', Web.Services.BranchesService]);
