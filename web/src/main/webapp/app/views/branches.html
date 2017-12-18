@@ -62,7 +62,7 @@
                                 <div layout-gt-sm="row">
                                     <md-input-container class="md-block">
                                         <label>Manager</label>
-                                        <md-select id="manager" ng-model="viewModel.manager" required>
+                                        <md-select id="manager" ng-model="viewModel.manager" required ng-selected="viewModel.manager">
                                             <md-option ng-repeat="user in viewModel.users" ng-value="user" >
                                                 {{user.name}}
                                             </md-option>
@@ -79,7 +79,7 @@
                                     <div ng-repeat="car in viewModel.cars">
                                         <ul>
                                         <label for="chkCar_{{car.id}}">
-                                        <input id="chkCar_{{car.id}}" type="checkbox" ng-model="vievModel.selected"/>
+                                            <input id="chkCar_{{car.id}}" type="checkbox" ng-model="vievModel.selected" ng-checked="car.selected" ng-click="car.selected = true"/>
                                         {{car.name}}
                                         </ul>
                                     </div>
@@ -89,7 +89,7 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
                     <md-button class="md-primary" ng-click="actions.addBranch()" ng-disabled="addBranchDialogFrom.$invalid">
-                        Create
+                        Save
                     </md-button>
                     <md-button ng-click="actions.cancelAddBranch()">
                         Cancel

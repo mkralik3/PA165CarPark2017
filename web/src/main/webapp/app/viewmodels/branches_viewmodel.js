@@ -3,6 +3,7 @@
     this.name = null;
     this.manager = null;
     this.cars = [];
+    this.employees = [];
 
     this.convertToEvent = function () {
         result = {};
@@ -11,6 +12,7 @@
         result.notSelectedColor = result.color;
         result.title = this.regionalBranch.name;
         result.source = this;
+        result.cars = this.cars;
         return result;
     };
 };
