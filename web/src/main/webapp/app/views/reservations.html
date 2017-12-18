@@ -38,16 +38,16 @@
                 <md-dialog-content layout="column">
                     <md-content layout-padding >
                         <div>
-                            <form name="newReservationDialogFrom">
+                            <ng-form name="newReservationDialogFrom">
                                 <md-input-container class="md-block">
                                     <label>Car</label>
-                                    <md-select ng-model="viewModel.newReservation.car"  required>
+                                    <md-select name="newReservationCar" ng-model="viewModel.newReservation.car" ng-change="actions.validateNewReservation(newReservationDialogFrom)" required>
                                         <md-option ng-repeat="car in viewModel.cars" ng-value="car" >
                                             {{car.name}}
                                         </md-option>
                                     </md-select>
-                                    <div ng-messages="viewModel.newReservation.car.$error" multiple md-auto-hide="true">
-                                        <div ng-message="required">
+                                    <div ng-messages="viewModel.newReservation.car.$error" ng-messages-multiple="true" md-auto-hide="true">
+                                        <div ng-show="newReservationDialogFrom.newReservationCar.$error.required" ng-message="required">
                                             Car is required.
                                         </div>
                                     </div>
@@ -55,10 +55,13 @@
                                 <div layout-gt-sm="row">
                                     <md-input-container>
                                         <label>Start date</label>
-                                        <md-datepicker ng-model="viewModel.newReservation.startDate" required></md-datepicker>
-                                        <div ng-messages="viewModel.newReservation.startDate.$error" multiple md-auto-hide="true">
-                                            <div ng-message="required">
+                                        <md-datepicker name="newReservationStartDate" ng-model="viewModel.newReservation.startDate" ng-change="actions.validateNewReservation(newReservationDialogFrom)" required></md-datepicker>
+                                        <div ng-messages="viewModel.newReservation.startDate.$error" ng-messages-multiple="true" md-auto-hide="true">
+                                            <div ng-show="newReservationDialogFrom.newReservationStartDate.$error.required" ng-message="required">
                                                 Start date is required.
+                                            </div>
+                                            <div ng-show="newReservationDialogFrom.newReservationStartDate.$error.startDateGreaterThenEndDate" ng-message="startDateGreaterThenEndDate">
+                                                Start date is greater than End date.
                                             </div>
                                         </div>
                                     </md-input-container>
@@ -66,15 +69,18 @@
                                 <div layout-gt-sm="row">
                                     <md-input-container>
                                         <label>End date</label>
-                                        <md-datepicker ng-model="viewModel.newReservation.endDate" required></md-datepicker>
-                                        <div ng-messages="viewModel.newReservation.endDate.$error" multiple md-auto-hide="true">
-                                            <div ng-message="required">
+                                        <md-datepicker name="newReservationEndDate" ng-model="viewModel.newReservation.endDate" ng-change="actions.validateNewReservation(newReservationDialogFrom)" required></md-datepicker>
+                                        <div ng-messages="viewModel.newReservation.endDate.$error" ng-messages-multiple="true" md-auto-hide="true">
+                                            <div ng-show="newReservationDialogFrom.newReservationEndDate.$error.required" ng-message="required">
                                                 End date is required.
+                                            </div>
+                                            <div ng-show="newReservationDialogFrom.newReservationEndDate.$error.startDateGreaterThenEndDate" ng-message="startDateGreaterThenEndDate">
+                                                End date is lower than Start date.
                                             </div>
                                         </div>
                                     </md-input-container>
                                 </div>
-                            </form>
+                            </ng-form>
                         </div>
                 </md-dialog-content>
                 <md-dialog-actions layout="row">

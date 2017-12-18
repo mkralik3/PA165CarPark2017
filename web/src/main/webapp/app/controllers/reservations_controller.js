@@ -147,6 +147,7 @@
         if (typeof car !== "undefined") {
             $scope.viewModel.newReservation.car = car;
         }
+        $scope.actions.validateNewReservation($scope.newReservationDialogFrom);
         $mdDialog.show({
             contentElement: '#newReservationDialog',
             parent: angular.element(document.body),
@@ -175,6 +176,26 @@
     }
     $scope.actions.cancelNewReservation = function () {
         $mdDialog.cancel();
+    }
+    $scope.actions.validateNewReservation = function(form){
+        if ($scope.viewModel.newReservation.startDate){
+            form.newReservationStartDate.$setValidity('required', true);
+            form.newReservationStartDate.$setValidity('startDateGreaterThenEndDate', $scope.viewModel.newReservation.startDate <= $scope.viewModel.newReservation.endDate);
+            form.newReservationStartDate.$setPristine();
+        } else {
+            form.newReservationStartDate.$setValidity('required', false);
+        }
+        if ($scope.viewModel.newReservation.endDate){
+            form.newReservationEndDate.$setValidity('required', true);
+            form.newReservationEndDate.$setValidity('startDateGreaterThenEndDate', $scope.viewModel.newReservation.startDate <= $scope.viewModel.newReservation.endDate);
+        } else {
+            form.newReservationEndDate.$setValidity('required', false);
+        }
+        if ($scope.viewModel.newReservation.car){
+            form.newReservationCar.$setValidity('required', true);
+        }else {
+            form.newReservationCar.$setValidity('required', false);
+        }
     }
 
     $rootScope.pageSubtitle = "RESERVATIONS.PAGE_SUBTITLE";
