@@ -42,6 +42,15 @@ public interface CarReservationRequestFacade {
     List<CarReservationRequestDTO> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo);
 
     /**
+     * Get all reservations for particular regional branch and its children in time period
+     * @param regionalBranchId particular regional branch
+     * @param dateFrom start period
+     * @param dateTo end period
+     * @return list of all reservation for this time period and branch
+     */
+    List<CarReservationRequestDTO> getAllForRegionalBranchAndChildren(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo);
+
+    /**
      * Find all reservations
      * @return all reservations
      */

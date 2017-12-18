@@ -106,6 +106,11 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     }
 
     @Override
+    public List<CarReservationRequest> getAllForRegionalBranchAndChildren(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return requestsDao.getAllForRegionalBranchAndChildren(regionalBranchId, dateFrom, dateTo);
+    }
+
+    @Override
     public List<CarReservationRequest> findAll() {
         return requestsDao.findAll();
     }
