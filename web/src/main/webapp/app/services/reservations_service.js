@@ -1,6 +1,6 @@
 ﻿Web.Services.ReservationsService = function ($http) {
     this.getReservations = function (request, onSuccess, onError) {
-    	var urlReservations = urlBase.concat("/reservation/1"); 
+    	var urlReservations = urlBase.concat("/reservation/2");
     	var response = {};
     	request.dateTo.setMilliseconds(192); //workaround, time is not importatn
     	var start = request.dateFrom.toJSON();
