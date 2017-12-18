@@ -21,3 +21,6 @@ You will find web interface of application at: http://localhost:8080/pa165/
 
 
 REST API DOC you find [here](web/README.md)
+
+**Notes**
+The application has three types of users: Admin, branch manager and user
