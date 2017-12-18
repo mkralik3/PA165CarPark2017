@@ -82,8 +82,8 @@ Web.Services.BranchesService = function ($http) {
         var urlBranch = urlBase.concat("/branch");     
     	var response = {};
     	var name = request.name;
-        
-        var cars = JSON.stringify(request.cars, this.replacer);
+        var id = request.id;
+        //var cars = JSON.parse(JSON.stringify(request.cars, this.replacer));
         
     	var req = {
                     method: 'PUT',
@@ -91,7 +91,7 @@ Web.Services.BranchesService = function ($http) {
                     headers: {
                       'Content-Type': 'application/json'
                     },
-                    data: {name, cars}
+                    data: {id, name/*, cars*/}
 		}
     	
     	$http(req)

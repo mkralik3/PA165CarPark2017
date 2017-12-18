@@ -100,6 +100,7 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     };
     
     $scope.actions.showAddBranchDialog = function (ev) {
+        $scope.viewModel.isBeingAdded = true;
         $scope.viewModel.addBranch = new Web.ViewModels.BranchesViewModel();
         angular.forEach($scope.viewModel.cars, function(car){
             car.selected = false;
@@ -216,10 +217,54 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
         });
         $scope.viewModel.addBranch = null;
         $scope.viewModel.manager = null;
+        $scope.viewModel.isBeingEdited = false;
+        $scope.viewModel.isBeingAdded = false;
+        $mdDialog.cancel();
+    }
+    
+    $scope.actions.updateBranch = function () {
+        var managerToSet = $scope.viewModel.manager;
+        var selectedCars = [];
+        angular.forEach($scope.viewModel.cars, function(car){
+            if (car.selected) selectedCars.push(car);
+        })
+        var request = {id: $scope.viewModel.addBranch.id, name: $scope.viewModel.addBranch.name, cars: selectedCars};
+        branchesService.updateBranch(request, function (httpResponse) {
+            var response = httpResponse.data;
+            if (response !== null) {
+                var data = response.data;
+                if (response.isSuccess && data !== null) {
+                    /*angular.forEach($scope.viewModel.cars, function(car){
+                        if (car.selected) {
+                            $scope.viewModel.selectedItem = data.data;
+                            $scope.viewModel.carToAssign = car;
+                            $scope.actions.assignCar();
+                            data.data.cars.push(car);
+                        };
+                    })
+                    $scope.viewModel.selectedItem = data.data;
+                    $scope.viewModel.userToAssign = managerToSet;
+                    data.data.employees.push(managerToSet);
+                    $scope.actions.assignUser();*/
+                    //$scope.viewModel.branches.push(data.data);
+                } else {
+                    notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
+                }
+            } else {
+                notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
+            }
+        }, function (httpResponse) {
+            notificationsService.showSimple("BRANCHES.UNKNOWN_SERVER_ERROR");
+        });
+        $scope.viewModel.addBranch = null;
+        $scope.viewModel.manager = null;
+        $scope.viewModel.isBeingEdited = false;
+        $scope.viewModel.isBeingAdded = false;
         $mdDialog.cancel();
     }
     
     $scope.actions.editSelectedBranch = function (ev) {
+        $scope.viewModel.isBeingEdited = true;
         $scope.viewModel.addBranch = $scope.viewModel.selectedItem;
         $mdDialog.show({
             contentElement: '#addBranchDialog',
@@ -236,6 +281,8 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
         $scope.viewModel.carToAssign = null;
         $scope.viewModel.userToAssign = null;
         $scope.viewModel.addBranch = null;
+        $scope.viewModel.isBeingEdited = false;
+        $scope.viewModel.isBeingAdded = false;
         angular.forEach($scope.viewModel.cars, function(car){
             car.selected = false;
         })
@@ -264,6 +311,8 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     $scope.viewModel.userToAssign = null;
     
     $scope.viewModel.addBranch = null;
+    $scope.viewModel.isBeingAdded = false;
+    $scope.viewModel.isBeingEdited = false;
     initList();
 }
 angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', Web.Controllers.BranchesController]);
