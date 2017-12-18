@@ -6,7 +6,7 @@
     <groupId>cz.fi.muni.pa165</groupId>
     <artifactId>car-park-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.0-milestone2</version>
+    <version>3.0-milestone3</version>
     <name>Car park Parent</name>
 
     <build>
