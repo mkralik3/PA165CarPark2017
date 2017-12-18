@@ -8,5 +8,5 @@
         result.title = this.name;
         result.source = this;
         return result;
-    }
-}
+    };
+};

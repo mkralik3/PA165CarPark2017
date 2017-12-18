@@ -1,1 +1,75 @@
 ﻿Cars
+﻿<div class="container-fluid h-100">
+    <div class="row align-items-center" style="min-height: 3em">
+        <div class="col">
+            <!-- here may be some filtering -->
+        </div>
+    </div>
+    <div class="row h-100">
+        <div class="col">
+            <div id="cars_list">
+                <div ng-model="viewModel.cars" required/>
+                <ul>
+                    <li ng-repeat="car in viewModel.cars" ng-click="setSelected(car)">{{car.name}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-2" style="min-width:150px; border-left: solid 1px #d0d0d0;">
+            <div class="container-fluid command-menu">
+                <h3>General actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.showAddCarDialog($event)">Add a new car</li>
+                </ul>
+            </div>
+            <br />
+            <br />
+            <div class="container-fluid command-menu" ng-show="viewModel.selectedItem != null">
+                <h3>Selected item actions:</h3>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.deleteSelectedCar()">Remove selected car</li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.editSelectedCar($event)">Edit selected car</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="visibility: collapse">
+    <div class="md-dialog-container" id="addCarDialog">
+        <md-dialog layout-padding style="min-width:350px">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Add A New Car</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <md-dialog-content layout="column">
+                <md-content layout-padding >
+                    <div>
+                        <form name="addCarDialogForm">
+                            <md-input-container class="md-block">
+                                <div layout-gt-sm="row">
+                                    <label>Name</label>
+                                    <input ng-model="viewModel.addCar.name" required ng-value="viewModel.addCar.name"></input>
+                                    <div ng-messages="viewModel.addCar.name.$error" multiple md-auto-hide="true">
+                                        <div ng-message="required">
+                                            Name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </form>
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button class="md-primary" ng-click="actions.addCar()" ng-disabled="addCarDialogForm.$invalid">
+                    Create
+                </md-button>
+                <md-button ng-click="actions.cancelAddCar()">
+                    Cancel
+                </md-button>
+            </md-dialog-actions>
+        </md-dialog>
+    </div>
+</div>
