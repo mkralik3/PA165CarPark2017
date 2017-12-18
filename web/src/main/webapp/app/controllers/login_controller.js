@@ -13,6 +13,7 @@
                 data = response.data;
                 if (response.isSuccess && response.token != null && data != null) {
                     var sessionInfo = new Web.ViewModels.SessionInfoViewModel();
+                    sessionInfo.userId = data.id;
                     sessionInfo.username = request.username;
                     sessionInfo.userType = data.userType;
                     sessionInfo.branchName = data.branchName;

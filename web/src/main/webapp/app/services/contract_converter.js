@@ -1,7 +1,7 @@
 ﻿Web.Services.ContractConverter = function () {
     this.convertAuthError = function (error) {
         if (error != null) {
-            errorToUse = error.toUpperCase();
+            var errorToUse = error.toUpperCase();
             switch (errorToUse) {
                 case 'NONAUTHENTICATED':
                 case 'LOCKED':
@@ -65,6 +65,14 @@
             } 	
         }
         return result;
+    }
+    
+    this.convertReservationErrors = function(errors){
+        for (var i = 0; i < errors.length; i++){
+            var errorToUse = errors[i].toUpperCase();
+            return "RESERVATIONS" + "." + errorToUse;
+        }
+        return "RESERVATIONS.UNKNOWN_ERROR";
     }
 }
 Web.App.service('contractConverter', [Web.Services.ContractConverter]);

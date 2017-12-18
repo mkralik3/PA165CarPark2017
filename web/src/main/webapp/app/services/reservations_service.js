@@ -38,6 +38,26 @@
         });
     }
     
+    this.createReservation = function(data, onSuccess, onError){
+        var req = {
+			 method: 'POST',
+			 url: urlBase.concat("/reservation"),
+			 headers: {
+			   'Content-Type': 'application/json'
+			 },
+			 data: data
+		}
+        $http(req).then(function(httpResponse){
+           if (httpResponse.status === 200){
+                onSuccess(httpResponse.data.isSuccess, httpResponse.data.errorCodes);
+            } else {
+                onError(["UNKNOWN_ERROR"]);
+            }
+        }, function(httpResponse){
+           onError(["UNKNOWN_ERROR"]); 
+        });
+    }
+    
     this.getAllReservations = function (request, onSuccess, onError) {
     	var urlAllReservations = urlBase.concat("/reservation");     
         var response = {};

@@ -1,4 +1,4 @@
-﻿Web.Controllers.ReservationsController = function ($rootScope, $scope, $mdDialog, notificationsService, contractConverter, settingsProvider, reservationsService, carsService) {
+﻿Web.Controllers.ReservationsController = function ($rootScope, $scope, $mdDialog, notificationsService, contractConverter, settingsProvider, reservationsService, carsService, sessionManager) {
     var initCalendar = function () {
         $scope.calendarElement.fullCalendar('destroy');
         $scope.calendarElement.fullCalendar({
@@ -49,7 +49,7 @@
                         notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
                     }
                     $scope.viewModel.selectedEvent = null;
-                    $scope.$digest();
+                    //$scope.$digest();
                 }, function (httpResponse) {
                     $scope.viewModel.selectedEvent = null;
                     notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
@@ -76,7 +76,7 @@
                     } else {
                         notificationsService.showSimple("RESERVATIONS.UNKNOWN_ERROR");
                     }
-                    $scope.$digest();
+                    //$scope.$digest();
                 }, function (httpResponse) {
                     notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
                 });
@@ -132,9 +132,17 @@
         $scope.viewModel.newReservation = new Web.ViewModels.ReservationViewModel();
         if (typeof startDate !== "undefined") {
             $scope.viewModel.newReservation.startDate = startDate;
+            $scope.viewModel.newReservation.startDate.setHours(0);
+            $scope.viewModel.newReservation.startDate.setMinutes(0);
+            $scope.viewModel.newReservation.startDate.setSeconds(0);
+            $scope.viewModel.newReservation.startDate.setMilliseconds(0);
         }
         if (typeof endDate !== "undefined") {
             $scope.viewModel.newReservation.endDate = endDate;
+            $scope.viewModel.newReservation.endDate.setHours(23);
+            $scope.viewModel.newReservation.endDate.setMinutes(59);
+            $scope.viewModel.newReservation.endDate.setSeconds(59);
+            $scope.viewModel.newReservation.endDate.setMilliseconds(999);
         }
         if (typeof car !== "undefined") {
             $scope.viewModel.newReservation.car = car;
@@ -147,6 +155,22 @@
         });
     };
     $scope.actions.createNewReservation = function () {
+        reservationsService.createReservation(
+                {
+                    car: { id: $scope.viewModel.newReservation.car.id },
+                    user: { id: sessionManager.currentSession.userId },
+                    reservationStartDate: $scope.viewModel.newReservation.startDate,
+                    reservationEndDate: $scope.viewModel.newReservation.endDate
+                }, function(isSuccess, errors){
+                    if (isSuccess){
+                        notificationsService.showSimple("RESERVATIONS.NEW_CREATED");
+                        $scope.calendarElement.fullCalendar('refetchEvents');
+                    } else {
+                        notificationsService.showSimple(contractConverter.convertReservationErrors(errors));
+                    }
+                },function(errors){
+                    notificationsService.showSimple(contractConverter.convertReservationErrors(errors));
+                });
         $mdDialog.cancel();
     }
     $scope.actions.cancelNewReservation = function () {
@@ -163,4 +187,4 @@
     initCalendar();
 }
 
-angular.module('CarParSystemWebApp').controller('ReservationsController', ['$rootScope', '$scope', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'reservationsService', 'carsService', Web.Controllers.ReservationsController]);
+angular.module('CarParSystemWebApp').controller('ReservationsController', ['$rootScope', '$scope', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'reservationsService', 'carsService', 'sessionManager', Web.Controllers.ReservationsController]);
