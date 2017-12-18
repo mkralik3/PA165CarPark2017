@@ -75,7 +75,7 @@ data: {
 ```
 Find all reservation for particular branch (id is as parameter, time period is in the json): 
 ```
-curl -X PUT -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1
+curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1
 data: 
 {
     "start" : "2018-12-17T21:25:47.277",
