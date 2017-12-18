@@ -21,7 +21,7 @@ import java.util.*;
 @RequestMapping(ApiDefinition.Reservation.BASE)
 public class CarReservationController {
 
-    private final static Logger logger = LoggerFactory.getLogger(CarReservationController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(CarReservationController.class);
 
     @Inject
     private CarReservationRequestFacade reservationRequestFacade;
@@ -53,7 +53,7 @@ public class CarReservationController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        logger.debug("REST create reservation: ", reservation);
+        LOG.debug("REST create reservation: ", reservation);
 
         return reservationRequestFacade.createCarReservationRequest(reservation);
     }
@@ -65,25 +65,25 @@ public class CarReservationController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        logger.debug("REST update reservation: ", reservation);
+        LOG.debug("REST update reservation: ", reservation);
 
         return reservationRequestFacade.updateCarReservationRequest(reservation);
     }
 
     @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public final void deleteCarReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id){
-        logger.debug("REST deleteCar with id: ", id);
+        LOG.debug("REST deleteCar with id: ", id);
         try {
             reservationRequestFacade.deleteCarReservationRequest(id);
         } catch (Exception ex) {
-            logger.warn(ex.getMessage());
+            LOG.warn(ex.getMessage());
             throw new ResourceNotFound();
         }
     }
 
     @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<CarReservationRequestDTO> getReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id, @RequestBody Map<String, LocalDateTime> period){
-        logger.debug("get all reservations for branch ", id);
+        LOG.debug("get all reservations for branch ", id);
 
         LocalDateTime start = period.get("start");
         LocalDateTime end = period.get("end");

@@ -10,6 +10,9 @@ import cz.muni.fi.pa165.exceptions.ResourceNotFound;
 import cz.muni.fi.pa165.exceptions.ResourceNotValid;
 import cz.muni.fi.pa165.facade.RegionalBranchFacade;
 import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping(ApiDefinition.Branch.BASE)
 public class RegionalBranchController {
+
+    private final static Logger LOG = LoggerFactory.getLogger(RegionalBranchController.class);
 
     @Inject
     private RegionalBranchFacade branchFacade;
@@ -58,12 +63,8 @@ public class RegionalBranchController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        RegionalBranchOperationResult result = branchFacade.createRegionalBranch(branch);
-        if (result.getIsSuccess()) {
-            return result;
-        } else {
-            throw new ResourceNotFound();
-        }
+        LOG.debug("REST create branch: ", branch);
+        return branchFacade.createRegionalBranch(branch);
     }
     
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -73,20 +74,17 @@ public class RegionalBranchController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        RegionalBranchOperationResult result = branchFacade.updateRegionalBranch(branch);
-        if (result.getIsSuccess()) {
-            return result;
-        } else {
-            throw new ResourceNotFound();
-        }
+        LOG.debug("REST update branch: ", branch);
+
+        return branchFacade.updateRegionalBranch(branch);
     }
     
     @RequestMapping(value = ApiDefinition.Branch.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final SimpleResult deleteRegionalBranch(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId){
-        SimpleResult result = branchFacade.deleteRegionalBranch(branchId);
-        if (result.getIsSuccess()) {
-            return result;
-        } else {
+    public final void deleteRegionalBranch(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId){
+        try {
+            branchFacade.deleteRegionalBranch(branchId);
+        } catch (Exception ex) {
+            LOG.warn(ex.getMessage());
             throw new ResourceNotFound();
         }
     }
@@ -96,15 +94,11 @@ public class RegionalBranchController {
     public final RegionalBranchOperationResult assignUser(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId, @Valid @RequestBody UserDTO user,
                                                           BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
+            LOG.debug("Resource not valid user:", user);
             throw new ResourceNotValid();
         }
-
-        RegionalBranchOperationResult result = branchFacade.assignUser(branchId, user);
-        if (result.getIsSuccess()) {
-            return result;
-        } else {
-            throw new ResourceNotFound();
-        }
+        LOG.debug("Assign user : " + user + "  to the branch with id: " + branchId);
+        return branchFacade.assignUser(branchId, user);
     }
     
     @RequestMapping(value = ApiDefinition.Branch.ASSIGN_CAR, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -112,24 +106,21 @@ public class RegionalBranchController {
     public final RegionalBranchOperationResult assignCar(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId, @Valid @RequestBody CarDTO car,
                                                          BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
+            LOG.debug("Resource not valid user:", car);
             throw new ResourceNotValid();
         }
-        RegionalBranchOperationResult result = branchFacade.assignCar(branchId, car);
-        if (result.getIsSuccess()) {
-            return result;
-        } else {
-            result.
-            throw new ResourceNotFound();
-        }
+        LOG.debug("Assign car : " + car + "  to the branch with id: " + branchId);
+        return branchFacade.assignCar(branchId, car);
     }
     
     @RequestMapping(value = ApiDefinition.Branch.FIND_AVAILABLE, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<CarDTO> assignCar(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId, @RequestBody Map<String, LocalDateTime> date) {
+    public final List<CarDTO> findAvailable(@PathVariable(ApiDefinition.Branch.PATH_ID) long branchId, @RequestBody Map<String, LocalDateTime> date) {
         LocalDateTime day = date.get("date");
+        LOG.debug("Find all available car in date: " + day + " for branch with id: ", branchId);
         RegionalBranchDTO branch = branchFacade.findOne(branchId);
-        List<CarDTO> resultList = branchFacade.findAllAvailableCarsForBranch(branch, day);
-        if(resultList == null) {
+        List<CarDTO> result = branchFacade.findAllAvailableCarsForBranch(branch, day);
+        if(result == null) {
             result = Collections.emptyList();
         }
         return result;

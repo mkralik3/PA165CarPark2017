@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping(ApiDefinition.Car.BASE)
 public class CarController {
 
-    private final static Logger logger = LoggerFactory.getLogger(CarController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(CarController.class);
 
     @Inject
     private CarFacade carFacade;
@@ -52,7 +52,7 @@ public class CarController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        logger.debug("REST create car: ", car);
+        LOG.debug("REST create car: ", car);
 
         return carFacade.createCar(car);
     }
@@ -64,18 +64,18 @@ public class CarController {
         if (bindingResult.hasErrors()) {
             throw new ResourceNotValid();
         }
-        logger.debug("REST update car: ", car);
+        LOG.debug("REST update car: ", car);
 
         return carFacade.createCar(car);
     }
 
     @RequestMapping(value = ApiDefinition.Car.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public final void deleteCar(@PathVariable(ApiDefinition.Car.PATH_ID) long id){
-        logger.debug("REST delete car with id: ", id);
+        LOG.debug("REST delete car with id: ", id);
         try {
             carFacade.deleteCar(id);
         } catch (Exception ex) {
-            logger.warn(ex.getMessage());
+            LOG.warn(ex.getMessage());
             throw new ResourceNotFound();
         }
     }
