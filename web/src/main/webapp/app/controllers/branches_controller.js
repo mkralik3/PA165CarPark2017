@@ -133,13 +133,15 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     };
     
     $scope.actions.assignUser = function () {
+        var branchToUpdate = $scope.viewModel.selectedItem;
+        var userToBeAssigned = $scope.viewModel.userToAssign;
         var request = {id: $scope.viewModel.selectedItem.id, user: $scope.viewModel.userToAssign};
         branchesService.assignUser(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
-                    $scope.viewModel.selectedItem.employees.push($scope.viewModel.userToAssign);
+                    branchToUpdate.employees.push(userToBeAssigned);
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
@@ -155,13 +157,15 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     };
     
     $scope.actions.assignCar = function () {
-        var request = {id: $scope.viewModel.selectedItem.id, car: $scope.viewModel.carToAssign};
+        var branchToUpdate = $scope.viewModel.selectedItem;
+        var carToBeAssigned = $scope.viewModel.carToAssign;
+        var request = {id: $scope.viewModel.selectedItem.id, car: carToBeAssigned};
         branchesService.assignCar(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
-                    $scope.viewModel.selectedItem.cars.push($scope.viewModel.carToAssign);
+                    branchToUpdate.cars.push(carToBeAssigned);
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
@@ -182,13 +186,14 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
             if (!!car.selected) selectedCars.push(car);
         })
         
+        var branchToAdd = $scope.viewModel.addBranch;
         var request = {name: $scope.viewModel.addBranch.name};
         branchesService.createBranch(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
-                    $scope.viewModel.branches.push($scope.viewModel.addBranch);
+                    $scope.viewModel.branches.push(branchToAdd);
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
