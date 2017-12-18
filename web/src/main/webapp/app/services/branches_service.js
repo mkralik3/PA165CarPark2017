@@ -57,12 +57,36 @@ Web.Services.BranchesService = function ($http) {
         var urlBranch = urlBase.concat("/branch");     
     	var response = {};
     	var name = request.name;
+    	var req = {
+                    method: 'PUT',
+                    url: urlBranch,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    data: {name}
+		}
+    	
+    	$http(req)
+    		.then(function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = true;
+                onSuccess(response);
+            }, function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = false;
+                error(response);
+		    });
+    }
+    
+    this.updateBranch = function (request, onSuccess, onError) {    
+        var urlBranch = urlBase.concat("/branch");     
+    	var response = {};
+    	var name = request.name;
         
         var cars = JSON.stringify(request.cars, this.replacer);
         
-        
     	var req = {
-                    method: 'POST',
+                    method: 'PUT',
                     url: urlBranch,
                     headers: {
                       'Content-Type': 'application/json'
@@ -82,10 +106,63 @@ Web.Services.BranchesService = function ($http) {
 		    });
     }
     
+    this.assignCar = function (request, onSuccess, onError) {    
+    	var response = {};
+    	var id = request.id;
+        var car = JSON.stringify(request.car, this.replacer);
+        var urlBranch = urlBase.concat("/branch/").concat(id).concat("/assignCar");
+    	var req = {
+                    method: 'PUT',
+                    url: urlBranch,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    data: {car}
+		}
+    	
+    	$http(req)
+    		.then(function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = true;
+                onSuccess(response);
+            }, function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = false;
+                error(response);
+		    });
+    }
+    
+    this.assignUser = function (request, onSuccess, onError) {    
+    	var response = {};
+    	var id = request.id;
+        var user = JSON.stringify(request.user, this.replacer);
+        var urlBranch = urlBase.concat("/branch/").concat(id).concat("/assignUser");
+    	var req = {
+                    method: 'PUT',
+                    url: urlBranch,
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    data: {user}
+		}
+    	
+    	$http(req)
+    		.then(function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = true;
+                onSuccess(response);
+            }, function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = false;
+                error(response);
+		    });
+    }
+    
     this.replacer = function replacer(key,value) {
         if (key=="$$hashKey") return undefined;
         else if (key=="object") return undefined;
         else if (key=="selected") return undefined;
+        else if (key=="$$mdSelectId") return undefined;
         else return value;
     }
 }

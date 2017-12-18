@@ -31,6 +31,12 @@
                 <ul class="nav navbar-nav">
                     <li ng-click="actions.editSelectedBranch($event)">Edit selected branch</li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.openAssignCar($event)">Assign car</li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-click="actions.openAssignUser($event)">Assign user</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -89,6 +95,100 @@
                 </md-dialog-content>
                 <md-dialog-actions layout="row">
                     <md-button class="md-primary" ng-click="actions.addBranch()" ng-disabled="addBranchDialogFrom.$invalid">
+                        Save
+                    </md-button>
+                    <md-button ng-click="actions.cancelAddBranch()">
+                        Cancel
+                    </md-button>
+                </md-dialog-actions>
+        </md-dialog>
+    </div>
+    <div style="visibility: collapse">
+    <div class="md-dialog-container" id="assignCarDialog">
+        <md-dialog layout-padding style="min-width:350px">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Assign car to the branch</h2>
+                        <span flex></span>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content layout="column">
+                    <md-content layout-padding >
+                        <div>
+                            <form name="asssignCarForm">
+                                <md-input-container class="md-block">
+                                    <div layout-gt-sm="row">
+                                        <label>Selected branch</label>
+                                        <input ng-model="viewModel.selectedItem.name" required ng-value="viewModel.selectedItem.name" ng-disabled="true"></input>
+                                    </div>
+                                </md-input-container>
+                                <div layout-gt-sm="row">
+                                    <md-input-container class="md-block">
+                                            <label>Car</label>
+                                            <md-select id="cars" ng-model="viewModel.carToAssign" required ng-selected="viewModel.carToAssign">
+                                                <md-option ng-repeat="car in viewModel.cars" ng-value="car" ng-disabled="car.selected">
+                                                    {{car.name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="viewModel.carToAssign.$error" multiple md-auto-hide="true">
+                                                <div ng-message="required">
+                                                    Car is required.
+                                                </div>
+                                            </div>
+                                    </md-input-container>
+                                </div>
+                            </form>
+                        </div>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary" ng-click="actions.assignCar()" ng-disabled="asssignCarForm.$invalid">
+                        Save
+                    </md-button>
+                    <md-button ng-click="actions.cancelAddBranch()">
+                        Cancel
+                    </md-button>
+                </md-dialog-actions>
+        </md-dialog>
+    </div>
+    <div style="visibility: collapse">
+    <div class="md-dialog-container" id="assignUserDialog">
+        <md-dialog layout-padding style="min-width:350px">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Assign user to the branch</h2>
+                        <span flex></span>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content layout="column">
+                    <md-content layout-padding >
+                        <div>
+                            <form name="asssignUserForm">
+                                <md-input-container class="md-block">
+                                    <div layout-gt-sm="row">
+                                        <label>Selected branch</label>
+                                        <input ng-model="viewModel.selectedItem.name" required ng-value="viewModel.selectedItem.name" ng-disabled="true"></input>
+                                    </div>
+                                </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <div layout-gt-sm="row">
+                                            <label>User</label>
+                                            <md-select id="cars" ng-model="viewModel.userToAssign" required ng-selected="viewModel.userToAssign">
+                                                <md-option ng-repeat="user in viewModel.users" ng-value="user" >
+                                                    {{user.name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="viewModel.userToAssign.$error" multiple md-auto-hide="true">
+                                                <div ng-message="required">
+                                                    User is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                            </form>
+                        </div>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button class="md-primary" ng-click="actions.assignUser()" ng-disabled="asssignUserForm.$invalid">
                         Save
                     </md-button>
                     <md-button ng-click="actions.cancelAddBranch()">
