@@ -5,8 +5,17 @@
         response.data.isSuccess = true;
         response.data.token = "testToken";
         response.data.data = new Web.Data.User();
-        response.data.data.id = 1;
-        response.data.data.userType = 2; //0=user, 1=branchmanager, 2=admin
+        if (request.username === "admin"){
+            response.data.data.id = 1;
+            response.data.data.userType = 2; //0=user, 1=branchmanager, 2=admin
+        } else if (request.username === "manager"){
+            response.data.data.id = 2;
+            response.data.data.userType = 1;
+        } else {
+            response.data.data.id = 3;
+            response.data.data.userType = 0;
+        }
+        
         response.data.data.branchName = "Brno";
         onSuccess(response);
         /*
