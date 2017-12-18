@@ -30,14 +30,12 @@
     $scope.actions = new Object();
     $scope.actions.deleteSelectedCar = function () {
         if ($scope.viewModel.selectedItem != null) {
-            var selectedEvent = $scope.viewModel.selectedItem;
-            var selectedHashKey = $scope.viewModel.selectedItem.$$hashKey;
-            for(var i = 0; i < $scope.viewModel.cars.length; i++) {
-                if ($scope.viewModel.cars[i].$$hashKey === selectedHashKey) {
-                    $scope.viewModel.cars.splice(i, 1);
-                }
-            }
-            $scope.viewModel.selectedItem = null;
+            carsService.deleteCar($scope.viewModel.selectedItem.id, function(){
+                $scope.viewModel.selectedItem = null;
+                notificationsService.showSimple("CARS.DELETE_SUCCESS");
+            }, function(){
+                notificationsService.showSimple("CARS.DELETE_FAIL");
+            });
         }
     };
 
@@ -52,7 +50,16 @@
     };
 
     $scope.actions.addCar = function () {
-        $scope.viewModel.cars.push($scope.viewModel.addCar);
+        carsService.createCar($scope.viewModel.addCar
+            , function(isSuccess, errors){
+                if (isSuccess){
+                    notificationsService.showSimple("CARS.NEW_CREATED");
+                } else {
+                    notificationsService.showSimple("CARS.UNKNOWN_ERROR");
+                }
+            },function(errors){
+                notificationsService.showSimple("CARS.UNKNOWN_ERROR");
+            });
         $scope.viewModel.addCar = null;
         $mdDialog.cancel();
     }
