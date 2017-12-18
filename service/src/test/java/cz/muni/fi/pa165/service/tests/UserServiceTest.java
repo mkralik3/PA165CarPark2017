@@ -114,6 +114,20 @@ public class UserServiceTest extends BaseServiceTest {
     }
     
     @Test
+    public void authUserOkPassword(){
+        User user = userService.authenticate(testUsername, testPassword);
+        
+        assertThat(user).isNotNull();
+    }
+    
+    @Test
+    public void authUserWrongPassword(){
+        User user = userService.authenticate(testUsername, "wrongPassword");
+        
+        assertThat(user).isNull();
+    }
+    
+    @Test
     public void findNonExistingUser(){
         User user = userService.findByUsername("nonexisting");
         assertThat(user).isNull();

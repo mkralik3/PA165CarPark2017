@@ -10,6 +10,7 @@ import java.util.Set;
  * @author Martin Miskeje
  */
 public interface UserService {
+    User authenticate(String userName, String password);
     Set<UserOperationErrorCode> create(User user, String password);
     
     Set<UserOperationErrorCode> update(User user);

@@ -157,4 +157,15 @@ public class UserServiceImpl implements UserService {
         return errors;
     }
 
+    @Override
+    public User authenticate(String userName, String password) {
+        User user = userDao.findUserByUserName(userName);
+        if (user != null && password != null) {
+            if (passwordSupport.validatePassword(password, user.getPassword())){ // possible improvement of security - count fail attempts
+                return user;
+            }
+        }
+        return null;
+    }
+
 }
