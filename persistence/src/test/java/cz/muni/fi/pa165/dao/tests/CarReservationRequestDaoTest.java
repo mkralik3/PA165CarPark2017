@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -301,6 +302,51 @@ public class CarReservationRequestDaoTest extends TestBase {
         assertThat(foundReservations.contains(reservation2));
     }
 
+    @Test
+    public void getAllForRegionalBranchAndChildrenTest() {
+        LocalDateTime startPeriod = currentTime.minus(7, ChronoUnit.DAYS);
+        LocalDateTime endPeriod = currentTime.plus(7, ChronoUnit.DAYS);
+
+        Car car2 = objectFactory.createCar("Car2");
+        carDao.save(car2);
+        Car car3 = objectFactory.createCar("Car3");
+        carDao.save(car3);
+        Car car4 = objectFactory.createCar("Car4");
+        carDao.save(car4);
+
+        CarReservationRequest reservation1 = objectFactory.
+                createReservationRequest(car, user,startPeriod.plus(2, ChronoUnit.DAYS) , endPeriod.minus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation2 = objectFactory.
+                createReservationRequest(car2, user, startPeriod.plus(3, ChronoUnit.DAYS), endPeriod.minus(3, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation3 = objectFactory.
+                createReservationRequest(car3, user, startPeriod.plus(2, ChronoUnit.DAYS), endPeriod.minus(2, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation4Other = objectFactory.
+                createReservationRequest(car4, user, startPeriod.plus(2, ChronoUnit.DAYS), endPeriod.minus(2, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+
+        reservationDao.save(reservation1);
+        reservationDao.save(reservation2);
+        reservationDao.save(reservation3);
+        reservationDao.save(reservation4Other);
+
+        RegionalBranch branch1 = objectFactory.createRegionalBranch("branch1");
+        branch1.addCar(car);
+        branch1.addCar(car2);
+        branchDao.save(branch1);
+        RegionalBranch branch2 = objectFactory.createRegionalBranch("branch2");
+        branch2.setParent(branch1);
+        branch2.addCar(car3);
+        branchDao.save(branch2);
+
+        RegionalBranch branch3Other = objectFactory.createRegionalBranch("branch3");
+        branch3Other.addCar(car4);
+        branchDao.save(branch3Other);
+
+        List<CarReservationRequest> foundReservations = reservationDao.getAllForRegionalBranchAndChildren(branch1.getId(),currentTime.minus(8, ChronoUnit.DAYS), currentTime);
+
+        assertThat(foundReservations.size()).isEqualTo(3);
+        assertThat(foundReservations).contains(reservation1,reservation2, reservation3);
+    }
+
 
     @Test
     public void findAllOverlappedReservationsTest() {
@@ -320,5 +366,4 @@ public class CarReservationRequestDaoTest extends TestBase {
         assertThat(foundReservations.size()).isEqualTo(1);
         assertThat(foundReservations.contains(reservation1));
     }
-
 }

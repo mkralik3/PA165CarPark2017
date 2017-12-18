@@ -78,8 +78,18 @@ Find all reservation for particular branch (id is as parameter, time period is i
 curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1
 data: 
 {
-    "start" : "2018-12-17T21:25:47.277",
-    "end" : "2018-11-17T21:25:47.277"
+    "start" : "2017-12-18T20:37:52.862",
+    "end" : "2017-12-19T20:37:52.862"
+}
+```
+
+Find all reservation for particular branch and children (add children param to true, default is set to false): 
+```
+curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1?children=true
+data: 
+{
+    "start" : "2017-12-18T20:37:52.862",
+    "end" : "2017-12-19T20:37:52.862"
 }
 ```
 # Branch

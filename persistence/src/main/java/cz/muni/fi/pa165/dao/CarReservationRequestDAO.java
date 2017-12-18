@@ -75,4 +75,10 @@ public interface CarReservationRequestDAO extends CrudRepository<CarReservationR
     List<CarReservationRequest> getAllForRegionalBranch(@Param("regionalBranchIds")Set<Long> regionalBranchIds,
                                                         @Param("dateFrom") LocalDateTime dateFrom,
                                                         @Param("dateTo") LocalDateTime dateTo);
+
+    @Query("SELECT r FROM CarReservationRequest r INNER JOIN r.car c INNER JOIN c.regionalBranch b " +
+            "WHERE b.id = :regionalBranchId OR b.parent = :regionalBranchId AND (r.reservationStartDate <= :dateTo) AND (:dateFrom <= r.reservationEndDate)")
+    List<CarReservationRequest> getAllForRegionalBranchAndChildren(@Param("regionalBranchId")long regionalBranchId,
+                                                        @Param("dateFrom") LocalDateTime dateFrom,
+                                                        @Param("dateTo") LocalDateTime dateTo);
 }
