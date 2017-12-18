@@ -54,6 +54,8 @@ public class InitializerImpl implements Initializer {
         User tomas = this.createUser("Tomas", "testTest", UserType.BRANCH_MANAGER);
         User pepa = this.createUser("Pepa", "testTest", UserType.USER);
         User franta = this.createUser("Franta", "testTest", UserType.USER);
+        User standa = this.createUser("Standa", "testTest", UserType.BRANCH_MANAGER);
+        User maria = this.createUser("Maria", "testTest", UserType.USER);
 
         //create Branches
         List<Car> headquarterCars = new ArrayList<>();
@@ -79,9 +81,9 @@ public class InitializerImpl implements Initializer {
         headquarters.addChild(brno);
 
         //create Reservations
-        CarReservationRequest first = this.createReservationRequest(audi, denis, currentTime, currentTime.plus(8, ChronoUnit.DAYS), CarReservationRequestState.CREATED);
-        CarReservationRequest second = this.createReservationRequest(ford, pepa, currentTime, currentTime.plus(4, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
-        CarReservationRequest third = this.createReservationRequest(volvo, franta, currentTime, currentTime.plus(40, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
+        CarReservationRequest first = this.createReservationRequest(audi, denis, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.CREATED);
+        CarReservationRequest second = this.createReservationRequest(ford, pepa, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest third = this.createReservationRequest(volvo, franta, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
     }
 
     private Car createCar(String name) {
