@@ -1,52 +1,32 @@
 Web.Services.BranchesService = function ($http) {
-    this.getBranches = function (request, onSuccess, onError) {
-        var response = {}
-        response.data = {}
-        response.data.isSuccess = true;
-
-        var branches = [];
-        for (var i = 0; i < 5; i++) {
-            var toAdd = new Web.Data.Branch();
-            toAdd.id = i + 1;
-            toAdd.name = "Branch " + (i + 1);
-            branches.push(toAdd);
-        }
-        
-        /*var response = {};
-        response.data = new Web.Data.Get();
-        response.data.isSuccess = true;
-
-        var branches = [];
-        for (var i = 0; i < 5; i++) {
-            var toAdd = new Web.Data.Branch();
-            toAdd.id = i + 1;
-            toAdd.name = "Branch " + (i + 1);
-            branches.push(toAdd);
-        }*/
-
-        response.data.data = branches;
-        setTimeout(function () { // simulation of async api call
-            onSuccess(response);
-        }, 0);
+    this.getBranches = function (request, onSuccess, onError) {    
+    	var urlBranch = urlBase.concat("/branch");     
+        var response = {};
+    	$http.get(urlBranch)
+    		.then(function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = true;
+                onSuccess(response);
+            }, function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = false;
+                error(response);
+		    });
     }
     
     this.getAllUsers = function (request, onSuccess, onError) {
+    	var urlUsers = urlBase.concat("/user");     
         var response = {};
-        response.data = {};
-        response.data.isSuccess = true;
-
-        var users = [];
-        for (var i = 0; i < 5; i++) {
-            var toAdd = new Web.Data.User();
-            toAdd.id = i + 1;
-            toAdd.name = "User " + (i + 1);
-            users.push(toAdd);
-        }
-
-        response.data.data = users;
-        setTimeout(function () { 
-            onSuccess(response);
-        }, 0);
+    	$http.get(urlUsers)
+    		.then(function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = true;
+                onSuccess(response);
+            }, function(httpResponse) {
+                response.data = httpResponse;
+                response.data.isSuccess = false;
+                error(response);
+		    });
     }
 }
 Web.App.service('branchesService', ['$http', Web.Services.BranchesService]);

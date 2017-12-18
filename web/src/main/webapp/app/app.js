@@ -1,4 +1,7 @@
 ﻿var Web = Web || {};
+
+var urlBase = "http://localhost:8080/pa165/rest";
+
 Web.createNamespace = function (namespace) {
     var parts = namespace.split(".");
     var parent = Web;
