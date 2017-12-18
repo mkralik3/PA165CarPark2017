@@ -35,7 +35,7 @@ public interface CarFacade {
 
     /**
      * Find car by id
-     * @param carId id of carr
+     * @param carId id of car
      * @return particular car or null
      */
     CarDTO findCarById(long carId);

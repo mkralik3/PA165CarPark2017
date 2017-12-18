@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import cz.muni.fi.pa165.controllers.CarController;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.RegionalBranchDTO;
@@ -48,6 +48,7 @@ public class RestConfiguration extends WebMvcConfigurerAdapter {
     private MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule()); //due to java 8 date
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH));

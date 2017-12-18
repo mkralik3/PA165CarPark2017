@@ -71,8 +71,14 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         errors.addAll(validateInput(request, existing));
         if (errors.isEmpty()) {
             try {
-                request.setModificationDate(timeService.getCurrentTime());
-                requestsDao.save(request);
+                //change is permitted only for this properties:
+                existing.setUser(request.getUser());
+                existing.setCar(request.getCar());
+                existing.setReservationStartDate(request.getReservationStartDate());
+                existing.setReservationEndDate(request.getReservationEndDate());
+                existing.setState(request.getState());
+                existing.setModificationDate(timeService.getCurrentTime());
+                requestsDao.save(existing);
             }
             catch (DataAccessException ex) {
                 errors.add(CarReservationRequestOperationErrorCode.DATABASE_ERROR);
@@ -97,6 +103,16 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     @Override
     public List<CarReservationRequest> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo) {
         return requestsDao.getAllForRegionalBranch(regionalBranchIds, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<CarReservationRequest> findAll() {
+        return requestsDao.findAll();
+    }
+
+    @Override
+    public CarReservationRequest findOne(long id) {
+        return requestsDao.findOne(id);
     }
 
     private Set<CarReservationRequestOperationErrorCode> validateInput(CarReservationRequest newRequest, CarReservationRequest existingRequest){

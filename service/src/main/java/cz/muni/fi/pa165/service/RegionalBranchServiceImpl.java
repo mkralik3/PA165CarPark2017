@@ -73,9 +73,26 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
-        regionalBranch.setModificationDate(timeService.getCurrentTime());
         try{
-            regionalBranchDao.save(regionalBranch);
+            existingBranch.setName(regionalBranch.getName());
+            existingBranch.setParent(regionalBranch.getParent());
+            List<Car> oldCar = existingBranch.getCars();
+            regionalBranch.getCars().stream()
+                    .filter(item -> !oldCar.contains(item))
+                    .forEach(item -> existingBranch.addCar(item))
+            ;
+            List<User> oldEmployees = existingBranch.getEmployees();
+            regionalBranch.getEmployees().stream()
+                    .filter(item -> !oldEmployees.contains(item))
+                    .forEach(item -> existingBranch.addEmployee(item))
+            ;
+            List<RegionalBranch> oldChildren = existingBranch.getChildren();
+            regionalBranch.getChildren().stream()
+                    .filter(item -> !oldChildren.contains(item))
+                    .forEach(item -> existingBranch.addChild(item))
+            ;
+            existingBranch.setModificationDate(timeService.getCurrentTime());
+            regionalBranchDao.save(existingBranch);
         }catch (DataAccessException ex) {
             errors.add(RegionalBranchOperationErrorCode.DATABASE_ERROR);
             log.error(ex.toString());
@@ -127,21 +144,18 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
             throw new IllegalArgumentException("branch doesn't exist");
         }
         Set<RegionalBranchOperationErrorCode> errors = new HashSet<>();
-		User findedUser = userDao.findOne(user.getId());
-		if(findedUser == null){
+		User foundUser = userDao.findOne(user.getId());
+		if(foundUser == null){
 	        errors.add(RegionalBranchOperationErrorCode.USER_DOESNT_EXIST);
             log.debug("user doesn't exist! User: " + user);
 		}else{
-			if(findedUser.getRegionalBranch()!=null){ //remove from old branch
+			if(foundUser.getRegionalBranch()!=null){ //remove from old branch
                 log.debug("User must be reassigned");
-                RegionalBranch old = findedUser.getRegionalBranch();
-				if(old.getEmployees().remove(findedUser)){
-                    errors.addAll(this.update(old));
-                }else{
-				    throw new IllegalStateException("User has set branch but it was not in the branch as employee");
-                }
+                RegionalBranch old = foundUser.getRegionalBranch();
+				old.removeEmployee(foundUser);
+                errors.addAll(this.update(old));
 			}
-			existingBranch.addEmployee(findedUser);
+			existingBranch.addEmployee(foundUser);
 			errors.addAll(this.update(existingBranch));
 		}
 		return errors;
@@ -168,11 +182,8 @@ public class RegionalBranchServiceImpl implements RegionalBranchService {
 			if(foundCar.getRegionalBranch()!=null){ //remove from old branch
                 log.debug("Car must be reassigned");
                 RegionalBranch old = foundCar.getRegionalBranch();
-				if(old.getCars().remove(foundCar)){
-                    errors.addAll(this.update(old));
-                }else{
-                    throw new IllegalStateException("Car has set branch but it was not in the branch as employee");
-                }
+				old.removeCar(foundCar);
+                errors.addAll(this.update(old));
 			}
 			existingBranch.addCar(foundCar);
 			errors.addAll(this.update(existingBranch));

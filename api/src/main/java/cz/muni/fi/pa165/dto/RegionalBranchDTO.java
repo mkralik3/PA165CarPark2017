@@ -87,7 +87,7 @@ public class RegionalBranchDTO {
         return "RegionalBranch{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", parent=" + parent +
+                ", parentId=" + ((parent == null) ? null :parent.getId()) + //due to StackOverflowError because reginalBranch has user class
                 ", children=" + children +
                 ", employees=" + employees +
                 ", cars=" + cars +
