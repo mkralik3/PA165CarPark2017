@@ -66,12 +66,12 @@ public interface CarReservationRequestDAO extends CrudRepository<CarReservationR
      */
     List<CarReservationRequest> findAllReservationsByUser(User user);
     
-    @Query("SELECT r FROM CarReservationRequest r WHERE r.car.id = :carId AND (r.reservationStartDate < :endDate) AND (:startDate < r.reservationEndDate)")
+    @Query("SELECT r FROM CarReservationRequest r WHERE (r.car.id = :carId) AND (r.reservationStartDate <= :endDate) AND (:startDate <= r.reservationEndDate)")
     List<CarReservationRequest> findAllOverlappedReservations(@Param("startDate") LocalDateTime startDate,
                                                               @Param("endDate") LocalDateTime endDate,
                                                               @Param("carId") long carId);
     
-    @Query("SELECT r FROM CarReservationRequest r INNER JOIN r.car c INNER JOIN c.regionalBranch b WHERE b.id IN :regionalBranchIds AND (r.reservationStartDate < :dateTo) AND (:dateFrom < r.reservationEndDate)")
+    @Query("SELECT r FROM CarReservationRequest r INNER JOIN r.car c INNER JOIN c.regionalBranch b WHERE b.id IN :regionalBranchIds AND (r.reservationStartDate <= :dateTo) AND (:dateFrom <= r.reservationEndDate)")
     List<CarReservationRequest> getAllForRegionalBranch(@Param("regionalBranchIds")Set<Long> regionalBranchIds,
                                                         @Param("dateFrom") LocalDateTime dateFrom,
                                                         @Param("dateTo") LocalDateTime dateTo);

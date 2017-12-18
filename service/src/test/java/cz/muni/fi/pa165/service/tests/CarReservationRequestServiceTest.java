@@ -114,9 +114,6 @@ public class CarReservationRequestServiceTest extends BaseServiceTest {
             }
 
             CarReservationRequest carReservationRequest = (CarReservationRequest) argument;
-            if (carReservationRequest.getId() != null) {
-                throw new IllegalArgumentException();
-            }
 
             carReservationRequest.setId(Long.valueOf(1));
             return null;

@@ -61,7 +61,7 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
             log.error("request argument is null");
             throw new IllegalArgumentException("request argument is null");
         }
-        // get user from db for change safety
+        // get from db for change safety
         CarReservationRequest existing = requestsDao.findOne(request.getId());
         if (existing == null) {
             log.error("request not exists");
@@ -130,17 +130,15 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
             errors.add(CarReservationRequestOperationErrorCode.END_DATE_REQUIRED);
         }
         if (errors.isEmpty()) {
-            List<CarReservationRequest> overlappedReservations = requestsDao.findAllOverlappedReservations(newRequest.getReservationStartDate(), newRequest.getReservationEndDate(), newRequest.getCar().getId());
+            List<CarReservationRequest> overlappedReservations = requestsDao.findAllOverlappedReservations(newRequest.getReservationStartDate().minusDays(1), newRequest.getReservationEndDate().plusDays(1), newRequest.getCar().getId());
             // remove denied reservations, they are harmless
             overlappedReservations.removeIf(x -> x.getState() == CarReservationRequestState.DENIED);
-            if (existingRequest == null) {
-                if (!overlappedReservations.isEmpty()) {
-                    errors.add(CarReservationRequestOperationErrorCode.CAR_NOT_AVAILABLE);
-                }
-            } else {
-                if (overlappedReservations.size() != 1 || !overlappedReservations.get(0).equals(existingRequest)) {
-                    errors.add(CarReservationRequestOperationErrorCode.CAR_NOT_AVAILABLE);
-                }
+            if (existingRequest != null){
+                // remove existing reservation - it will be updated
+                overlappedReservations.removeIf(x -> x.getId().equals(existingRequest.getId()));
+            }
+            if (!overlappedReservations.isEmpty()) {
+                errors.add(CarReservationRequestOperationErrorCode.CAR_NOT_AVAILABLE);
             }
         }
         return errors;
