@@ -28,9 +28,9 @@
                 <ul class="nav navbar-nav">
                     <li ng-click="actions.deleteSelectedRegionalBranch()">Remove selected branch</li>
                 </ul>
-                <ul class="nav navbar-nav">
+                <!--<ul class="nav navbar-nav">
                     <li ng-click="actions.editSelectedBranch($event)">Edit selected branch</li>
-                </ul>
+                </ul>-->
                 <ul class="nav navbar-nav">
                     <li ng-click="actions.openAssignCar($event)">Assign car</li>
                 </ul>
@@ -69,7 +69,7 @@
                                     <md-input-container class="md-block">
                                         <label>Manager</label>
                                         <md-select id="manager" ng-model="viewModel.manager" required ng-selected="viewModel.manager">
-                                            <md-option ng-repeat="user in viewModel.users" ng-value="user" >
+                                            <md-option ng-repeat="user in viewModel.users" ng-value="user" ng-disabled="user.userType !== 'BRANCH_MANAGER'">
                                                 {{user.name}}
                                             </md-option>
                                         </md-select>

@@ -181,26 +181,36 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     };
     
     $scope.actions.addBranch = function () {
-        var selectedCars = [];
+        /*var selectedCars = [];
         angular.forEach($scope.viewModel.cars, function(car){
-            if (!!car.selected) selectedCars.push(car);
-        })
-        
-        var branchToAdd = $scope.viewModel.addBranch;
+            if (car.selected) selectedCars.push(car);
+        })*/
+        var managerToSet = $scope.viewModel.manager;
         var request = {name: $scope.viewModel.addBranch.name};
         branchesService.createBranch(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
                 var data = response.data;
                 if (response.isSuccess && data !== null) {
-                    $scope.viewModel.branches.push(branchToAdd);
+                    angular.forEach($scope.viewModel.cars, function(car){
+                        if (car.selected) {
+                            $scope.viewModel.selectedItem = data.data;
+                            $scope.viewModel.carToAssign = car;
+                            $scope.actions.assignCar();
+                            data.data.cars.push(car);
+                        };
+                    })
+                    $scope.viewModel.selectedItem = data.data;
+                    $scope.viewModel.userToAssign = managerToSet;
+                    data.data.employees.push(managerToSet);
+                    $scope.actions.assignUser();
+                    $scope.viewModel.branches.push(data.data);
                 } else {
                     notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
                 }
             } else {
                 notificationsService.showSimple("BRANCHES.UNKNOWN_ERROR");
             }
-            $scope.$digest();
         }, function (httpResponse) {
             notificationsService.showSimple("BRANCHES.UNKNOWN_SERVER_ERROR");
         });
@@ -243,7 +253,7 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     
     $rootScope.pageSubtitle = "BRANCHES.PAGE_SUBTITLE";
     $scope.branchesList = $('#branches_list');
-    $scope.viewModel = new Web.ViewModels.BranchesViewModel();//new Object();
+    $scope.viewModel = new Web.ViewModels.BranchesViewModel();
     $scope.viewModel.branches = [];
     $scope.viewModel.users = [];
     $scope.viewModel.cars = [];
@@ -256,5 +266,4 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     $scope.viewModel.addBranch = null;
     initList();
 }
-
 angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', Web.Controllers.BranchesController]);
