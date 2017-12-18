@@ -6,7 +6,7 @@
     	var start = request.dateFrom.toJSON();
     	var end = request.dateTo.toJSON();
     	var req = {
-			 method: 'PUT',
+			 method: 'POST',
 			 url: urlReservations,
 			 headers: {
 			   'Content-Type': 'application/json'
@@ -24,6 +24,18 @@
                 response.data.isSuccess = false;
                 error(response);
 		    });
+    }
+    
+    this.deleteReservation = function(id, onSuccess, onError){
+        $http.delete(urlBase.concat("/reservation/" + id)).then(function(httpResponse){
+            if (httpResponse.status === 200){
+                onSuccess();
+            } else {
+                onError();
+            }
+        }, function(httpResponse){
+            onError();
+        });
     }
     
     this.getAllReservations = function (request, onSuccess, onError) {

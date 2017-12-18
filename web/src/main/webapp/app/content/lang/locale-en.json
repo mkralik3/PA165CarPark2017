@@ -24,6 +24,8 @@
     "LOGIN_FAILED_UNKNOWN": "Login failed - unknown error. Contact technical support."
   },
   "RESERVATIONS": {
+    "DELETE_SUCCESS": "Reservation was successfully deleted.",
+    "DELETE_FAIL": "An unknown error ocurred.",
     "PAGE_SUBTITLE": "Reservations management",
     "UNKNOWN_ERROR": "An unknown error occured.",
     "UNKNOWN_SERVER_ERROR": "A server error occured. Try later."

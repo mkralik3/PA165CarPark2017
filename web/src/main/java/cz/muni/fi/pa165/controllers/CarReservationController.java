@@ -71,8 +71,8 @@ public class CarReservationController {
     }
 
     @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void deleteCarReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id){
-        LOG.debug("REST deleteCar with id: ", id);
+    public final void deleteReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id){
+        LOG.debug("REST delete reservation with id: ", id);
         try {
             reservationRequestFacade.deleteCarReservationRequest(id);
         } catch (Exception ex) {
@@ -81,7 +81,7 @@ public class CarReservationController {
         }
     }
 
-    @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<CarReservationRequestDTO> getReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id, @RequestBody Map<String, LocalDateTime> period){
         LOG.debug("get all reservations for branch ", id);
 

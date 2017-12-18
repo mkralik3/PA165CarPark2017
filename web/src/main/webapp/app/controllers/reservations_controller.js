@@ -118,9 +118,14 @@
     $scope.actions = new Object();
     $scope.actions.deleteSelectedReservation = function () {
         if ($scope.viewModel.selectedEvent != null) {
+            reservationsService.deleteReservation($scope.viewModel.selectedEvent.id, function(){
             var selectedEvent = $scope.viewModel.selectedEvent;
             $scope.calendarElement.fullCalendar('removeEvents', selectedEvent.id);
             $scope.viewModel.selectedEvent = null;
+            notificationsService.showSimple("RESERVATIONS.DELETE_SUCCESS");
+            }, function(){
+                notificationsService.showSimple("RESERVATIONS.DELETE_FAIL");
+            });
         }
     };
     $scope.actions.showNewReservationDialog = function (ev, startDate, endDate, car) {
