@@ -17,10 +17,11 @@
         var result = new Web.ViewModels.ReservationViewModel();
         if (source != null) {
             result.id = source.id;
-            result.startDate = source.startDate;
-            result.endDate = source.endDate;
+            result.startDate = new Date(source.reservationStartDate);
+            result.endDate = new Date(source.reservationEndDate);
             result.user = this.convertUserToViewModel(source.user);
             result.car = this.convertCarToViewModel(source.car);
+            result.state = source.state;
         }
         return result;
     }
@@ -38,9 +39,9 @@
         var result = new Web.ViewModels.UserViewModel();
         if (source != null) {
             result.id = source.id;
-            result.username = source.username;
-            result.name = source.name;
-            result.userType = source.userType;
+            result.username = source.userName;
+            result.name = source.userName;
+            result.userType = source.type;
             result.branchName = source.branchName;
         }
         return result;
@@ -51,6 +52,17 @@
         if (source != null) {
             result.id = source.id;
             result.name = source.name;
+            
+            result.employees = [];
+            for (var i = 0; i < source.employees.length; i++) {
+                var toAdd = this.convertUserToViewModel(source.employees[i]);
+                result.employees.push(toAdd);
+            }           	
+            result.cars = [];
+            for (var i = 0; i < source.cars.length; i++) {
+                var toAdd = this.convertCarToViewModel(source.cars[i]);
+                result.cars.push(toAdd);
+            } 	
         }
         return result;
     }
