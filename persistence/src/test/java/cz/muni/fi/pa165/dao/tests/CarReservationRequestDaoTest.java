@@ -304,21 +304,21 @@ public class CarReservationRequestDaoTest extends TestBase {
 
     @Test
     public void findAllOverlappedReservationsTest() {
-        Car car2 = objectFactory.createCar("Car2");
-        carDao.save(car2);
+        User user2 = objectFactory.createUser("User2", "1234567890", UserType.USER);
+        userDao.save(user2);
 
         CarReservationRequest reservation1 = objectFactory.
                 createReservationRequest(car, user, currentTime.minus(7, ChronoUnit.DAYS), currentTime.plus(3, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
         CarReservationRequest reservation2 = objectFactory.
-                createReservationRequest(car2, user, currentTime.minus(7, ChronoUnit.DAYS), currentTime.minus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+                createReservationRequest(car, user2, currentTime.minus(10, ChronoUnit.DAYS), currentTime.minus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
 
         reservationDao.save(reservation1);
         reservationDao.save(reservation2);
 
-        List<CarReservationRequest> foundReservations = reservationDao.findAllOverlappedReservations(currentTime.minus(8, ChronoUnit.DAYS), currentTime, car2.getId());
+        List<CarReservationRequest> foundReservations = reservationDao.findAllOverlappedReservations(currentTime.minus(7, ChronoUnit.DAYS), currentTime.plus(3, ChronoUnit.DAYS), car.getId());
 
         assertThat(foundReservations.size()).isEqualTo(1);
-        assertThat(foundReservations.contains(reservation2));
+        assertThat(foundReservations.contains(reservation1));
     }
 
 }
