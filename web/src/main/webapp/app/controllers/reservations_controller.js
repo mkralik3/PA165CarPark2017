@@ -4,7 +4,7 @@
         $scope.calendarElement.fullCalendar({
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
             defaultView: 'agendaDay',
-            defaultDate: '2017-12-20',
+            defaultDate: new Date().toISOString(),
             locale: settingsProvider.currentLanguage,
             editable: false,
             selectable: true,
