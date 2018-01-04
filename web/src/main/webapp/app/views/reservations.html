@@ -65,6 +65,10 @@
                                             </div>
                                         </div>
                                     </md-input-container>
+                                    <md-input-container>
+                                        <input mdc-datetime-picker date="false" time="true" type="text" short-time="true" show-todays-date placeholder="Time"
+                                               format="hh:mm a" ng-model="viewModel.newReservation.startDate"/>
+                                    </md-input-container>
                                 </div>
                                 <div layout-gt-sm="row">
                                     <md-input-container>
@@ -78,6 +82,10 @@
                                                 End date is lower than Start date.
                                             </div>
                                         </div>
+                                    </md-input-container>
+                                    <md-input-container>
+                                        <input mdc-datetime-picker date="false" time="true" type="text" short-time="true" show-todays-date placeholder="Time"
+                                               format="hh:mm a" ng-model="viewModel.newReservation.endDate"/>
                                     </md-input-container>
                                 </div>
                             </ng-form>

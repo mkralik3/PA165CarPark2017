@@ -25,7 +25,7 @@ Web.createNamespace("Web.Data");
 Web.createNamespace("Web.Services");
 Web.createNamespace("Web.ViewModels");
 
-Web.App = angular.module('CarParSystemWebApp', ['ui.router', 'ngCookies', 'pascalprecht.translate', 'LocalStorageModule', 'ngMaterial']);
+Web.App = angular.module('CarParSystemWebApp', ['ui.router', 'ngCookies', 'pascalprecht.translate', 'LocalStorageModule', 'ngMaterial', 'ngMaterialDatePicker']);
 
 Web.App.config(['$stateProvider', '$urlRouterProvider', '$translateProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $translateProvider, $httpProvider) {
     $urlRouterProvider.otherwise(Web.Constants.StateNames.IMPLICIT);

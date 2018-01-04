@@ -4,6 +4,7 @@
         $scope.calendarElement.fullCalendar({
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
             defaultView: 'agendaDay',
+            timezone: 'local',
             defaultDate: new Date().toISOString(),
             locale: settingsProvider.currentLanguage,
             editable: false,
@@ -132,17 +133,9 @@
         $scope.viewModel.newReservation = new Web.ViewModels.ReservationViewModel();
         if (typeof startDate !== "undefined") {
             $scope.viewModel.newReservation.startDate = startDate;
-            $scope.viewModel.newReservation.startDate.setHours(0);
-            $scope.viewModel.newReservation.startDate.setMinutes(0);
-            $scope.viewModel.newReservation.startDate.setSeconds(0);
-            $scope.viewModel.newReservation.startDate.setMilliseconds(0);
         }
         if (typeof endDate !== "undefined") {
             $scope.viewModel.newReservation.endDate = endDate;
-            $scope.viewModel.newReservation.endDate.setHours(23);
-            $scope.viewModel.newReservation.endDate.setMinutes(59);
-            $scope.viewModel.newReservation.endDate.setSeconds(59);
-            $scope.viewModel.newReservation.endDate.setMilliseconds(999);
         }
         if (typeof car !== "undefined") {
             $scope.viewModel.newReservation.car = car;
@@ -160,8 +153,8 @@
                 {
                     car: { id: $scope.viewModel.newReservation.car.id },
                     user: { id: sessionManager.currentSession.userId },
-                    reservationStartDate: $scope.viewModel.newReservation.startDate,
-                    reservationEndDate: $scope.viewModel.newReservation.endDate
+                    reservationStartDate: new Date($scope.viewModel.newReservation.startDate.toUTCString()),
+                    reservationEndDate: new Date($scope.viewModel.newReservation.endDate.toUTCString())
                 }, function(isSuccess, errors){
                     if (isSuccess){
                         notificationsService.showSimple("RESERVATIONS.NEW_CREATED");
