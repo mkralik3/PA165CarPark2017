@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private final int MIN_PASSWORD_LENGTH = 6;
+    private final int MIN_PASSWORD_LENGTH = 5;
     @Inject
     private UserDAO userDao;
     @Inject
