@@ -17,8 +17,8 @@
         var result = new Web.ViewModels.ReservationViewModel();
         if (source != null) {
             result.id = source.id;
-            result.startDate = new Date(source.reservationStartDate);
-            result.endDate = new Date(source.reservationEndDate);
+            result.startDate = moment.utc(source.reservationStartDate).toDate();
+            result.endDate = moment.utc(source.reservationEndDate).toDate();
             result.user = this.convertUserToViewModel(source.user);
             result.car = this.convertCarToViewModel(source.car);
             result.state = source.state;
