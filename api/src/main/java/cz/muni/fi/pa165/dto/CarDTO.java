@@ -13,7 +13,8 @@ public class CarDTO {
     private LocalDateTime activationDate;
     private LocalDateTime modificationDate;
     private RegionalBranchDTO regionalBranch = null;
-    
+    private boolean deactivated;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +61,14 @@ public class CarDTO {
 
     public void setRegionalBranch(RegionalBranchDTO regionalBranch) {
         this.regionalBranch = regionalBranch;
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
     }
 
     @Override

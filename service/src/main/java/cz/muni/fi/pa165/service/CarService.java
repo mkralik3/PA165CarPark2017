@@ -33,10 +33,16 @@ public interface CarService {
     Car deleteCar(long id);
 
     /**
-     * Find all cars
+     * Find all activated cars
      * @return all cars
      */
-    List<Car> findAllCars();
+    List<Car> findAllActivatedCars();
+
+    /**
+     * Find all deactivated cars
+     * @return all cars
+     */
+    List<Car> findAllDeactivatedCars();
 
     /**
      * Find car by id

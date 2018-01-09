@@ -41,8 +41,14 @@ public interface CarFacade {
     CarDTO findCarById(long carId);
 
     /**
-     * Find all cars
+     * Find all cars which are activated
      * @return all cars
      */
-    List<CarDTO> findAllCars();
+    List<CarDTO> findAllActivatedCars();
+
+    /**
+     * Find all cars which are deactivated
+     * @return all deactivated cars
+     */
+    List<CarDTO> findAllDeactivatedCars();
 }

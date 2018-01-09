@@ -27,8 +27,14 @@ public class CarController {
     private CarFacade carFacade;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<CarDTO> getAllCars(){
-        List<CarDTO> result = carFacade.findAllCars();
+    public final List<CarDTO> getAllCars(@RequestParam(value = "activated",required = false, defaultValue = "true")
+                                                     boolean activated){
+        List<CarDTO> result = null;
+        if(activated){
+            result = carFacade.findAllActivatedCars();
+        }else{
+            result = carFacade.findAllDeactivatedCars();
+        }
         if(result == null) {
             result = Collections.emptyList();
         }
@@ -72,10 +78,11 @@ public class CarController {
     @RequestMapping(value = ApiDefinition.Car.ID, method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public final void deleteCar(@PathVariable(ApiDefinition.Car.PATH_ID) long id){
         LOG.debug("REST delete car with id: ", id);
-        try {
-            carFacade.deleteCar(id);
-        } catch (Exception ex) {
-            LOG.warn(ex.getMessage());
+        CarDTO result = carFacade.findCarById(id);
+        if (result != null) {
+            result.setDeactivated(true);
+            carFacade.updateCar(result);
+        } else {
             throw new ResourceNotFound();
         }
     }

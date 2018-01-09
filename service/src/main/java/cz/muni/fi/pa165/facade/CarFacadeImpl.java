@@ -102,10 +102,26 @@ public class CarFacadeImpl implements CarFacade {
     }
 
     @Override
-    public List<CarDTO> findAllCars() {
+    public List<CarDTO> findAllActivatedCars() {
         List<CarDTO> result = new ArrayList<>();
         try {
-            List<Car> cars = carService.findAllCars();
+            List<Car> cars = carService.findAllActivatedCars();
+            if (cars != null) {
+                cars.forEach((u) -> {
+                    result.add(beanMappingService.mapTo(u, CarDTO.class));
+                });
+            }
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public List<CarDTO> findAllDeactivatedCars() {
+        List<CarDTO> result = new ArrayList<>();
+        try {
+            List<Car> cars = carService.findAllDeactivatedCars();
             if (cars != null) {
                 cars.forEach((u) -> {
                     result.add(beanMappingService.mapTo(u, CarDTO.class));
