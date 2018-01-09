@@ -140,8 +140,8 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
         }
         if (errors.isEmpty()) {
             List<CarReservationRequest> overlappedReservations = requestsDao.findAllOverlappedReservations(
-                    newRequest.getReservationStartDate().minusDays(1),
-                    newRequest.getReservationEndDate().plusDays(1),
+                    newRequest.getReservationStartDate(),
+                    newRequest.getReservationEndDate(),
                     newRequest.getCar().getId());
             // remove denied reservations, they are harmless
             overlappedReservations.removeIf(x -> x.getState() == CarReservationRequestState.DENIED);
