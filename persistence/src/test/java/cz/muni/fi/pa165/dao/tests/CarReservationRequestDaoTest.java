@@ -243,60 +243,34 @@ public class CarReservationRequestDaoTest extends TestBase {
     }
 
     @Test
-    public void getAllForRegionalBranchTest() {
-        RegionalBranch regionalBranch1 = objectFactory.createRegionalBranch("parent");
-        RegionalBranch regionalBranch2 = objectFactory.createRegionalBranch("child", null, null, null, regionalBranch1);
-        regionalBranch1.addCar(car);
-        branchDao.save(regionalBranch1);
-
-        Car car2 = objectFactory.createCar("Car2");
-        carDao.save(car2);
-
-        regionalBranch2.addCar(car2);
-        branchDao.save(regionalBranch2);
-
-        CarReservationRequest reservation1 = objectFactory.
-                createReservationRequest(car, user, currentTime, currentTime.plus(3, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
-        CarReservationRequest reservation2 = objectFactory.
-                createReservationRequest(car2, user, currentTime, currentTime.plus(8, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
-
-        reservationDao.save(reservation1);
-        reservationDao.save(reservation2);
-
-        Set<Long> requiredBranchIds = new HashSet<>();
-        requiredBranchIds.add(reservation2.getId());
-
-        List<CarReservationRequest> foundReservations = reservationDao.getAllForRegionalBranch(requiredBranchIds, currentTime, currentTime.plus(4, ChronoUnit.DAYS));
-
-        assertThat(foundReservations.contains(reservation2));
-    }
-
-    @Test
     public void getAllForMoreRegionalBranchTest() {
-        RegionalBranch regionalBranch1 = objectFactory.createRegionalBranch("parent");
-        RegionalBranch regionalBranch2 = objectFactory.createRegionalBranch("child", null, null, null, regionalBranch1);
-        regionalBranch1.addCar(car);
-        branchDao.save(regionalBranch1);
-
         Car car2 = objectFactory.createCar("Car2");
         carDao.save(car2);
+        Car car3 = objectFactory.createCar("Car3");
+        carDao.save(car3);
 
-        regionalBranch2.addCar(car2);
+        RegionalBranch regionalBranch1 = objectFactory.createRegionalBranch("branch1");
+        regionalBranch1.addCar(car);
+        regionalBranch1.addCar(car2);
+        branchDao.save(regionalBranch1);
+
+        RegionalBranch regionalBranch2 = objectFactory.createRegionalBranch("branch2");
+        regionalBranch2.addCar(car3);
         branchDao.save(regionalBranch2);
 
         CarReservationRequest reservation1 = objectFactory.
                 createReservationRequest(car, user, currentTime, currentTime.plus(3, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
         CarReservationRequest reservation2 = objectFactory.
                 createReservationRequest(car2, user, currentTime, currentTime.plus(8, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest reservation3Other = objectFactory.
+                createReservationRequest(car3, user, currentTime, currentTime.plus(8, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
 
         reservationDao.save(reservation1);
         reservationDao.save(reservation2);
+        reservationDao.save(reservation3Other);
 
-        Set<Long> requiredBranchIds = new HashSet<>();
-        requiredBranchIds.add(reservation1.getId());
-        requiredBranchIds.add(reservation2.getId());
 
-        List<CarReservationRequest> foundReservations = reservationDao.getAllForRegionalBranch(requiredBranchIds, currentTime, currentTime.plus(4, ChronoUnit.DAYS));
+        List<CarReservationRequest> foundReservations = reservationDao.getAllForRegionalBranch(regionalBranch1.getId(), currentTime, currentTime.plus(4, ChronoUnit.DAYS));
 
         assertThat(foundReservations.contains(reservation1));
         assertThat(foundReservations.contains(reservation2));

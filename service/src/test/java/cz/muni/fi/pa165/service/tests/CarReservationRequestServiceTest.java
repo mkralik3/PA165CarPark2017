@@ -179,10 +179,7 @@ public class CarReservationRequestServiceTest extends BaseServiceTest {
         regionalBranch.addCar(car1);
         regionalBranchDao.save(regionalBranch);
 
-        Set<Long> requiredBranchIds = new HashSet<>();
-        requiredBranchIds.add(reservation1.getId());
-
-        List<CarReservationRequest> foundReservations = carReservationRequestDAO.getAllForRegionalBranch(requiredBranchIds, currentTime, currentTime.plus(4, ChronoUnit.DAYS));
+        List<CarReservationRequest> foundReservations = carReservationRequestDAO.getAllForRegionalBranch(reservation1.getId(), currentTime, currentTime.plus(4, ChronoUnit.DAYS));
 
         assertThat(foundReservations.contains(reservation1));
     }

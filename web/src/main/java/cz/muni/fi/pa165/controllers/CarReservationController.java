@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.controllers;
 import cz.muni.fi.pa165.config.ApiDefinition;
 import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.results.CarReservationRequestOperationResult;
+import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.exceptions.ResourceNotFound;
 import cz.muni.fi.pa165.exceptions.ResourceNotValid;
 import cz.muni.fi.pa165.facade.CarReservationRequestFacade;
@@ -97,9 +98,7 @@ public class CarReservationController {
             result= reservationRequestFacade.getAllForRegionalBranchAndChildren(id,start,end);
         }else{
             LOG.debug("get all reservations for branch ", id);
-            Set<Long> ids = new HashSet<>();
-            ids.add(id);
-            result = reservationRequestFacade.getAllForRegionalBranch(ids,start,end);
+            result = reservationRequestFacade.getAllForRegionalBranch(id,start,end);
         }
         if(result == null) {
             result = Collections.emptyList();
