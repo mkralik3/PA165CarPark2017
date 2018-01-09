@@ -115,16 +115,14 @@ public class UserServiceTest extends BaseServiceTest {
     
     @Test
     public void authUserOkPassword(){
-        User user = userService.authenticate(testUsername, testPassword);
-        
-        assertThat(user).isNotNull();
+        Set<UserOperationErrorCode> errors = userService.authenticate(testUsername, testPassword);
+        assertThat(errors).isEmpty();
     }
     
     @Test
     public void authUserWrongPassword(){
-        User user = userService.authenticate(testUsername, "wrongPassword");
-        
-        assertThat(user).isNull();
+        Set<UserOperationErrorCode> errors = userService.authenticate(testUsername, "wrongPassword");
+        assertThat(errors).isNotEmpty();
     }
     
     @Test

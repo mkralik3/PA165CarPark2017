@@ -142,4 +142,16 @@ Get all users:
 ```
 curl -X GET http://localhost:8080/pa165/rest/user
 ```
+Authentification user:
+```
+curl -X POST http://localhost:8080/pa165/rest/user/authenticate
+data: { 
+"userName" : "admin",
+"password" : "admin" 
+}
+```
+
+
+
+
 [WIP]

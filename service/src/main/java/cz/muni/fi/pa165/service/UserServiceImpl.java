@@ -158,14 +158,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User authenticate(String userName, String password) {
-        User user = userDao.findUserByUserName(userName);
-        if (user != null && password != null) {
-            if (passwordSupport.validatePassword(password, user.getPassword())){ // possible improvement of security - count fail attempts
-                return user;
+    public Set<UserOperationErrorCode> authenticate(String userName, String password) {
+        log.info("Auth user: " + userName);
+        Set<UserOperationErrorCode> errors = new HashSet<>();
+        if (userName == null) {
+            log.error("userName argument is null");
+            errors.add(UserOperationErrorCode.USERNAME_REQUIRED);
+        }
+        if (password == null) {
+            errors.add(UserOperationErrorCode.PASSWORD_REQUIRED);
+        }
+        else if (password.length() < MIN_PASSWORD_LENGTH) {
+            log.debug("password is not big enough");
+            errors.add(UserOperationErrorCode.PASSWORD_LENGTH);
+        }
+        if(errors.isEmpty()){
+            User user = userDao.findUserByUserName(userName);
+            if(user==null){
+                errors.add(UserOperationErrorCode.USERNAME_DOES_NOT_EXIST);
+                return errors;
+            }
+            if(passwordSupport.validatePassword(password, user.getPassword())){
+                log.debug("Authentication user was successful");
+            }else{
+                log.debug("Authentication user was not successful");
+                errors.add(UserOperationErrorCode.PASSWORD_MISMATCH);
             }
         }
-        return null;
+        return errors;
     }
-
 }

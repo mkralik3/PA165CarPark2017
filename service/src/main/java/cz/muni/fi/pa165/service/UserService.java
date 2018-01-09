@@ -10,7 +10,14 @@ import java.util.Set;
  * @author Martin Miskeje
  */
 public interface UserService {
-    User authenticate(String userName, String password);
+    /**
+     * Authenticate user
+     * @param userName - user name
+     * @param password - password
+     * @return set of error code whether some happened
+     */
+    Set<UserOperationErrorCode> authenticate(String userName, String password);
+
     Set<UserOperationErrorCode> create(User user, String password);
     
     Set<UserOperationErrorCode> update(User user);

@@ -55,4 +55,11 @@ public interface UserFacade {
      * @return particular user
      */
     UserDTO findUserByUserName(String userName);
+
+    /**
+     * Auth user
+     * @param user - user for auth
+     * @return result, particular user (UserDTO) whether operation was successful otherwise set of error codes
+     */
+    UserOperationResult authenticate(UserAuthDTO user);
 }
