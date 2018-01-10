@@ -40,7 +40,11 @@
                             for (var i = 0; i < data.length; i++) {
                                 var toAdd = contractConverter.convertReservationToViewModel(data[i]);
                                 $scope.viewModel.reservations.push(toAdd);
-                                eventsForCalendar.push(toAdd.convertToEvent());
+                                if(toAdd.user.id!=sessionManager.currentSession.userId & sessionManager.currentSession.userType == 'USER'){
+                                    eventsForCalendar.push(toAdd.convertToSecretEvent()); //another user reservation and user is not admin or manager
+                                }else{
+                                    eventsForCalendar.push(toAdd.convertToEvent());
+                                }
                             }
                             callback(eventsForCalendar);
                             $scope.calendarElement.fullCalendar('refetchResources');
@@ -66,8 +70,6 @@
                         reservationsService.getReservations(request, fillInCalendar, handleError);
                         break;
                     case 'USER':
-                        request.onlyForUser = true;
-                        request.userId = sessionManager.currentSession.userId;
                         reservationsService.getReservations(request, fillInCalendar, handleError);
                         break;
                     default:
@@ -123,6 +125,9 @@
             eventClick: function (calEvent, jsEvent, view) {
                 if ($scope.viewModel.selectedEvent != null) {
                     updateEventColor($scope.viewModel.selectedEvent, $scope.viewModel.selectedEvent.notSelectedColor);
+                }
+                if(calEvent.isSecret){ //only info event, user cannot click
+                    return;
                 }
                 $scope.viewModel.selectedEvent = calEvent;
                 updateEventColor(calEvent, "red");

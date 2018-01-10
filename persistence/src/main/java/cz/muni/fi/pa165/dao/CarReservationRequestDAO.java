@@ -66,7 +66,7 @@ public interface CarReservationRequestDAO extends CrudRepository<CarReservationR
      */
     List<CarReservationRequest> findAllReservationsByUser(User user);
     
-    @Query("SELECT r FROM CarReservationRequest r WHERE (r.car.id = :carId) AND (r.reservationStartDate >= :startDate) AND (r.reservationEndDate <= :endDate)")
+    @Query("SELECT r FROM CarReservationRequest r WHERE (r.car.id = :carId) AND (:startDate < r.reservationEndDate) AND (r.reservationStartDate < :endDate)")
     List<CarReservationRequest> findAllOverlappedReservations(@Param("startDate") LocalDateTime startDate,
                                                               @Param("endDate") LocalDateTime endDate,
                                                               @Param("carId") long carId);
