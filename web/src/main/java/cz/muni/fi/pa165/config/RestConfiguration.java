@@ -9,10 +9,7 @@ import cz.muni.fi.pa165.dto.CarDTO;
 import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.RegionalBranchDTO;
 import cz.muni.fi.pa165.dto.UserDTO;
-import cz.muni.fi.pa165.mixin.CarDTOMixin;
-import cz.muni.fi.pa165.mixin.CarReservationRequestDTOMixin;
 import cz.muni.fi.pa165.mixin.RegionalBranchDTOMixin;
-import cz.muni.fi.pa165.mixin.UserDTOMixin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -53,10 +50,7 @@ public class RestConfiguration extends WebMvcConfigurerAdapter {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH));
 
-        objectMapper.addMixIn(CarDTO.class, CarDTOMixin.class);
         objectMapper.addMixIn(RegionalBranchDTO.class, RegionalBranchDTOMixin.class);
-        objectMapper.addMixIn(UserDTO.class, UserDTOMixin.class);
-        objectMapper.addMixIn(CarReservationRequestDTO.class, CarReservationRequestDTOMixin.class);
 
         objectMapper.disable(MapperFeature.DEFAULT_VIEW_INCLUSION);
 

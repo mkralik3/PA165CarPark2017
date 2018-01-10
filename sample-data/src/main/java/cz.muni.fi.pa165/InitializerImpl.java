@@ -46,6 +46,7 @@ public class InitializerImpl implements Initializer {
         Car volvo = this.createCar("Volvo XC90");
         Car skoda = this.createCar("Skoda Fabia");
         Car ford = this.createCar("Ford Focus");
+        Car mazda = this.createCar("Mazda 3");
 
         //create Users
         User admin = this.createUser("admin", "admin", UserType.ADMIN);
@@ -59,10 +60,11 @@ public class InitializerImpl implements Initializer {
 
         //create Branches
         List<Car> headquarterCars = new ArrayList<>();
-
+        headquarterCars.add(mazda);
 
         List<User> headquartersEmployees = new ArrayList<>();
-
+        headquartersEmployees.add(admin);
+        headquartersEmployees.add(standa);
 
         List<Car> brnoCars = new ArrayList<>();
         brnoCars.add(skoda);
@@ -84,8 +86,10 @@ public class InitializerImpl implements Initializer {
 
         //create Reservations
         CarReservationRequest first = this.createReservationRequest(audi, denis, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.CREATED);
-        CarReservationRequest second = this.createReservationRequest(ford, pepa, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
+        CarReservationRequest second = this.createReservationRequest(ford, mato, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
         CarReservationRequest third = this.createReservationRequest(volvo, franta, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.DENIED);
+
+        this.createReservationRequest(mazda, standa, currentTime, currentTime.plus(1, ChronoUnit.DAYS), CarReservationRequestState.APPROVED);
     }
 
     private Car createCar(String name) {

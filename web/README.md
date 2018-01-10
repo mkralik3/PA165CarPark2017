@@ -9,6 +9,18 @@ Get all Cars:
 ```
 curl -X GET http://localhost:8080/pa165/rest/car
 ```
+Get all Cars in branch: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?branchId=1
+```
+Get all deactivated cars: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?activated=false
+```
+Get all deactivated cars in particular branch: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?activated=false&branchId=1
+```
 Find car by ID: 
 ```
 curl -X GET http://localhost:8080/pa165/rest/car/1
@@ -22,10 +34,6 @@ Update car:
 ```
 curl -X PUT -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/car
 data: {"id": 1, "name": "Audi A3"}
-```
-Get all deactivated cars: 
-```
-curl -X GET http://localhost:8080/pa165/rest/car?activated=false
 ```
 Deactivate car (with id 1):
 ```
@@ -100,6 +108,16 @@ data:
     "end" : "2017-12-19T20:37:52.862"
 }
 ```
+Find all reservation for particular user: 
+```
+curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1/user/3
+data: 
+{
+    "start" : "2017-12-18T20:37:52.862",
+    "end" : "2017-12-19T20:37:52.862"
+}
+```
+
 # Branch
 
 Get all branches: 
@@ -142,4 +160,16 @@ Get all users:
 ```
 curl -X GET http://localhost:8080/pa165/rest/user
 ```
+Authentification user:
+```
+curl -X POST http://localhost:8080/pa165/rest/user/authenticate
+data: { 
+"userName" : "admin",
+"password" : "admin" 
+}
+```
+
+
+
+
 [WIP]

@@ -27,9 +27,10 @@
             allDaySlot: false,
             events: function (start, end, timezone, callback) {
                 var request = new Web.Data.GetReservationsRequest();
+                request.branchId = sessionManager.currentSession.branchId;
                 request.dateFrom = new Date(start);
                 request.dateTo = new Date(end);
-                reservationsService.getReservations(request, function (httpResponse) {
+                var fillInCalendar = function (httpResponse) {
                     var response = httpResponse.data;
                     if (response != null) {
                         var data = response.data;
@@ -51,13 +52,33 @@
                     }
                     $scope.viewModel.selectedEvent = null;
                     //$scope.$digest();
-                }, function (httpResponse) {
+                };
+                var handleError = function (httpResponse) {
                     $scope.viewModel.selectedEvent = null;
                     notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
-                });
+                };
+
+                switch(sessionManager.currentSession.userType) {
+                    case 'ADMIN':
+                        reservationsService.getAllReservations(request, fillInCalendar, handleError);
+                        break;
+                    case 'BRANCH_MANAGER':
+                        reservationsService.getReservations(request, fillInCalendar, handleError);
+                        break;
+                    case 'USER':
+                        request.onlyForUser = true;
+                        request.userId = sessionManager.currentSession.userId;
+                        reservationsService.getReservations(request, fillInCalendar, handleError);
+                        break;
+                    default:
+                        handleError();
+                }
             },
             resources: function (callback) {
-                var request = new Web.Data.GetCarsRequest();
+                var request = new Web.Data.GetCarsRequest(sessionManager);
+                if(sessionManager.currentSession.userType == 'ADMIN'){
+                    request.getAllCars = true;
+                }
                 carsService.getCars(request, function (httpResponse) {
                     var response = httpResponse.data;
                     if (response != null) {

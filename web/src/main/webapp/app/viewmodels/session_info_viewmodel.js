@@ -3,6 +3,7 @@
     this.username = null;
     this.userType = 0;
     this.branchName = "";
+    this.branchId = 0;
     this.currentCulture = "en-GB";
     this.currentLanguage = "en";
     this.isValid = false;
@@ -18,6 +19,7 @@
             this.username = session.username;
             this.userType = session.userType;
             this.branchName = session.branchName;
+            this.branchId = session.branchId;
             this.currentCulture = session.currentCulture;
             this.currentLanguage = session.currentLanguage;
             this.validate();

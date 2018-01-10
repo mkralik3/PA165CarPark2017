@@ -140,4 +140,27 @@ public class UserFacadeImpl implements UserFacade{
         return result;
     }
 
+    @Override
+    public UserOperationResult authenticate(UserAuthDTO user) {
+        UserOperationResult result = new UserOperationResult();
+        try {
+            Set<UserOperationErrorCode> errors = new HashSet<>();
+            userService.authenticate(user.getUserName(),user.getPassword()).forEach((x) -> {
+                errors.add(beanMappingService.mapEnumTo(x, UserOperationErrorCode.class));
+            });
+            if (errors.isEmpty()) {
+                User authorizedUser = userService.findByUsername(user.getUserName());
+                result.setData(beanMappingService.mapTo(authorizedUser, UserDTO.class));
+                result.setIsSuccess(true);
+            }
+            errors.forEach((e) -> {
+                result.getErrorCodes().add(beanMappingService.mapEnumTo(e, UserOperationErrorCode.class));
+            });
+        } catch (Exception ex) {
+            result.getErrorCodes().add(UserOperationErrorCode.UNKNOWN_ERROR);
+            log.error(ex.toString());
+        }
+        return result;
+    }
+
 }

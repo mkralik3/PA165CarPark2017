@@ -1,7 +1,7 @@
-Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDialog, notificationsService, contractConverter, settingsProvider, carService, branchesService) {
+Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDialog, notificationsService, contractConverter, settingsProvider, carService, branchesService, sessionManager) {
     var initList = function () {
         var request = new Web.Data.GetBranchesRequest();
-        
+
         branchesService.getBranches(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response !== null) {
@@ -45,7 +45,10 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
             $scope.viewModel.selectedEvent = null;
             notificationsService.showSimple("RESERVATIONS.UNKNOWN_SERVER_ERROR");
         });
-        var request = new Web.Data.GetCarsRequest();
+        var request = new Web.Data.GetCarsRequest(sessionManager);
+        if(sessionManager.currentSession.userType == 'ADMIN'){
+            request.getAllCars = true;
+        }
             carService.getCars(request, function (httpResponse) {
                 var response = httpResponse.data;
                 if (response !== null) {
@@ -315,4 +318,4 @@ Web.Controllers.BranchesController = function ($rootScope, $scope, $http, $mdDia
     $scope.viewModel.isBeingEdited = false;
     initList();
 }
-angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', Web.Controllers.BranchesController]);
+angular.module('CarParSystemWebApp').controller('BranchesController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'branchesService', 'sessionManager', Web.Controllers.BranchesController]);

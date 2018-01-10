@@ -1,24 +1,20 @@
 ﻿Web.Services.CarsService = function ($http) {
     this.getCars = function (request, onSuccess, onError) {
-    	var urlCars = urlBase.concat("/car");     
-        var response = {};
-        var req = {
-            method: 'POST',
-            url: urlCars,
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        var urlCars = urlBase.concat("/car");
+        if(!request.getAllCars){
+            urlCars = urlBase.concat("/car?branchId=" + request.branchId);
         }
-    	$http(req)
-    		.then(function(httpResponse) {
+        var response = {};
+        $http.get(urlCars)
+            .then(function(httpResponse) {
                 response.data = httpResponse;
                 response.data.isSuccess = true;
                 onSuccess(response);
             }, function(httpResponse) {
                 response.data = httpResponse;
                 response.data.isSuccess = false;
-                error(response);
-		    });
+                onError(response);
+            });
     }
 
     this.deleteCar = function(id, onSuccess, onError){
@@ -31,21 +27,6 @@
         }, function(httpResponse){
             onError();
         });
-    }
-
-    this.getCars = function (request, onSuccess, onError) {
-        var urlAllReservations = urlBase.concat("/car");
-        var response = {};
-        $http.get(urlAllReservations)
-            .then(function(httpResponse) {
-                response.data = httpResponse;
-                response.data.isSuccess = true;
-                onSuccess(response);
-            }, function(httpResponse) {
-                response.data = httpResponse;
-                response.data.isSuccess = false;
-                error(response);
-            });
     }
 
     this.createCar = function(data, onSuccess, onError){

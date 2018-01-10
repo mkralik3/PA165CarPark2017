@@ -102,8 +102,8 @@
                     <div class="container-fluid">
                         <ul class="nav navbar-nav">
                             <li><a href="#!/reservations">Reservations</a></li>
-                            <li ng-show="services.sessionManager.currentSession.userType == 2"><a href="#!/branches">Branches</a></li>
-                            <li ng-show="services.sessionManager.currentSession.userType == 2"><a href="#!/cars">Cars</a></li>
+                            <li ng-show="services.sessionManager.currentSession.userType == 'ADMIN'"><a href="#!/branches">Branches</a></li>
+                            <li ng-show="services.sessionManager.currentSession.userType == 'ADMIN' || services.sessionManager.currentSession.userType == 'BRANCH_MANAGER'"><a href="#!/cars">Cars</a></li>
                         </ul>
                     </div>
                 </nav>

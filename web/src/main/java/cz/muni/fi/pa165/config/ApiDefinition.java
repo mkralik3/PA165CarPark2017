@@ -13,6 +13,8 @@ public class ApiDefinition {
         public static final String BASE = "/reservation";
         public static final String ID = "/{id}";
         public static final String PATH_ID = "id";
+        public static final String BY_USER_ID = "/{id}/user/{user_id}";
+        public static final String USER_ID = "user_id";
     }
 
     public static final class Branch {

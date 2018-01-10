@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(ApiDefinition.Car.BASE)
@@ -26,9 +27,17 @@ public class CarController {
     @Inject
     private CarFacade carFacade;
 
+    /**
+     * /car select all cars
+     * /car?branchId=1 select all cars for branch 1
+     * /car?activated=false select all deactivated car
+     * /car?activated=false&branchId=1 select all deactivated car in branch 1
+     */
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final List<CarDTO> getAllCars(@RequestParam(value = "activated",required = false, defaultValue = "true")
-                                                     boolean activated){
+                                                     boolean activated,
+                                         @RequestParam(value = "branchId",required = false, defaultValue = "-1")
+                                                 long branchId){
         List<CarDTO> result = null;
         if(activated){
             result = carFacade.findAllActivatedCars();
@@ -38,7 +47,11 @@ public class CarController {
         if(result == null) {
             result = Collections.emptyList();
         }
-        return result;
+        if(branchId>=0){
+            return result.stream().filter(x -> x.getRegionalBranch().getId()==branchId).collect(Collectors.toList());
+        }else{
+            return result;
+        }
     }
 
     @RequestMapping(value = ApiDefinition.Car.ID , method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

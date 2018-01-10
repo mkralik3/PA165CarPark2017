@@ -1,4 +1,4 @@
 ﻿Web.Data.AuthRequest = function () {
-    this.username = null;
+    this.userName = null;
     this.password = null;
 }
