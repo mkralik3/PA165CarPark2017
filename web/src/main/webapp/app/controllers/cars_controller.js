@@ -1,7 +1,9 @@
-﻿Web.Controllers.CarsController = function ($rootScope, $scope, $http, $mdDialog, notificationsService, contractConverter, settingsProvider, carsService) {
+﻿Web.Controllers.CarsController = function ($rootScope, $scope, $http, $mdDialog, notificationsService, contractConverter, settingsProvider, carsService, sessionManager) {
     var initList = function () {
-        var request = new Web.Data.GetCarsRequest();
-
+        var request = new Web.Data.GetCarsRequest(sessionManager);
+        if(sessionManager.currentSession.userType == 'ADMIN'){
+            request.getAllCars = true;
+        }
         carsService.getCars(request, function (httpResponse) {
             var response = httpResponse.data;
             if (response != null) {
@@ -91,4 +93,4 @@
     initList();
 }
 
-angular.module('CarParSystemWebApp').controller('CarsController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', Web.Controllers.CarsController]);
+angular.module('CarParSystemWebApp').controller('CarsController', ['$rootScope', '$scope', '$http', '$mdDialog', 'notificationsService', 'contractConverter', 'settingsProvider', 'carsService', 'sessionManager', Web.Controllers.CarsController]);

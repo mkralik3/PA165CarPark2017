@@ -9,6 +9,18 @@ Get all Cars:
 ```
 curl -X GET http://localhost:8080/pa165/rest/car
 ```
+Get all Cars in branch: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?branchId=1
+```
+Get all deactivated cars: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?activated=false
+```
+Get all deactivated cars in particular branch: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?activated=false&branchId=1
+```
 Find car by ID: 
 ```
 curl -X GET http://localhost:8080/pa165/rest/car/1
@@ -22,10 +34,6 @@ Update car:
 ```
 curl -X PUT -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/car
 data: {"id": 1, "name": "Audi A3"}
-```
-Get all deactivated cars: 
-```
-curl -X GET http://localhost:8080/pa165/rest/car?activated=false
 ```
 Deactivate car (with id 1):
 ```

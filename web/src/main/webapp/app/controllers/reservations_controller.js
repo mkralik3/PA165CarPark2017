@@ -75,7 +75,10 @@
                 }
             },
             resources: function (callback) {
-                var request = new Web.Data.GetCarsRequest();
+                var request = new Web.Data.GetCarsRequest(sessionManager);
+                if(sessionManager.currentSession.userType == 'ADMIN'){
+                    request.getAllCars = true;
+                }
                 carsService.getCars(request, function (httpResponse) {
                     var response = httpResponse.data;
                     if (response != null) {
