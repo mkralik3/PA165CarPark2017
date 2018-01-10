@@ -137,8 +137,7 @@ public class CarReservationRequestFacadeTest extends BaseFacadeTest {
     public void getAllForRegionalBranchTest() {
         LocalDateTime today = LocalDateTime.now();
 
-        Set<Long> requiredBranchIds = new HashSet<>();
-        requiredBranchIds.add(1L);
+        Long requiredBranchId = 1L;
 
         CarReservationRequest crr = new CarReservationRequest();
         crr.setCar(car1);
@@ -154,14 +153,14 @@ public class CarReservationRequestFacadeTest extends BaseFacadeTest {
         crr.setReservationStartDate(today);
         crr.setReservationStartDate(today.plus(5, ChronoUnit.DAYS));
 
-        when(carReservationRequestService.getAllForRegionalBranch(requiredBranchIds, today, today.plus(5, ChronoUnit.DAYS)))
+        when(carReservationRequestService.getAllForRegionalBranch(requiredBranchId, today, today.plus(5, ChronoUnit.DAYS)))
                 .thenReturn(Arrays.asList(crr));
 
         when(beanMappingService.mapTo(crr, CarReservationRequestDTO.class)).thenReturn(crrDTO);
 
-        List<CarReservationRequestDTO> result = carReservationRequestFacade.getAllForRegionalBranch(requiredBranchIds, today, today.plus(5, ChronoUnit.DAYS));
+        List<CarReservationRequestDTO> result = carReservationRequestFacade.getAllForRegionalBranch(requiredBranchId, today, today.plus(5, ChronoUnit.DAYS));
 
-        verify(carReservationRequestService).getAllForRegionalBranch(requiredBranchIds, today, today.plus(5, ChronoUnit.DAYS));
+        verify(carReservationRequestService).getAllForRegionalBranch(requiredBranchId, today, today.plus(5, ChronoUnit.DAYS));
         verify(beanMappingService).mapTo(crr, CarReservationRequestDTO.class);
 
         assertThat(result).contains(crrDTO);

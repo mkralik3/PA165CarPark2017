@@ -3,6 +3,7 @@ package cz.muni.fi.pa165.controllers;
 import cz.muni.fi.pa165.config.ApiDefinition;
 import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.dto.results.CarReservationRequestOperationResult;
+import cz.muni.fi.pa165.entity.RegionalBranch;
 import cz.muni.fi.pa165.exceptions.ResourceNotFound;
 import cz.muni.fi.pa165.exceptions.ResourceNotValid;
 import cz.muni.fi.pa165.facade.CarReservationRequestFacade;
@@ -81,15 +82,24 @@ public class CarReservationController {
         }
     }
 
+    /**
+     * @param children true for all children ../reservation/1?children=true
+     */
     @RequestMapping(value = ApiDefinition.Reservation.ID, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final List<CarReservationRequestDTO> getReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id, @RequestBody Map<String, LocalDateTime> period){
-        LOG.debug("get all reservations for branch ", id);
-
+    public final List<CarReservationRequestDTO> getReservation(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id,
+                                                                          @RequestParam(value = "children",required = false, defaultValue = "false")
+                                                                                  boolean children,
+                                                                          @RequestBody Map<String, LocalDateTime> period){
         LocalDateTime start = period.get("start");
         LocalDateTime end = period.get("end");
-        Set<Long> ids = new HashSet<>();
-        ids.add(id);
-        List<CarReservationRequestDTO> result = reservationRequestFacade.getAllForRegionalBranch(ids,start,end);
+        List<CarReservationRequestDTO> result = null;
+        if(children){
+            LOG.debug("get all reservations for branch ", id);
+            result= reservationRequestFacade.getAllForRegionalBranchAndChildren(id,start,end);
+        }else{
+            LOG.debug("get all reservations for branch ", id);
+            result = reservationRequestFacade.getAllForRegionalBranch(id,start,end);
+        }
         if(result == null) {
             result = Collections.emptyList();
         }

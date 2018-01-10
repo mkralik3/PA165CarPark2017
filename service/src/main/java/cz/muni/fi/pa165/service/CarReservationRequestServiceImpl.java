@@ -1,7 +1,11 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.dao.CarDAO;
 import cz.muni.fi.pa165.dao.CarReservationRequestDAO;
+import cz.muni.fi.pa165.dao.UserDAO;
+import cz.muni.fi.pa165.entity.Car;
 import cz.muni.fi.pa165.entity.CarReservationRequest;
+import cz.muni.fi.pa165.entity.User;
 import cz.muni.fi.pa165.enums.CarReservationRequestState;
 import cz.muni.fi.pa165.service.enums.CarReservationRequestOperationErrorCode;
 import java.time.LocalDateTime;
@@ -29,7 +33,7 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     private CarReservationRequestDAO requestsDao;
     @Inject
     private TimeService timeService;
-    
+
     @Override
     public Set<CarReservationRequestOperationErrorCode> create(CarReservationRequest request) {
         log.info("arReservation will be created: " + request);
@@ -101,8 +105,13 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
     }
     
     @Override
-    public List<CarReservationRequest> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo) {
-        return requestsDao.getAllForRegionalBranch(regionalBranchIds, dateFrom, dateTo);
+    public List<CarReservationRequest> getAllForRegionalBranch(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return requestsDao.getAllForRegionalBranch(regionalBranchId, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<CarReservationRequest> getAllForRegionalBranchAndChildren(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return requestsDao.getAllForRegionalBranchAndChildren(regionalBranchId, dateFrom, dateTo);
     }
 
     @Override
@@ -130,7 +139,10 @@ public class CarReservationRequestServiceImpl implements CarReservationRequestSe
             errors.add(CarReservationRequestOperationErrorCode.END_DATE_REQUIRED);
         }
         if (errors.isEmpty()) {
-            List<CarReservationRequest> overlappedReservations = requestsDao.findAllOverlappedReservations(newRequest.getReservationStartDate().minusDays(1), newRequest.getReservationEndDate().plusDays(1), newRequest.getCar().getId());
+            List<CarReservationRequest> overlappedReservations = requestsDao.findAllOverlappedReservations(
+                    newRequest.getReservationStartDate(),
+                    newRequest.getReservationEndDate(),
+                    newRequest.getCar().getId());
             // remove denied reservations, they are harmless
             overlappedReservations.removeIf(x -> x.getState() == CarReservationRequestState.DENIED);
             if (existingRequest != null){

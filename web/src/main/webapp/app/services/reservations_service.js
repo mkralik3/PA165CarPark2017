@@ -1,17 +1,18 @@
 ﻿Web.Services.ReservationsService = function ($http) {
     this.getReservations = function (request, onSuccess, onError) {
-    	var urlReservations = urlBase.concat("/reservation/2");
+    	var urlReservations = urlBase.concat("/reservation/2"); 
     	var response = {};
-    	request.dateTo.setMilliseconds(192); //workaround, time is not importatn
-    	var start = request.dateFrom.toJSON();
-    	var end = request.dateTo.toJSON();
+    	var dataFor ={};
+        dataFor.start = request.dateFrom.toJSON();
+        dataFor.end = request.dateTo.toJSON();
+    	request.dateTo.setMilliseconds(1); //workaround, time is not importatn		
     	var req = {
 			 method: 'POST',
 			 url: urlReservations,
 			 headers: {
 			   'Content-Type': 'application/json'
 			 },
-			 data: {start, end}
+			 data: dataFor
 		}
     	
     	$http(req)

@@ -1,5 +1,6 @@
 package cz.muni.fi.pa165.service;
 
+import cz.muni.fi.pa165.dto.CarReservationRequestDTO;
 import cz.muni.fi.pa165.service.enums.*;
 import cz.muni.fi.pa165.entity.*;
 import java.time.LocalDateTime;
@@ -37,12 +38,21 @@ public interface CarReservationRequestService {
 
     /**
      * Get all reservations for particular regional branch in time period
-     * @param regionalBranchIds particular regional branch
+     * @param regionalBranchId particular regional branch
      * @param dateFrom start period
      * @param dateTo end period
      * @return list of all reservation for this time period and branch
      */
-    List<CarReservationRequest> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo);
+    List<CarReservationRequest> getAllForRegionalBranch(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo);
+
+    /**
+     * Get all reservations for particular regional branch and its children in time period
+     * @param regionalBranchId particular regional branch
+     * @param dateFrom start period
+     * @param dateTo end period
+     * @return list of all reservation for this time period and branch
+     */
+    List<CarReservationRequest> getAllForRegionalBranchAndChildren(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo);
 
     /**
      * Find all reservation

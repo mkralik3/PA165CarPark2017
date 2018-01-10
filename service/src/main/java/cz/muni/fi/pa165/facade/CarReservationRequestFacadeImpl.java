@@ -91,10 +91,26 @@ public class CarReservationRequestFacadeImpl implements CarReservationRequestFac
     }
 
     @Override
-    public List<CarReservationRequestDTO> getAllForRegionalBranch(Set<Long> regionalBranchIds, LocalDateTime dateFrom, LocalDateTime dateTo) {
+    public List<CarReservationRequestDTO> getAllForRegionalBranch(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo) {
         List<CarReservationRequestDTO> result = new ArrayList<>();
         try {
-            List<CarReservationRequest> reservations = reservationsService.getAllForRegionalBranch(regionalBranchIds, dateFrom, dateTo);
+            List<CarReservationRequest> reservations = reservationsService.getAllForRegionalBranch(regionalBranchId, dateFrom, dateTo);
+            if (reservations != null) {
+                reservations.forEach((u) -> {
+                    result.add(beanMappingService.mapTo(u, CarReservationRequestDTO.class));
+                });
+            }
+        } catch (Exception ex) {
+            log.error(ex.toString());
+        }
+        return result;
+    }
+
+    @Override
+    public List<CarReservationRequestDTO> getAllForRegionalBranchAndChildren(long regionalBranchId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        List<CarReservationRequestDTO> result = new ArrayList<>();
+        try {
+            List<CarReservationRequest> reservations = reservationsService.getAllForRegionalBranchAndChildren(regionalBranchId, dateFrom, dateTo);
             if (reservations != null) {
                 reservations.forEach((u) -> {
                     result.add(beanMappingService.mapTo(u, CarReservationRequestDTO.class));
