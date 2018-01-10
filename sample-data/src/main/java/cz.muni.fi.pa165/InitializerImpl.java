@@ -62,7 +62,7 @@ public class InitializerImpl implements Initializer {
 
 
         List<User> headquartersEmployees = new ArrayList<>();
-
+        headquartersEmployees.add(admin);
 
         List<Car> brnoCars = new ArrayList<>();
         brnoCars.add(skoda);

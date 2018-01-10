@@ -1,6 +1,6 @@
 ﻿Web.Services.ReservationsService = function ($http) {
     this.getReservations = function (request, onSuccess, onError) {
-    	var urlReservations = urlBase.concat("/reservation/2"); 
+    	var urlReservations = urlBase.concat("/reservation/"+request.branchId);
     	var response = {};
     	var dataFor ={};
         dataFor.start = request.dateFrom.toJSON();

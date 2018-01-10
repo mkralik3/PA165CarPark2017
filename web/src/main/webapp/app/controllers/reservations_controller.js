@@ -27,6 +27,7 @@
             allDaySlot: false,
             events: function (start, end, timezone, callback) {
                 var request = new Web.Data.GetReservationsRequest();
+                request.branchId = sessionManager.currentSession.branchId;
                 request.dateFrom = new Date(start);
                 request.dateTo = new Date(end);
                 reservationsService.getReservations(request, function (httpResponse) {

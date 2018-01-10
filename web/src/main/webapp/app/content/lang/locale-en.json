@@ -21,11 +21,17 @@
     "PAGE_SUBTITLE": "Login",
     "USERNAME": "Username:",
     "PASSWORD": "Password:",
-    "LOGON": "Log on",
+    "LOGIN_BUTTON": "Log in",
     "LOGIN_FAILED_SERVER_ERROR": "Login failed - server error, try later.",
     "LOGIN_FAILED_NONAUTHENTICATED": "Wrong username or password, try again.",
     "LOGIN_FAILED_LOCKED": "Login disabled from security reasons. Try later.",
     "LOGIN_FAILED_DISABLED": "Login disabled from security reasons. Contact technical support.",
+    "LOGIN_FAILED_USERNAME_REQUIRED": "The user name is required",
+    "LOGIN_FAILED_PASSWORD_REQUIRED": "The password is required",
+    "LOGIN_FAILED_PASSWORD_LENGTH": "The length of the password is not too enough",
+    "LOGIN_FAILED_PASSWORD_MISMATCH": "The password is incorrect",
+    "LOGIN_FAILED_USERNAME_DOES_NOT_EXIST": "The username doesn't exist",
+    "LOGIN_FAILED_BRANCH_NULL": "The user is not in the any branch. Contact technical support or manager.",
     "LOGIN_FAILED_UNKNOWN": "Login failed - unknown error. Contact technical support."
   },
   "RESERVATIONS": {

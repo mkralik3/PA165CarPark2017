@@ -1,14 +1,7 @@
 ﻿Web.Services.ContractConverter = function () {
     this.convertAuthError = function (error) {
         if (error != null) {
-            var errorToUse = error.toUpperCase();
-            switch (errorToUse) {
-                case 'NONAUTHENTICATED':
-                case 'LOCKED':
-                case 'DISABLED':
-                    return 'LOGIN.LOGIN_FAILED_' + errorToUse;
-                    break;
-            }
+            return 'LOGIN.LOGIN_FAILED_' + error;
         }
         return 'LOGIN.LOGIN_FAILED_UNKNOWN';
     }
