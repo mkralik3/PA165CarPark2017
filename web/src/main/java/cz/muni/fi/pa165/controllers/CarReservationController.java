@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(ApiDefinition.Reservation.BASE)
@@ -104,5 +105,25 @@ public class CarReservationController {
             result = Collections.emptyList();
         }
         return result;
+    }
+
+    /**
+     * Get all reservation for particular user
+     */
+    @RequestMapping(value = ApiDefinition.Reservation.BY_USER_ID, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final List<CarReservationRequestDTO> getReservationForUser(@PathVariable(ApiDefinition.Reservation.PATH_ID) long id,
+                                                                      @PathVariable(ApiDefinition.Reservation.USER_ID) long userId,
+                                                               @RequestBody Map<String, LocalDateTime> period){
+        LOG.debug("get all reservations for user with id '" + userId + "' in the branch " + id);
+        LocalDateTime start = period.get("start");
+        LocalDateTime end = period.get("end");
+        List<CarReservationRequestDTO> result = null;
+
+        LOG.debug("get all reservations for branch ", id);
+        result= reservationRequestFacade.getAllForRegionalBranchAndChildren(id,start,end);
+        if(result == null) {
+            result = Collections.emptyList();
+        }
+        return result.stream().filter(x -> x.getUser().getId() == userId).collect(Collectors.toList());
     }
 }

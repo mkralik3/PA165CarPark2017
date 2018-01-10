@@ -1,6 +1,9 @@
 ﻿Web.Services.ReservationsService = function ($http) {
     this.getReservations = function (request, onSuccess, onError) {
-    	var urlReservations = urlBase.concat("/reservation/"+request.branchId);
+        var urlReservations = urlBase.concat("/reservation/" + request.branchId);
+        if(request.onlyForUser == true){
+            urlReservations = urlReservations.concat("/user/" + request.userId);
+        }
     	var response = {};
     	var dataFor ={};
         dataFor.start = request.dateFrom.toJSON();
@@ -23,7 +26,7 @@
             }, function(httpResponse) {
                 response.data = httpResponse;
                 response.data.isSuccess = false;
-                error(response);
+                onError(response);
 		    });
     }
     
@@ -70,7 +73,7 @@
             }, function(httpResponse) {
                 response.data = httpResponse;
                 response.data.isSuccess = false;
-                error(response);
+                onError(response);
 		    });
     }
 }

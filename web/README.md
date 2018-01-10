@@ -100,6 +100,16 @@ data:
     "end" : "2017-12-19T20:37:52.862"
 }
 ```
+Find all reservation for particular user: 
+```
+curl -X POST -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/reservation/1/user/3
+data: 
+{
+    "start" : "2017-12-18T20:37:52.862",
+    "end" : "2017-12-19T20:37:52.862"
+}
+```
+
 # Branch
 
 Get all branches: 
