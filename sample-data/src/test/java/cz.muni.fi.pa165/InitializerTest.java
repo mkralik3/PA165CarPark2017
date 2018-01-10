@@ -47,7 +47,7 @@ public class InitializerTest extends AbstractTestNGSpringContextTests {
     public void createSampleDataTest() {
         Assert.assertTrue(userDAO.findAll().size() > 0, "no users");
 
-        Assert.assertTrue(carDAO.findAll().size() > 0, "no orders");
+        Assert.assertTrue(carDAO.findByDeactivatedFalse().size() > 0, "no orders");
     }
 
 }

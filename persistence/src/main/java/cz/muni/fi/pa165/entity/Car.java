@@ -32,6 +32,8 @@ public class Car {
     @JoinColumn(name = "regionalBranchId", nullable = true)
     private RegionalBranch regionalBranch = null;
 
+    private boolean deactivated = false;
+
     public Long getId() {
         return id;
     }
@@ -78,6 +80,14 @@ public class Car {
     // internal only
     void setRegionalBranch(RegionalBranch regionalBranch) {
         this.regionalBranch = regionalBranch;
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
     }
 
     @Override

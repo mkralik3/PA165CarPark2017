@@ -73,12 +73,12 @@ public class CarFacadeTest extends BaseFacadeTest {
 
     @Test
     public void testFindAllCars(){
-        when(carService.findAllCars()).thenReturn(Collections.singletonList(car));
+        when(carService.findAllActivatedCars()).thenReturn(Collections.singletonList(car));
 
-        List<CarDTO> cars = carFacade.findAllCars();
+        List<CarDTO> cars = carFacade.findAllActivatedCars();
 
         assertThat(car.getName()).isEqualTo(cars.get(0).getName());
-        verify(carService).findAllCars();
+        verify(carService).findAllActivatedCars();
         verify(beanMappingService).mapTo(car, CarDTO.class);
     }
     

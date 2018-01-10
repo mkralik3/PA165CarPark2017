@@ -13,8 +13,14 @@ import java.util.List;
 public interface CarDAO extends CrudRepository<Car, Long> {
 
     /**
-     * Get all cars from database
+     * Get all cars from database which are activated
      * @return all cars in database
      */
-    List<Car> findAll();
+    List<Car> findByDeactivatedFalse();
+
+    /**
+     * Find all car which are deactivated
+     * @return
+     */
+    List<Car> findByDeactivatedTrue();
 }

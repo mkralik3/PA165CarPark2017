@@ -33,7 +33,7 @@ public class CarDaoTest extends TestBase {
             carDao.save(car);
         }
 
-        Collection<Car> loadedCars = carDao.findAll();
+        Collection<Car> loadedCars = carDao.findByDeactivatedFalse();
 
         for (Car createdCar : carsToCreate){
             assertThat(loadedCars).contains(createdCar);

@@ -23,6 +23,14 @@ Update car:
 curl -X PUT -i -H "Content-Type: application/json" --data ' http://localhost:8080/pa165/rest/car
 data: {"id": 1, "name": "Audi A3"}
 ```
+Get all deactivated cars: 
+```
+curl -X GET http://localhost:8080/pa165/rest/car?activated=false
+```
+Deactivate car (with id 1):
+```
+curl -X DELETE http://localhost:8080/pa165/rest/car/1
+```
 
 # Reservation
 

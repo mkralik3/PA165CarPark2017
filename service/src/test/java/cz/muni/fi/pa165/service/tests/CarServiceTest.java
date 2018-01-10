@@ -44,7 +44,7 @@ public class CarServiceTest extends BaseServiceTest {
         when(carDao.findOne(1L))
             .thenReturn(car1);
         
-        when(carDao.findAll())
+        when(carDao.findByDeactivatedFalse())
             .thenReturn(Arrays.asList(car1, car2));
         
         doAnswer((Answer<Object>) (InvocationOnMock invocation) -> {
@@ -103,7 +103,7 @@ public class CarServiceTest extends BaseServiceTest {
     
     @Test
     public void findAllCars(){
-        List<Car> cars = carService.findAllCars();
+        List<Car> cars = carService.findAllActivatedCars();
         assertThat(cars).isNotNull();
         assertThat(cars.size()).isEqualTo(2);
         assertThat(cars).contains(car1, car2);

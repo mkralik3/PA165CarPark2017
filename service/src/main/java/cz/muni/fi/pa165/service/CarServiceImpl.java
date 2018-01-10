@@ -62,6 +62,7 @@ public class CarServiceImpl implements CarService{
             existingCar.setName(car.getName());
             existingCar.setActivationDate(car.getActivationDate());
             existingCar.setModificationDate(timeService.getCurrentTime());
+            existingCar.setDeactivated(car.isDeactivated());
             carDAO.save(existingCar);
         }catch (DataAccessException ex) {
             errors.add(CarOperationErrorCode.DATABASE_ERROR);
@@ -83,8 +84,13 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public List<Car> findAllCars() {
-        return carDAO.findAll();
+    public List<Car> findAllActivatedCars() {
+        return carDAO.findByDeactivatedFalse();
+    }
+
+    @Override
+    public List<Car> findAllDeactivatedCars() {
+        return carDAO.findByDeactivatedTrue();
     }
 
     @Override
