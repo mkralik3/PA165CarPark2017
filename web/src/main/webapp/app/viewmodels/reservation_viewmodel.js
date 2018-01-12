@@ -4,16 +4,22 @@
     this.endDate = null;
     this.user = null;
     this.car = null;
+    this.state = null;
 
     this.convertToEvent = function () {
         result = {};
         result.id = this.id;
-        result.color = "#007bff";
+        if(this.state === 'APPROVED'){
+            result.title = this.user.name + ' \n APPROVED';
+            result.color = "#02ff0e";
+        }else{
+            result.title = this.user.name + ' \n WAITING FOR APPROVED';
+            result.color = "#007bff";
+        }
         result.notSelectedColor = result.color;
         result.start = this.startDate;
         result.end = this.endDate;
         result.resourceId = this.car.id;
-        result.title = this.user.name;
         result.source = this;
         result.isSecret = false;
         return result;

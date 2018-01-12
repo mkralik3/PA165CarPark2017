@@ -22,6 +22,9 @@
                 <ul class="nav navbar-nav">
                     <li ng-click="actions.deleteSelectedReservation()">Delete reservation</li>
                 </ul>
+                <ul ng-show="services.sessionManager.currentSession.userType == 'ADMIN' || services.sessionManager.currentSession.userType == 'BRANCH_MANAGER' || viewModel.selectedEvent.state !== 'APPROVED'" class="nav navbar-nav">
+                    <li ng-click="actions.showApproveDenyDialog($event)">Approve/deny</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -99,6 +102,33 @@
                         Cancel
                     </md-button>
                 </md-dialog-actions>
+        </md-dialog>
+    </div>
+    <div class="md-dialog-container" id="approveOrDenyDialog">
+        <md-dialog layout-padding style="min-width:350px">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Approve or deny reservation</h2>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block">
+                    <label>Action</label>
+                    <md-select ng-model="statusReservation">
+                        <md-option value="APPROVED">APPROVED</md-option>
+                        <md-option value="DENIED">DENIED</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-dialog-actions layout="row">
+                <md-button class="md-primary" ng-click="actions.approveOrDeny()">
+                    Update
+                </md-button>
+                <md-button ng-click="actions.cancelNewReservation()">
+                    Cancel
+                </md-button>
+            </md-dialog-actions>
         </md-dialog>
     </div>
 </div>

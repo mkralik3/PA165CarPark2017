@@ -174,6 +174,23 @@
             clickOutsideToClose: true
         });
     };
+
+    $scope.actions.showApproveDenyDialog = function (ev) {
+        if ($scope.viewModel.selectedEvent != null) {
+            $scope.viewModel.approveOrDenyReservation = $scope.viewModel.selectedItem;
+            $mdDialog.show({
+                contentElement: '#approveOrDenyDialog',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true
+            });
+        }
+    };
+
+    $scope.actions.approveOrDeny = function () {
+        alert("not yet implemented");
+    };
+
     $scope.actions.createNewReservation = function () {
         reservationsService.createReservation(
                 {
